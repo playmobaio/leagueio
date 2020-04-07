@@ -1,0 +1,24 @@
+{
+  "name": "leagueio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server/server.js",
+  "scripts": {
+    "start": "node src/server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/philipslan/leagueio.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/philipslan/leagueio/issues"
+  },
+  "homepage": "https://github.com/philipslan/leagueio#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "path": "^0.12.7",
+    "socket.io": "^2.3.0"
+  }
+}

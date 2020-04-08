@@ -18,14 +18,13 @@ function listen() {
 
 app.use(express.static(path.join(__dirname, "../client")));
 
-var PLAYERS = [];
 var io = require("socket.io")(server);
 io.sockets.on(
   "connect",
   function(socket) {
     console.log("We have a new client: " + socket.id);
 
-    socket.on("CLIENT:JOIN_GAME", () => socketController.clientJoinGame(socket, io, PLAYERS));
-    socket.on('disconnect', socketController.disconnect);
+    socket.on("CLIENT:JOIN_GAME", () => socketController.clientJoinGame(socket, io));
+    socket.on('disconnect', () => socketController.disconnect(socket, io));
   }
 );

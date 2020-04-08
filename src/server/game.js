@@ -20,4 +20,6 @@ class Game {
     return this._players;
   }
 }
-new Game();
+
+const instance = new Game();
+module.exports = instance;

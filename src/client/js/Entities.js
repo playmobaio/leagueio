@@ -60,8 +60,8 @@ Entity = function(type,id,x,y,width,height,img){
 	return self;
 }
 
-Player = function(){
-	var self = Actor('player','myId',800,800,50*1.5,70*1.5,Img.player,10,1);
+Player = function(x, y){
+	var self = Actor('player','myId',x,y,50*1.5,70*1.5,Img.player,10,1);
 	self.maxMoveSpd = 10;
 	self.pressingMouseLeft = false;
 	self.pressingMouseRight = false;

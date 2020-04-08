@@ -1,5 +1,3 @@
-PLAYERS = [];
-
 function joinGame() {
   console.log("Initializing Socket");
   var socket = io();
@@ -8,26 +6,25 @@ function joinGame() {
   var name = document.getElementById("playerNameInput");
   document.getElementById("game").style.visibility = "visible";
   document.getElementById("startpanel").style.visibility = "hidden";
-
-  setInterval(update,40);
   socket.emit("CLIENT:JOIN_GAME");
 };
 
 function registerSocket(socket) {
   socket.on("SERVER:PLAYER_CREATED", (state) => {
+    _game.players = state.players.map(p => Player(p.id, p.x, p.y));
+    _game.removePlayer(socket.id);
+
+    // TODO: We should refactor this when we update the event loop also update server
     if (socket.id == state.generated.id) {
-      player = Player(socket.id, state.generated.x, state.generated.y);
+      const player = Player(socket.id, state.generated.x, state.generated.y);
+      _game.user = player;
       startNewGame();
       setInterval(update,40);
-    } 
-    // TODO: We should refactor this when we update the event loop also update server
-    var otherPlayers = state.players.filter(x => x.id != socket.id).map((p) => Player(p.id, p.x, p.y));
-    otherPlayers.push(player);
-    PLAYERS = otherPlayers;
+    }
   });
 
   socket.on("SERVER:PLAYER_DC", (id) => {
-    PLAYERS = PLAYERS.filter(x => x.id != id);
+    _game.removePlayer(id);
   })
 }
 
@@ -102,54 +99,66 @@ function testCollisionRectRect(rect1,rect2) {
 }
 
 document.onmousedown = function(mouse) {
+  if (!_game.user)
+    return
 	if(mouse.which === 1)
-		player.pressingMouseLeft = true;
+		_game.user.pressingMouseLeft = true;
 	else
-		player.pressingMouseRight = true;
+		_game.user.pressingMouseRight = true;
 }
 document.onmouseup = function(mouse) {
+  if (!_game.user)
+    return
 	if(mouse.which === 1)
-		player.pressingMouseLeft = false;
+		_game.user.pressingMouseLeft = false;
 	else
-		player.pressingMouseRight = false;
+		_game.user.pressingMouseRight = false;
 }
 document.oncontextmenu = function(mouse) {
+  if (!_game.user)
+    return
 	mouse.preventDefault();
 }
 
 document.onmousemove = function(mouse) {
+  if (!_game.user)
+    return
 	var mouseX = mouse.clientX - canvas.getBoundingClientRect().left;
 	var mouseY = mouse.clientY - canvas.getBoundingClientRect().top;
 
 	mouseX -= CANVAS_WIDTH/2;
 	mouseY -= CANVAS_HEIGHT/2;
 
-	player.aimAngle = Math.atan2(mouseY,mouseX) / Math.PI * 180;
+	_game.user.aimAngle = Math.atan2(mouseY,mouseX) / Math.PI * 180;
 }
 
 document.onkeydown = function(event) {
+  if (!_game.user)
+    return
 	if(event.keyCode === 68)	//d
-		player.pressingRight = true;
+		_game.user.pressingRight = true;
 	else if(event.keyCode === 83)	//s
-		player.pressingDown = true;
+		_game.user.pressingDown = true;
 	else if(event.keyCode === 65) //a
-		player.pressingLeft = true;
+		_game.user.pressingLeft = true;
 	else if(event.keyCode === 87) // w
-		player.pressingUp = true;
+		_game.user.pressingUp = true;
 
 	else if(event.keyCode === 80) //p
 		paused = !paused;
 }
 
 document.onkeyup = function(event) {
+  if (!_game.user)
+    return
 	if(event.keyCode === 68)	//d
-		player.pressingRight = false;
+		_game.user.pressingRight = false;
 	else if(event.keyCode === 83)	//s
-		player.pressingDown = false;
+		_game.user.pressingDown = false;
 	else if(event.keyCode === 65) //a
-		player.pressingLeft = false;
+		_game.user.pressingLeft = false;
 	else if(event.keyCode === 87) // w
-		player.pressingUp = false;
+		_game.user.pressingUp = false;
 }
 
 function update() {
@@ -168,14 +177,15 @@ function update() {
 	Upgrade.update();
 	Enemy.update();
 
-  PLAYERS.forEach((p) => { p.update(); })
+  _game.players.forEach((p) => { p.update(); })
+  _game.user.update();
 
-	ctx.fillText(player.hp + " Hp",0,30);
+	ctx.fillText(_game.user.hp + " Hp",0,30);
 	ctx.fillText("Score: " + score,200,30);
 }
 
 function startNewGame() {
-	player.hp = 10;
+  _game.user.hp = 10;
 	timeWhenGameStarted = Date.now();
 	frameCount = 0;
 	score = 0;
@@ -208,8 +218,8 @@ Maps = function(id,imgSrc,grid){
 	}
 
 	self.draw = function(){
-		var x = WIDTH/2 - player.x;
-		var y = HEIGHT/2 - player.y;
+		var x = WIDTH/2 - _game.user.x;
+		var y = HEIGHT/2 - _game.user.y;
 		ctx.drawImage(self.image,0,0,self.image.width,self.image.height,x,y,self.image.width*2,self.image.height*2);
 	}
 	return self;

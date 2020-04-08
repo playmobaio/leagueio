@@ -1,3 +1,4 @@
+// Server
 class Game {
   constructor() {
     if(! Game.instance) {

@@ -1,7 +1,9 @@
+// Client
 class Game {
   constructor() {
     if(! Game.instance) {
-      this._players = [];
+      this.players = [];
+      this.user = null;
       Game.instance = this;
     }
     
@@ -9,15 +11,11 @@ class Game {
   }
 
   addPlayer(player) {
-    this._players.push(player);
+    this.players.push(player);
   }
 
   removePlayer(id) {
-    this._players = this._players.filter(player => player.id != id);
-  }
-
-  getPlayers() {
-    return this._players;
+    this.players = this.players.filter(p => p.id != id);
   }
 }
 new Game();

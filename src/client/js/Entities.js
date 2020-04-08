@@ -1,5 +1,4 @@
-
-var player;
+const _game = new Game();
 
 Entity = function(type,id,x,y,width,height,img){
 	var self = {
@@ -17,8 +16,8 @@ Entity = function(type,id,x,y,width,height,img){
 	}
 	self.draw = function(){
 		ctx.save();
-		var x = self.x - player.x;
-		var y = self.y - player.y;
+		var x = self.x - _game.user.x;
+		var y = self.y - _game.user.y;
 
 		x += WIDTH/2;
 		y += HEIGHT/2;
@@ -109,8 +108,8 @@ Actor = function(type,id,x,y,width,height,img,hp,atkSpd){
 
 	self.draw = function(){
 		ctx.save();
-		var x = self.x - player.x;
-		var y = self.y - player.y;
+		var x = self.x - _game.user.x;
+		var y = self.y - _game.user.y;
 
 		x += WIDTH/2;
 		y += HEIGHT/2;
@@ -244,14 +243,14 @@ Enemy = function(id,x,y,width,height,img,hp,atkSpd){
 		self.performAttack();
 	}
 	self.updateAim = function(){
-		var diffX = player.x - self.x;
-		var diffY = player.y - self.y;
+		var diffX = _game.user.x - self.x;
+		var diffY = _game.user.y - self.y;
 
 		self.aimAngle = Math.atan2(diffY,diffX) / Math.PI * 180
 	}
 	self.updateKeyPress = function(){
-		var diffX = player.x - self.x;
-		var diffY = player.y - self.y;
+		var diffX = _game.user.x - self.x;
+		var diffY = _game.user.y - self.y;
 
 		self.pressingRight = diffX > 3;
 		self.pressingLeft = diffX < -3;
@@ -263,8 +262,8 @@ Enemy = function(id,x,y,width,height,img,hp,atkSpd){
 	var super_draw = self.draw;
 	self.draw = function(){
 		super_draw();
-		var x = self.x - player.x + WIDTH/2;
-		var y = self.y - player.y + HEIGHT/2 - self.height/2 - 20;
+		var x = self.x - _game.user.x + WIDTH/2;
+		var y = self.y - _game.user.y + HEIGHT/2 - self.height/2 - 20;
 
 		ctx.save();
 		ctx.fillStyle = 'red';
@@ -328,12 +327,12 @@ Upgrade.update = function(){
 		Upgrade.randomlyGenerate();
 	for(var key in Upgrade.list){
 		Upgrade.list[key].update();
-		var isColliding = player.testCollision(Upgrade.list[key]);
+		var isColliding = _game.user.testCollision(Upgrade.list[key]);
 		if(isColliding){
 			if(Upgrade.list[key].category === 'score')
 				score += 1000;
 			if(Upgrade.list[key].category === 'atkSpd')
-				player.atkSpd += 3;
+				_game.user.atkSpd += 3;
 			delete Upgrade.list[key];
 		}
 	}
@@ -390,9 +389,9 @@ Bullet = function (id,x,y,spdX,spdY,width,height,combatType){
 				}
 			}
 		} else if(self.combatType === 'enemy'){
-			if(self.testCollision(player)){
+			if(self.testCollision(_game.user)){
 				self.toRemove = true;
-				player.hp -= 1;
+				_game.user.hp -= 1;
 			}
 		}
 		if(Maps.current.isPositionWall(self)){

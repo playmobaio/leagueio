@@ -1,6 +1,6 @@
 var express = require("express");
 var path = require("path");
-var socketController = require("./socketController");
+var socketController = require("./socketController.js");
 
 // Create the app
 var app = express();

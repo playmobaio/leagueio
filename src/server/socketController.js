@@ -1,4 +1,4 @@
-var Player = require("./Player");
+var Player = require("./player.js");
 
 module.exports = {
   clientJoinGame : function(socket, io, players) {

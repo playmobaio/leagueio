@@ -5,7 +5,7 @@
   "main": "src/server/server.js",
   "scripts": {
     "start": "node dist/server/server.js",
-    "build": "npm run clean && npm run html && npm run css && npm run img && tsc -p .", 
+    "build": "npm run clean && npm run html && npm run css && npm run img && tsc -p .",
     "html": "copyfiles -f src/client/**/*.html dist/client",
     "css": "copyfiles -f src/client/css/* dist/client/css",
     "img": "copyfiles -f src/client/img/* dist/client/img",
@@ -43,6 +43,7 @@
     "nodemon": "^2.0.3",
     "prettier": "~1.19.1",
     "rimraf": "~3.0.2",
+    "socket.io-client": "^2.3.0",
     "tsutils": "~3.17.0",
     "typescript": "~3.8.2"
   }

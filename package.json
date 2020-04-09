@@ -4,7 +4,12 @@
   "description": "",
   "main": "src/server/server.js",
   "scripts": {
-    "start": "node src/server/server.js"
+    "start": "npm run build:live",
+    "build": "tsc -p .",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server/server.ts",
+    "clean": "rimraf coverage build tmp",
+    "build:watch": "tsc -w -p tsconfig.release.json",
+    "lint": "eslint . --ext .ts,.tsx"
   },
   "repository": {
     "type": "git",
@@ -19,9 +24,22 @@
   "dependencies": {
     "express": "^4.17.1",
     "path": "^0.12.7",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "tslib": "~1.10.0"
   },
   "engines": {
     "node": "12.x"
+  },
+  "devDependencies": {
+    "@types/node": "~12.12.27",
+    "@typescript-eslint/eslint-plugin": "~2.19.2",
+    "@typescript-eslint/parser": "~2.19.2",
+    "eslint": "~6.8.0",
+    "eslint-config-prettier": "~6.10.0",
+    "nodemon": "^2.0.3",
+    "prettier": "~1.19.1",
+    "rimraf": "~3.0.2",
+    "tsutils": "~3.17.0",
+    "typescript": "~3.8.2"
   }
 }

@@ -36,7 +36,7 @@ var WIDTH = 640;
 var HEIGHT = 360;
 var CANVAS_WIDTH = 640;
 var CANVAS_HEIGHT = 360;
-var timeWhenGameStarted = Date.now();	//return time in ms
+var timeWhenGameStarted = Date.now(); //return time in ms
 
 let resizeCanvas = function() {
   CANVAS_WIDTH = window.innerWidth - 4;
@@ -51,7 +51,7 @@ let resizeCanvas = function() {
   canvas.width = WIDTH;
   canvas.height = HEIGHT;
   ctx.font = "30px Arial";
-  ctx.mozImageSmoothingEnabled = false;	//better graphics for pixel art
+  ctx.mozImageSmoothingEnabled = false; //better graphics for pixel art
   ctx.msImageSmoothingEnabled = false;
   ctx.imageSmoothingEnabled = false;
 
@@ -92,147 +92,147 @@ Img.upgrade2 = new Image();
 Img.upgrade2.src = "img/upgrade2.png";
 
 function testCollisionRectRect(rect1,rect2) {
-	return rect1.x <= rect2.x+rect2.width
-		&& rect2.x <= rect1.x+rect1.width
-		&& rect1.y <= rect2.y + rect2.height
-		&& rect2.y <= rect1.y + rect1.height;
+  return rect1.x <= rect2.x+rect2.width
+    && rect2.x <= rect1.x+rect1.width
+    && rect1.y <= rect2.y + rect2.height
+    && rect2.y <= rect1.y + rect1.height;
 }
 
 document.onmousedown = function(mouse) {
   if (!_game.user)
     return
-	if(mouse.which === 1)
-		_game.user.pressingMouseLeft = true;
-	else
-		_game.user.pressingMouseRight = true;
+  if(mouse.which === 1)
+    _game.user.pressingMouseLeft = true;
+  else
+    _game.user.pressingMouseRight = true;
 }
 document.onmouseup = function(mouse) {
   if (!_game.user)
     return
-	if(mouse.which === 1)
-		_game.user.pressingMouseLeft = false;
-	else
-		_game.user.pressingMouseRight = false;
+  if(mouse.which === 1)
+    _game.user.pressingMouseLeft = false;
+  else
+    _game.user.pressingMouseRight = false;
 }
 document.oncontextmenu = function(mouse) {
   if (!_game.user)
     return
-	mouse.preventDefault();
+  mouse.preventDefault();
 }
 
 document.onmousemove = function(mouse) {
   if (!_game.user)
     return
-	var mouseX = mouse.clientX - canvas.getBoundingClientRect().left;
-	var mouseY = mouse.clientY - canvas.getBoundingClientRect().top;
+  var mouseX = mouse.clientX - canvas.getBoundingClientRect().left;
+  var mouseY = mouse.clientY - canvas.getBoundingClientRect().top;
 
-	mouseX -= CANVAS_WIDTH/2;
-	mouseY -= CANVAS_HEIGHT/2;
+  mouseX -= CANVAS_WIDTH/2;
+  mouseY -= CANVAS_HEIGHT/2;
 
-	_game.user.aimAngle = Math.atan2(mouseY,mouseX) / Math.PI * 180;
+  _game.user.aimAngle = Math.atan2(mouseY,mouseX) / Math.PI * 180;
 }
 
 document.onkeydown = function(event) {
   if (!_game.user)
     return
-	if(event.keyCode === 68)	//d
-		_game.user.pressingRight = true;
-	else if(event.keyCode === 83)	//s
-		_game.user.pressingDown = true;
-	else if(event.keyCode === 65) //a
-		_game.user.pressingLeft = true;
-	else if(event.keyCode === 87) // w
-		_game.user.pressingUp = true;
+  if(event.keyCode === 68)  //d
+    _game.user.pressingRight = true;
+  else if(event.keyCode === 83) //s
+    _game.user.pressingDown = true;
+  else if(event.keyCode === 65) //a
+    _game.user.pressingLeft = true;
+  else if(event.keyCode === 87) // w
+    _game.user.pressingUp = true;
 
-	else if(event.keyCode === 80) //p
-		paused = !paused;
+  else if(event.keyCode === 80) //p
+    paused = !paused;
 }
 
 document.onkeyup = function(event) {
   if (!_game.user)
     return
-	if(event.keyCode === 68)	//d
-		_game.user.pressingRight = false;
-	else if(event.keyCode === 83)	//s
-		_game.user.pressingDown = false;
-	else if(event.keyCode === 65) //a
-		_game.user.pressingLeft = false;
-	else if(event.keyCode === 87) // w
-		_game.user.pressingUp = false;
+  if(event.keyCode === 68)  //d
+    _game.user.pressingRight = false;
+  else if(event.keyCode === 83) //s
+    _game.user.pressingDown = false;
+  else if(event.keyCode === 65) //a
+    _game.user.pressingLeft = false;
+  else if(event.keyCode === 87) // w
+    _game.user.pressingUp = false;
 }
 
 function update() {
-	if(paused){
-		ctx.fillText("Paused",WIDTH/2,HEIGHT/2);
-		return;
-	}
+  if(paused){
+    ctx.fillText("Paused",WIDTH/2,HEIGHT/2);
+    return;
+  }
 
-	ctx.clearRect(0,0,WIDTH,HEIGHT);
-	Maps.current.draw();
-	frameCount++;
-	score++;
+  ctx.clearRect(0,0,WIDTH,HEIGHT);
+  Maps.current.draw();
+  frameCount++;
+  score++;
 
 
-	Bullet.update();
-	Upgrade.update();
-	Enemy.update();
+  Bullet.update();
+  Upgrade.update();
+  Enemy.update();
 
   _game.players.forEach((p) => { p.update(); })
   _game.user.update();
 
-	ctx.fillText(_game.user.hp + " Hp",0,30);
-	ctx.fillText("Score: " + score,200,30);
+  ctx.fillText(_game.user.hp + " Hp",0,30);
+  ctx.fillText("Score: " + score,200,30);
 }
 
 function startNewGame() {
   _game.user.hp = 10;
-	timeWhenGameStarted = Date.now();
-	frameCount = 0;
-	score = 0;
-	Enemy.list = {};
-	Upgrade.list = {};
-	Bullet.list = {};
-	Enemy.randomlyGenerate();
-	Enemy.randomlyGenerate();
-	Enemy.randomlyGenerate();
+  timeWhenGameStarted = Date.now();
+  frameCount = 0;
+  score = 0;
+  Enemy.list = {};
+  Upgrade.list = {};
+  Bullet.list = {};
+  Enemy.randomlyGenerate();
+  Enemy.randomlyGenerate();
+  Enemy.randomlyGenerate();
 }
 
 Maps = function(id,imgSrc,grid){
-	var self = {
-		id:id,
-		image:new Image(),
-		width:grid[0].length * TILE_SIZE,
-		height:grid.length * TILE_SIZE,
-		grid:grid,
-	}
-	self.image.src = imgSrc;
+  var self = {
+    id:id,
+    image:new Image(),
+    width:grid[0].length * TILE_SIZE,
+    height:grid.length * TILE_SIZE,
+    grid:grid,
+  }
+  self.image.src = imgSrc;
 
-	self.isPositionWall = function(pt){
-		var gridX = Math.floor(pt.x / TILE_SIZE);
-		var gridY = Math.floor(pt.y / TILE_SIZE);
-		if(gridX < 0 || gridX >= self.grid[0].length)
-			return true;
-		if(gridY < 0 || gridY >= self.grid.length)
-			return true;
-		return self.grid[gridY][gridX];
-	}
+  self.isPositionWall = function(pt){
+    var gridX = Math.floor(pt.x / TILE_SIZE);
+    var gridY = Math.floor(pt.y / TILE_SIZE);
+    if(gridX < 0 || gridX >= self.grid[0].length)
+      return true;
+    if(gridY < 0 || gridY >= self.grid.length)
+      return true;
+    return self.grid[gridY][gridX];
+  }
 
-	self.draw = function(){
-		var x = WIDTH/2 - _game.user.x;
-		var y = HEIGHT/2 - _game.user.y;
-		ctx.drawImage(self.image,0,0,self.image.width,self.image.height,x,y,self.image.width*2,self.image.height*2);
-	}
-	return self;
+  self.draw = function(){
+    var x = WIDTH/2 - _game.user.x;
+    var y = HEIGHT/2 - _game.user.y;
+    ctx.drawImage(self.image,0,0,self.image.width,self.image.height,x,y,self.image.width*2,self.image.height*2);
+  }
+  return self;
 }
 
 var array = Array.from(Array(1600), () => 0);
 
 var array2D = [];
 for(var i = 0 ; i < 40; i++){
-	array2D[i] = [];
-	for(var j = 0 ; j < 40; j++){
-		array2D[i][j] = array[i * 40 + j];
-	}
+  array2D[i] = [];
+  for(var j = 0 ; j < 40; j++){
+    array2D[i][j] = array[i * 40 + j];
+  }
 }
 
 Maps.current = Maps("field","img/white.png",array2D);

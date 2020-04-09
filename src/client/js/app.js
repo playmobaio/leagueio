@@ -91,13 +91,6 @@ Img.upgrade1.src = "img/upgrade1.png";
 Img.upgrade2 = new Image();
 Img.upgrade2.src = "img/upgrade2.png";
 
-function testCollisionRectRect(rect1,rect2) {
-  return rect1.x <= rect2.x+rect2.width
-    && rect2.x <= rect1.x+rect1.width
-    && rect1.y <= rect2.y + rect2.height
-    && rect2.y <= rect1.y + rect1.height;
-}
-
 document.onmousedown = function(mouse) {
   if (!_game.user)
     return
@@ -143,9 +136,6 @@ document.onkeydown = function(event) {
     _game.user.pressingLeft = true;
   else if(event.keyCode === 87) // w
     _game.user.pressingUp = true;
-
-  else if(event.keyCode === 80) //p
-    paused = !paused;
 }
 
 document.onkeyup = function(event) {
@@ -162,11 +152,6 @@ document.onkeyup = function(event) {
 }
 
 function update() {
-  if(paused){
-    ctx.fillText("Paused",WIDTH/2,HEIGHT/2);
-    return;
-  }
-
   ctx.clearRect(0,0,WIDTH,HEIGHT);
   Maps.current.draw();
   frameCount++;

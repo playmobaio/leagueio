@@ -51,8 +51,11 @@ Entity = function(type,id,x,y,width,height,img){
       width:entity2.width,
       height:entity2.height,
     }
-    return testCollisionRectRect(rect1,rect2);
-
+    
+    return rect1.x <= rect2.x+rect2.width
+      && rect2.x <= rect1.x+rect1.width
+      && rect1.y <= rect2.y + rect2.height
+      && rect2.y <= rect1.y + rect1.height;
   }
   self.updatePosition = function(){}
 

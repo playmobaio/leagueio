@@ -21,7 +21,9 @@ io.sockets.on(
   function(socket: SocketIO.Socket) {
     console.log("We have a new client: " + socket.id);
 
-    socket.on("CLIENT:JOIN_GAME", () => socketController.clientJoinGame(socket, io));
+    socket.on("CLIENT:JOIN_GAME", () => {
+      socketController.clientJoinGame(socket, io);
+    });
     socket.on('disconnect', () => socketController.disconnect(socket, io));
   }
 );

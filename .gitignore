@@ -46,4 +46,14 @@ build/Release
 
 # Dependency directory
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
-node_modules
+node_modules/
+
+# VS Code
+.vscode
+!.vscode/tasks.js
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache

@@ -2,6 +2,7 @@
 var assert = require('assert');
 // Create a group of tests about Arrays
 describe('Array', function() {
+  beforeEach(function(){});
   // Within our Array group, Create a group of tests for indexOf
   describe('#indexOf()', function() {
     // A string explanation of what we're testing

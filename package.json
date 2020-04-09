@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/server/server.js",
   "scripts": {
+<<<<<<< HEAD
     "start": "node dist/server/server.js",
     "build": "npm run clean && npm run html && npm run css && tsc -p . && webpack --mode=development",
     "html": "copyfiles -f src/client/**/*.html dist/client",
@@ -13,6 +14,10 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "webpack": "webpack --mode=development"
+=======
+    "start": "node src/server/server.js",
+    "test": "mocha test/test_template.js"
+>>>>>>> one package, beforeEach
   },
   "repository": {
     "type": "git",

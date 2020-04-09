@@ -1,4 +1,4 @@
-const _game = new Game();
+const _game = Game.getInstance();
 
 Entity = function(type,id,x,y,width,height,img){
   var self = {

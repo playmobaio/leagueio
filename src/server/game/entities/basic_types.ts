@@ -46,15 +46,23 @@ class Rectangle {
 		this.angle = angle;
 	}
 
+	x(): number {
+		return point.x;
+	}
+
+	y(): number {
+		return point.y;
+	}
+
 	isCollision(rectangle: Rectangle): boolean {
 		if (this.angle != 0 || rectangle.angle != 0) {
 			throw 'Unimplemented';
 		}
 
-		return this.point.x <= rectangle.x + rectangle.width
-			&& rectangle.x <= this.point.x + this.width
-			&& this.point.y <= rectangle.y + rectangle.height
-			&& rectangle.y <= this.point.y + this.height;
+		return this.x() <= rectangle.x() + rectangle.width
+			&& rectangle.x() <= this.x() + this.width
+			&& this.y() <= rectangle.y() + rectangle.height
+			&& rectangle.y() <= this.y() + this.height;
 	}
 
 	transform(velocity: Velocity): Rectangle {

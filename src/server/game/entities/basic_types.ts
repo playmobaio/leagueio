@@ -28,7 +28,8 @@ class Velocity {
 
 class Rectangle {
 	// This x, y point marks the top left corner of the rectangle when angle = 0;
-	point: Point;
+  x: number;
+  y: number
 	width: number;
 	height: number;
 	// Angle is measured in 0 - 360 degrees, with 0 being the neutral state where
@@ -40,18 +41,11 @@ class Rectangle {
 	angle: number;
 
 	constructor(x: number, y:number, width: number, height: number, angle = 0) {
-		this.point = new Point(x, y);
+    this.x = x;
+    this.y = y;
 		this.width = width;
 		this.height = height;
 		this.angle = angle;
-	}
-
-	x(): number {
-		return point.x;
-	}
-
-	y(): number {
-		return point.y;
 	}
 
 	isCollision(rectangle: Rectangle): boolean {
@@ -59,14 +53,14 @@ class Rectangle {
 			throw 'Unimplemented';
 		}
 
-		return this.x() <= rectangle.x() + rectangle.width
-			&& rectangle.x() <= this.x() + this.width
-			&& this.y() <= rectangle.y() + rectangle.height
-			&& rectangle.y() <= this.y() + this.height;
+		return this.x <= rectangle.x + rectangle.width
+			&& rectangle.x <= this.x + this.width
+			&& this.y <= rectangle.y + rectangle.height
+			&& rectangle.y <= this.y + this.height;
 	}
 
 	transform(velocity: Velocity): Rectangle {
-		return new (this.x + velocity.x, this.y + velocity.y,
+		return new Rectangle(this.x + velocity.x, this.y + velocity.y,
 			this.width, this.height, this.angle);
 	}
 }

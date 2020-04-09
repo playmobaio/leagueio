@@ -20,31 +20,31 @@
     "prettier/@typescript-eslint"
   ],
   "rules": {
-		"max-len": ["error", { "code": 80 }],
-		"@typescript-eslint/explicit-function-return-type": [
-			"error",
-			{
-				"allowTypedFunctionExpressions": true
-			}
-		],
-		"@typescript-eslint/no-extra-non-null-assertion": "error",
+    "max-len": ["error", { "code": 80 }],
+    "@typescript-eslint/explicit-function-return-type": [
+      "error",
+      {
+        "allowTypedFunctionExpressions": true
+      }
+    ],
+    "@typescript-eslint/no-extra-non-null-assertion": "error",
 
-		"no-dupe-class-members": "off",
-		"@typescript-eslint/no-dupe-class-members": ["error"],
+    "no-dupe-class-members": "off",
+    "@typescript-eslint/no-dupe-class-members": ["error"],
 
-		"no-empty-function": "off",
-		"@typescript-eslint/no-empty-function": [
-			"error",
-			{ "allow": ["arrowFunctions"] }
-		],
+    "no-empty-function": "off",
+    "@typescript-eslint/no-empty-function": [
+      "error",
+      { "allow": ["arrowFunctions"] }
+    ],
 
-		"no-extra-parens": "off",
-		"@typescript-eslint/no-extra-parens": ["error"],
+    "no-extra-parens": "off",
+    "@typescript-eslint/no-extra-parens": ["error"],
 
-		"no-extra-semi": "off",
-		"@typescript-eslint/no-extra-semi": ["error"],
+    "no-extra-semi": "off",
+    "@typescript-eslint/no-extra-semi": ["error"],
 
     "indent": "off",
     "@typescript-eslint/indent": ["error", 2]
-	}
+  }
 }

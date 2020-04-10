@@ -19,9 +19,9 @@ function registerSocket(socket): void {
       const player = new CPlayer(socket.id, point);
       _game.user = player;
       alert("You've connected");
+    } else {
+      alert(`Player ${state.generated.id} has joined`);
     }
-
-    alert(`Player ${socket.id} has joined`)
   });
 
   socket.on("SERVER:PLAYER_DC", (id) => {

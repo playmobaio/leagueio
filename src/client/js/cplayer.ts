@@ -1,6 +1,6 @@
-import {IPlayer, Point} from '../types/basicTypes';
+import {IPlayer, Point} from '../../types/basicTypes';
 
-class Player implements IPlayer{
+class CPlayer implements IPlayer{
   public id: string;
   public position: Point;
 
@@ -14,4 +14,4 @@ class Player implements IPlayer{
   }
 }
 
-export default Player;
+export default CPlayer;

@@ -45,6 +45,8 @@
     "@typescript-eslint/no-extra-semi": ["error"],
 
     "indent": "off",
-    "@typescript-eslint/indent": ["error", 2]
+    "@typescript-eslint/indent": ["error", 2],
+
+    "prefixWithI": "always"
   }
 }

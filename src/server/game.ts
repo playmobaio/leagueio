@@ -1,12 +1,15 @@
 import Player from './player';
+import Map from './models/map';
 
 // Server
 class Game {
   private static instance: Game;
   private _players: Player[];
+  public map: Map;
 
   private constructor() { 
     this._players = [];
+    this.map = new Map();
   }
 
   public static getInstance(): Game {

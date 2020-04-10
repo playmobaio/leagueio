@@ -1,4 +1,9 @@
-class Point {
+export interface IPlayer {
+  id: string;
+  position: Point;
+}
+
+export class Point {
   x: number;
   y: number;
 
@@ -12,7 +17,7 @@ class Point {
   }
 }
 
-class Velocity {
+export class Velocity {
   x: number;
   y: number;
 
@@ -26,7 +31,7 @@ class Velocity {
   }
 }
 
-class Rectangle {
+export class Rectangle {
   // This x, y point marks the top left corner of the rectangle when angle = 0
   x: number;
   y: number
@@ -68,4 +73,3 @@ class Rectangle {
 // TODO Circle
 // integrate circle collisions with rectangles
 
-export { Point, Velocity, Rectangle }

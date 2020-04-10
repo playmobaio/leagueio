@@ -16,7 +16,7 @@ class Game {
   addPlayer(player): void {
     this.players.push(player);
   }
-  removePlayer(id : string): void {
+  removePlayer(id: string): void {
     this.players = this.players.filter(p => p.id != id);
   }
 }

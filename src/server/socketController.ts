@@ -4,7 +4,7 @@ import { Point } from "../types/basicTypes";
 
 function clientJoinGame(socket:SocketIO.Socket, io: SocketIO.Server): void {
   const game: Game = Game.getInstance();
-  const point: Point = game.map.randomMapPosition();
+  const point: Point = game.gamemap.randomMapPosition();
   const player: Player = new Player(socket.id, point);
   Game.getInstance().addPlayer(player);
 

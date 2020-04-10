@@ -1,18 +1,18 @@
 import Player from './player';
-import Map from './map';
+import Gamemap from './gamemap';
 
 // Server
 class Game {
   private static instance: Game;
   private _players: Player[];
-  public map: Map;
+  gamemap: Gamemap;
 
   private constructor() { 
     this._players = [];
-    this.map = new Map();
+    this.gamemap = new Gamemap();
   }
 
-  public static getInstance(): Game {
+  static getInstance(): Game {
     if (!Game.instance) {
       Game.instance = new Game();
     }

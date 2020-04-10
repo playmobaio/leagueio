@@ -1,8 +1,8 @@
 import {IPlayer, Point} from '../../types/basicTypes';
 
 class Player implements IPlayer{
-  public id: string;
-  public position: Point;
+  id: string;
+  position: Point;
 
   constructor(id: string, point: Point) {
     this.id = id;

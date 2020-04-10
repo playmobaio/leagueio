@@ -1,22 +1,22 @@
+import CPlayer from './cplayer';
+
 // Client 
 class Game {
   private static instance : Game;
-  public players : Array<any>;
-  public user : any; 
-    
-  constructor() {}
+  players : Array<CPlayer>;
+  user : CPlayer; 
 
-  public static getInstance(): Game {
-    if(!Game) {
+  static getInstance(): Game {
+    if(!Game.instance) {
       Game.instance = new Game(); 
     }
     return Game.instance;
   }
-
-  addPlayer(player) {
+  
+  addPlayer(player): void {
     this.players.push(player);
   }
-  removePlayer(id : number) {
+  removePlayer(id : string): void {
     this.players = this.players.filter(p => p.id != id);
   }
 }

@@ -5,7 +5,7 @@ class Map {
   public width: number;
   public height: number;
 
-  constructor(x: number = constants.DEFAULT_MAP_SIZE, y: number = constants.DEFAULT_MAP_SIZE) {
+  constructor(x: number= constants.DEFAULT_MAP_SIZE, y: number= constants.DEFAULT_MAP_SIZE) {
     this.width = x;
     this.height = y;
   }

@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "outDir": "dist",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
@@ -17,9 +16,5 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "strictNullChecks": false
-  },
-  "include": [
-    "src/server/**/*",
-    "src/types/**/*",
-  ]
+  }
 }

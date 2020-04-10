@@ -17,9 +17,5 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "strictNullChecks": false
-  },
-  "include": [
-    "src/server/**/*",
-    "src/types/**/*",
-  ]
+  }
 }

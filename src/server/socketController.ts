@@ -1,8 +1,11 @@
-import Player from "./player";
-import Game from "./game";
+import Player from "./models/player";
+import Game from "./models/game";
+import { Point } from "../types/basicTypes";
 
 function clientJoinGame(socket:SocketIO.Socket, io: SocketIO.Server): void {
-  const player: Player = new Player(socket.id);
+  const game: Game = Game.getInstance();
+  const point: Point = game.gamemap.randomMapPosition();
+  const player: Player = new Player(socket.id, point);
   Game.getInstance().addPlayer(player);
 
   io.emit("SERVER:PLAYER_CREATED", {

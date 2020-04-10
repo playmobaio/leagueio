@@ -5,14 +5,14 @@
   "main": "src/server/server.js",
   "scripts": {
     "start": "node dist/server/server.js",
-    "build": "npm run clean && npm run html && npm run css && npm run img && tsc -p .", 
+    "build": "npm run clean && npm run html && npm run css && tsc -p . && webpack --mode=development",
     "html": "copyfiles -f src/client/**/*.html dist/client",
     "css": "copyfiles -f src/client/css/* dist/client/css",
-    "img": "copyfiles -f src/client/img/* dist/client/img",
     "build:live": "nodemon --watch 'src/' -e ts --exec 'npm run build && npm start' --verbose",
     "clean": "rimraf coverage dist tmp",
-    "lint": "eslint . --ext .ts,.tsx",
-    "lint:fix": "eslint . --ext .ts,.tsx --fix"
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "webpack": "webpack --mode=development"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "path": "^0.12.7",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
   },
   "engines": {
     "node": "12.x"
@@ -43,7 +44,10 @@
     "nodemon": "^2.0.3",
     "prettier": "~1.19.1",
     "rimraf": "~3.0.2",
+    "ts-loader": "^6.2.2",
     "tsutils": "~3.17.0",
-    "typescript": "~3.8.2"
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   }
 }

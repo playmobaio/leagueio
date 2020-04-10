@@ -7,7 +7,6 @@
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "importHelpers": true,
-    "jsx": "react",
     "alwaysStrict": false,
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,

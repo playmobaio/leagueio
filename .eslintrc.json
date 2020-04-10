@@ -6,7 +6,7 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "tsconfig.json",
+    "project": "./tsconfig.json",
     "sourceType": "module"
   },
   "plugins": [
@@ -20,7 +20,7 @@
     "prettier/@typescript-eslint"
   ],
   "rules": {
-    "max-len": ["error", { "code": 80 }],
+    "max-len": ["error", { "code": 100 }],
     "@typescript-eslint/explicit-function-return-type": [
       "error",
       {
@@ -45,6 +45,13 @@
     "@typescript-eslint/no-extra-semi": ["error"],
 
     "indent": "off",
-    "@typescript-eslint/indent": ["error", 2]
+    "@typescript-eslint/indent": ["error", 2],
+
+    "@typescript-eslint/interface-name-prefix": [
+      "error",
+      {
+        "prefixWithI": "always"
+      }
+    ]
   }
 }

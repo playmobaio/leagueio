@@ -19,7 +19,6 @@
     "strictNullChecks": false
   },
   "include": [
-    "src/server/**/*",
-    "src/types/**/*",
+    "src/**/*"
   ]
 }

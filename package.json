@@ -10,8 +10,8 @@
     "css": "copyfiles -f src/client/css/* dist/client/css",
     "build:live": "nodemon --watch 'src/' -e ts --exec 'npm run build && npm start' --verbose",
     "clean": "rimraf coverage dist tmp",
-    "lint": "eslint src/server --ext .ts && eslint src/client --ext .ts && eslint src/types --ext .ts",
-    "lint:fix": "eslint src/server --ext .ts --fix && eslint src/client --ext .ts --fix && eslint src/types --ext .ts --fix",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
     "webpack": "webpack --mode=development"
   },
   "repository": {

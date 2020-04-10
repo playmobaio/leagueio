@@ -1,5 +1,5 @@
-import Player from "./player";
-import Game from "./game";
+import Player from "./models/player";
+import Game from "./models/game";
 import { Point } from "../types/basicTypes";
 
 function clientJoinGame(socket:SocketIO.Socket, io: SocketIO.Server): void {

@@ -1,5 +1,5 @@
 import Player from './player';
-import Map from './models/map';
+import Map from './map';
 
 // Server
 class Game {

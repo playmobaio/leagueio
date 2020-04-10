@@ -12,7 +12,7 @@ function registerSocket(socket): void {
       return new CPlayer(p.id, point);
     });
     _game.removePlayer(socket.id);
-    
+
     // TODO: We should refactor this when we update the event loop also update server
     if (socket.id == state.generated.id) {
       const point = new Point(state.generated.x, state.generated.y);

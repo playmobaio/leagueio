@@ -9,7 +9,7 @@ class Gamemap {
     this.width = x;
     this.height = y;
   }
-  
+
   randomMapPosition(): Point {
     const x = Math.floor(Math.random() * this.width);
     const y = Math.floor(Math.random() * this.height);

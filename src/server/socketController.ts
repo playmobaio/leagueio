@@ -20,7 +20,7 @@ function disconnect(socket: SocketIO.Socket, io: SocketIO.Server): void {
   io.emit("SERVER:PLAYER_DC", socket.id);
 }
 
-export { 
-  clientJoinGame, 
-  disconnect 
+export {
+  clientJoinGame,
+  disconnect
 }

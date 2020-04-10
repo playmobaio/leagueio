@@ -1,4 +1,4 @@
-import {IPlayer, Point} from '../../types/basicTypes';
+import { IPlayer, Point } from '../../types/basicTypes';
 
 class CPlayer implements IPlayer {
   id: string;

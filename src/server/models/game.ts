@@ -7,7 +7,7 @@ class Game {
   private _players: Player[];
   gamemap: Gamemap;
 
-  private constructor() { 
+  private constructor() {
     this._players = [];
     this.gamemap = new Gamemap();
   }

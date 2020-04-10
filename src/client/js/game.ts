@@ -1,18 +1,18 @@
 import CPlayer from './cplayer';
 
-// Client 
+// Client
 class Game {
   private static instance : Game;
   players : Array<CPlayer>;
-  user : CPlayer; 
+  user : CPlayer;
 
   static getInstance(): Game {
     if(!Game.instance) {
-      Game.instance = new Game(); 
+      Game.instance = new Game();
     }
     return Game.instance;
   }
-  
+
   addPlayer(player): void {
     this.players.push(player);
   }

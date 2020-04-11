@@ -1,6 +1,5 @@
 import Player from './player';
 import Gamemap from './gamemap';
-import { Velocity } from './basicTypes';
 import { UserIO } from '../../models/interfaces';
 
 // Server
@@ -31,8 +30,10 @@ class Game {
   }
 
   movePlayer(socket: SocketIO.Socket, io: UserIO): void {
-    const player: Player = this.players.get(socket.id);
-    player.velocity = Velocity.getVelocity(io);
+    if (this.players.has(socket.id)) {
+      const player: Player = this.players.get(socket.id);
+      player.updateVelocity(io);
+    }
   }
 
   update(): void {

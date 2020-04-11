@@ -1,5 +1,5 @@
 import Canvas from './canvas';
-import { CPlayer } from './cplayer';
+import CPlayer from './cplayer';
 import { UserIO } from '../../models/interfaces';
 
 // Client
@@ -64,8 +64,7 @@ class Game {
   private tryGetUserPlayer(): { user: CPlayer, found: boolean } {
     if (this.socket) {
       const id: string = this.socket.id;
-      const player: CPlayer = this.players.get(id);
-      return { user: player, found: player !== undefined };
+      return { user: this.players.get(id), found: this.players.has(id) };
     }
     return { user: null, found: false };
   }

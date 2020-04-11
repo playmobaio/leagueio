@@ -1,5 +1,5 @@
 import Game from './game';
-import { CPlayer } from './cplayer';
+import CPlayer from './cplayer';
 import { IPlayer } from '../../models/interfaces';
 
 function registerSocket(socket: SocketIO.Socket): void {

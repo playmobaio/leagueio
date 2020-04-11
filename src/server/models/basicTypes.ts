@@ -37,17 +37,6 @@ export class Velocity {
     return new Velocity(x, y);
   }
 
-  decrement(): void {
-    if (this.x > 0)
-      this.x -= .5;
-    else
-      this.x = 0;
-    if (this.y > 0)
-      this.y -= .5;
-    else
-      this.y = 0;
-  }
-
   getSpeed(): number {
     return Math.sqrt(this.x**2 + this.y**2);
   }

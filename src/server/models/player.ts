@@ -1,4 +1,4 @@
-import { IPlayer } from '../../models/interfaces';
+import { IPlayer, UserIO } from '../../models/interfaces';
 import { Point, Velocity } from './basicTypes';
 
 class Player implements IPlayer{
@@ -20,11 +20,14 @@ class Player implements IPlayer{
     this.position = point;
   }
 
+  updateVelocity(io: UserIO): void {
+    this.velocity = Velocity.getVelocity(io);
+  }
+
   update(): void {
     const retPlayer: IPlayer = { id: this.id, position: this.position };
     this.io.emit("S:PLAYER_MOVE", retPlayer);
     this.updatePosition(this.position.transform(this.velocity));
-    this.velocity.decrement();
   }
 }
 

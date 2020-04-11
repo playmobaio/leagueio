@@ -33,12 +33,12 @@ document.onkeyup = (event): void => {
   const _game = Game.getInstance();
   if (_game.socket) {
     if(event.keyCode === constants.d)
-      _game.registerPlayerIO(UserIO.d)
+      _game.deregisterPlayerIO(UserIO.d)
     else if(event.keyCode === constants.s)
-      _game.registerPlayerIO(UserIO.s)
+      _game.deregisterPlayerIO(UserIO.s)
     else if(event.keyCode === constants.a)
-      _game.registerPlayerIO(UserIO.a)
+      _game.deregisterPlayerIO(UserIO.a)
     else if(event.keyCode === constants.w)
-      _game.registerPlayerIO(UserIO.w)
+      _game.deregisterPlayerIO(UserIO.w)
   }
 }

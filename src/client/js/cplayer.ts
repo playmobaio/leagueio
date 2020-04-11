@@ -27,10 +27,8 @@ class CPlayer implements IPlayer {
   }
 
   update(socket: SocketIO.Socket): void {
-    if (this.userIo !== UserIO.none) {
-      socket.emit("C:USER_MOVE", this.userIo);
-    }
+    socket.emit("C:USER_MOVE", this.userIo);
   }
 }
 
-export { CPlayer };
+export default CPlayer;

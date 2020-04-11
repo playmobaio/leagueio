@@ -1,4 +1,4 @@
-import { IPoint } from '../../models/interfaces';
+import { IPoint, UserIO } from '../../models/interfaces';
 
 export class Point implements IPoint {
   x: number;
@@ -23,13 +23,27 @@ export class Velocity {
     this.y = y;
   }
 
+  static getVelocity(io: UserIO): Velocity {
+    let x = 0
+    let y = 0;
+    if (io & UserIO.w)
+      y-= 5;
+    if (io & UserIO.a)
+      x-= 5;
+    if (io & UserIO.s)
+      y+= 5;
+    if (io & UserIO.d)
+      x+= 5;
+    return new Velocity(x, y);
+  }
+
   decrement(): void {
     if (this.x > 0)
-      this.x -= 1;
+      this.x -= .5;
     else
       this.x = 0;
     if (this.y > 0)
-      this.y -= 1;
+      this.y -= .5;
     else
       this.y = 0;
   }

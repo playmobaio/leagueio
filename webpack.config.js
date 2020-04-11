@@ -2,8 +2,8 @@ const path = require('path');
 
 module.exports = {
   entry: { 
-    app: './src/client/js/app.ts',
-    player: './src/client/js/player.ts'
+    webpack_app: './src/client/js/app.ts',
+    webpack_player: './src/client/js/cplayer.ts'
   },
   devtool: 'inline-source-map',
   module: {
@@ -19,7 +19,7 @@ module.exports = {
     extensions: [ '.tsx', '.ts', '.js' ],
   },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist/client/js'),
   },
 };

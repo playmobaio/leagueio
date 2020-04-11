@@ -1,3 +1,3 @@
 export default {
-  DEFAULT_MAP_SIZE: 1600
+  DEFAULT_MAP_SIZE: 800
 }

@@ -20,16 +20,20 @@ class Game {
     return Game.instance;
   }
 
-  addPlayer(player): void {
+  addPlayer(player: Player): void {
     this._players.push(player);
   }
 
-  removePlayer(id): void {
+  removePlayer(id: string): void {
     this._players = this._players.filter(player => player.id != id);
   }
 
   getPlayers(): Player[] {
     return this._players;
+  }
+
+  update(): void {
+    this._players.forEach((player): void => player.update());
   }
 }
 

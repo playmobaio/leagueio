@@ -1,9 +1,6 @@
-export interface IPlayer {
-  id: string;
-  position: Point;
-}
+import { IPoint } from '../../models/interfaces';
 
-export class Point {
+export class Point implements IPoint {
   x: number;
   y: number;
 
@@ -24,6 +21,17 @@ export class Velocity {
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
+  }
+
+  decrement(): void {
+    if (this.x > 0)
+      this.x -= 1;
+    else
+      this.x = 0;
+    if (this.y > 0)
+      this.y -= 1;
+    else
+      this.y = 0;
   }
 
   getSpeed(): number {

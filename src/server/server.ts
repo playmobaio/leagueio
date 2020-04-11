@@ -1,6 +1,7 @@
 import * as express from "express";
 import * as path from "path";
 import *  as socketController from "./socketController";
+import Game from './models/game';
 
 // Create the app
 const app = express();
@@ -21,9 +22,11 @@ io.sockets.on(
   function(socket: SocketIO.Socket) {
     console.log("We have a new client: " + socket.id);
 
-    socket.on("CLIENT:JOIN_GAME", () => {
-      socketController.clientJoinGame(socket, io);
-    });
-    socket.on('disconnect', () => socketController.disconnect(socket, io));
+    socket.on("C:JOIN_GAME", () => socketController.clientJoinGame(socket, io));
+    socket.on('disconnect', () => socketController.disconnect(socket));
   }
 );
+
+setInterval(() => {
+  Game.getInstance().update();
+}, 1000 / 60) // 60 frames a second

@@ -1,9 +1,6 @@
-export interface IPlayer {
-  id: string;
-  position: Point;
-}
+import { IPoint, UserIO } from '../../models/interfaces';
 
-export class Point {
+export class Point implements IPoint {
   x: number;
   y: number;
 
@@ -24,6 +21,20 @@ export class Velocity {
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
+  }
+
+  static getVelocity(io: UserIO): Velocity {
+    let x = 0
+    let y = 0;
+    if (io & UserIO.w)
+      y-= 5;
+    if (io & UserIO.a)
+      x-= 5;
+    if (io & UserIO.s)
+      y+= 5;
+    if (io & UserIO.d)
+      x+= 5;
+    return new Velocity(x, y);
   }
 
   getSpeed(): number {

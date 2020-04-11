@@ -1,14 +1,15 @@
 import Player from './player';
 import Gamemap from './gamemap';
+import { UserIO } from '../../models/interfaces';
 
 // Server
 class Game {
   private static instance: Game;
-  private _players: Player[];
+  players: Map<string, Player>;
   gamemap: Gamemap;
 
   private constructor() {
-    this._players = [];
+    this.players = new Map<string, Player>();
     this.gamemap = new Gamemap();
   }
 
@@ -20,16 +21,23 @@ class Game {
     return Game.instance;
   }
 
-  addPlayer(player): void {
-    this._players.push(player);
+  addPlayer(player: Player): void {
+    this.players.set(player.id, player);
   }
 
-  removePlayer(id): void {
-    this._players = this._players.filter(player => player.id != id);
+  removePlayer(id: string): void {
+    this.players.delete(id);
   }
 
-  getPlayers(): Player[] {
-    return this._players;
+  movePlayer(socket: SocketIO.Socket, io: UserIO): void {
+    if (this.players.has(socket.id)) {
+      const player: Player = this.players.get(socket.id);
+      player.updateVelocity(io);
+    }
+  }
+
+  update(): void {
+    this.players.forEach((player): void => player.update());
   }
 }
 

@@ -1,5 +1,5 @@
 import constants from '../constants';
-import { Point } from '../../types/basicTypes';
+import { Point } from './basicTypes';
 
 class Gamemap {
   width: number;

@@ -5,7 +5,8 @@
   "main": "src/server/server.js",
   "scripts": {
     "start": "node dist/server/server.js",
-    "build": "npm run clean && npm run html && npm run css && tsc -p . && webpack --mode=development",
+    "test": "ts-mocha --paths -p tsconfig.json test/**/*.ts",
+    "build": "npm run lint && npm run test && npm run clean && npm run html && npm run css && tsc -p . && webpack --mode=development",
     "html": "copyfiles -f src/client/**/*.html dist/client",
     "css": "copyfiles -f src/client/css/* dist/client/css",
     "build:live": "nodemon --watch 'src/' -e ts --exec 'npm run build && npm start' --verbose",
@@ -34,6 +35,8 @@
     "node": "12.x"
   },
   "devDependencies": {
+    "@types/expect": "^24.3.0",
+    "@types/mocha": "^7.0.2",
     "@types/node": "~12.12.27",
     "@types/socket.io": "^2.1.4",
     "@typescript-eslint/eslint-plugin": "~2.19.2",
@@ -41,10 +44,12 @@
     "copyfiles": "^2.2.0",
     "eslint": "~6.8.0",
     "eslint-config-prettier": "~6.10.0",
+    "mocha": "^7.1.1",
     "nodemon": "^2.0.3",
     "prettier": "~1.19.1",
     "rimraf": "~3.0.2",
     "ts-loader": "^6.2.2",
+    "ts-mocha": "^7.0.0",
     "tsutils": "~3.17.0",
     "typescript": "^3.8.3",
     "webpack": "^4.42.1",

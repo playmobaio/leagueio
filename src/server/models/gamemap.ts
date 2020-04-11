@@ -11,8 +11,8 @@ class Gamemap {
   }
 
   randomMapPosition(): Point {
-    const x = Math.floor(Math.random() * this.width);
-    const y = Math.floor(Math.random() * this.height);
+    const x = Math.random() * this.width;
+    const y = Math.random() * this.height;
     return new Point(x, y);
   }
 }

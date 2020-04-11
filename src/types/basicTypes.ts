@@ -32,9 +32,8 @@ export class Velocity {
 }
 
 export class Rectangle {
-  // This x, y point marks the top left corner of the rectangle when angle = 0
-  x: number;
-  y: number
+  // point marks the top left corner of the rectangle when angle = 0
+  point: Point;
   width: number;
   height: number;
   // Angle is measured in 0 - 360 degrees, with 0 being the neutral state where
@@ -45,9 +44,8 @@ export class Rectangle {
   // [(x, y), (x, y - width), (x - height, y - width), (x - height, y)]
   angle: number;
 
-  constructor(x: number, y:number, width: number, height: number, angle = 0) {
-    this.x = x;
-    this.y = y;
+  constructor(point: Point, width: number, height: number, angle = 0) {
+    this.point = point;
     this.width = width;
     this.height = height;
     this.angle = angle;
@@ -58,15 +56,19 @@ export class Rectangle {
       throw 'Unimplemented';
     }
 
-    return this.x <= rectangle.x + rectangle.width
-      && rectangle.x <= this.x + this.width
-      && this.y <= rectangle.y + rectangle.height
-      && rectangle.y <= this.y + this.height;
+    return this.point.x <= rectangle.point.x + rectangle.width
+      && rectangle.point.x <= this.point.x + this.width
+      && this.point.y <= rectangle.point.y + rectangle.height
+      && rectangle.point.y <= this.point.y + this.height;
   }
 
   transform(velocity: Velocity): Rectangle {
-    return new Rectangle(this.x + velocity.x, this.y + velocity.y,
-      this.width, this.height, this.angle);
+    return new Rectangle(
+      this.point.transform(velocity),
+      this.width,
+      this.height,
+      this.angle
+    );
   }
 }
 

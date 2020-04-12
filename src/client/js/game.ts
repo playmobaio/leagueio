@@ -22,13 +22,13 @@ class Game {
     return Game.instance;
   }
 
-  startGame(): void {
-    document.getElementById("game").style.visibility = "visible";
-    document.getElementById("startpanel").style.visibility = "hidden";
-    window.setInterval(() => this.update(), 1000/ 60);
-  }
-
   addOrUpdatePlayer(player: CPlayer): void {
+    if (this.socket.id == player.id) {
+      const res: { user: CPlayer, found: boolean } = this.tryGetUserPlayer();
+      if (res.found) {
+        player.userIo = res.user.userIo;
+      }
+    }
     this.players.set(player.id, player);
   }
 
@@ -51,6 +51,7 @@ class Game {
   }
 
   update(): void {
+    this.canvas.context.clearRect(0, 0, this.canvas.canvas.width, this.canvas.canvas.height);
     this.players.forEach((player: CPlayer): void => {
       player.draw(this.canvas);
     });

@@ -1,8 +1,13 @@
 import * as io from 'socket.io-client';
 import { registerSocket } from './socket';
 import Game from './game';
-import constants from './constants';
 import { UserIO } from '../../models/interfaces';
+
+function gameLoop(): void {
+  const game: Game = Game.getInstance();
+  game.update();
+  requestAnimationFrame(gameLoop);
+}
 
 document.getElementById("joinGame").onclick = (): void => {
   console.log("Initializing Socket");
@@ -10,35 +15,55 @@ document.getElementById("joinGame").onclick = (): void => {
   const socket: SocketIO.Socket = io();
   registerSocket(socket);
   socket.emit("C:JOIN_GAME");
-
-  const _game = Game.getInstance();
-  _game.startGame();
+  gameLoop();
 };
 
-document.onkeydown = (event): void => {
+window.onkeydown = (event): void => {
+  event.preventDefault();
   const _game = Game.getInstance();
   if (_game.socket) {
-    if(event.keyCode === constants.d)
-      _game.registerPlayerIO(UserIO.d)
-    else if(event.keyCode === constants.s)
-      _game.registerPlayerIO(UserIO.s)
-    else if(event.keyCode === constants.a)
-      _game.registerPlayerIO(UserIO.a)
-    else if(event.keyCode === constants.w)
-      _game.registerPlayerIO(UserIO.w)
+    switch(event.code) {
+      case "KeyS":
+      case "ArrowDown":
+        _game.registerPlayerIO(UserIO.s)
+        break;
+      case "KeyW":
+      case "ArrowUp":
+        _game.registerPlayerIO(UserIO.w)
+        break;
+      case "KeyA":
+      case "ArrowLeft":
+        _game.registerPlayerIO(UserIO.a)
+        break;
+      case "KeyD":
+      case "ArrowRight":
+        _game.registerPlayerIO(UserIO.d)
+        break;
+    }
   }
 }
 
-document.onkeyup = (event): void => {
+window.onkeyup = (event): void => {
+  event.preventDefault();
   const _game = Game.getInstance();
   if (_game.socket) {
-    if(event.keyCode === constants.d)
-      _game.deregisterPlayerIO(UserIO.d)
-    else if(event.keyCode === constants.s)
-      _game.deregisterPlayerIO(UserIO.s)
-    else if(event.keyCode === constants.a)
-      _game.deregisterPlayerIO(UserIO.a)
-    else if(event.keyCode === constants.w)
-      _game.deregisterPlayerIO(UserIO.w)
+    switch(event.code) {
+      case "KeyS":
+      case "ArrowDown":
+        _game.deregisterPlayerIO(UserIO.s)
+        break;
+      case "KeyW":
+      case "ArrowUp":
+        _game.deregisterPlayerIO(UserIO.w)
+        break;
+      case "KeyA":
+      case "ArrowLeft":
+        _game.deregisterPlayerIO(UserIO.a)
+        break;
+      case "KeyD":
+      case "ArrowRight":
+        _game.deregisterPlayerIO(UserIO.d)
+        break;
+    }
   }
 }

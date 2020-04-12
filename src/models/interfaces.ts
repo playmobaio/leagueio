@@ -10,8 +10,8 @@ export interface IPoint {
 
 export enum UserIO {
   none = 0,
-  w = 1,
-  a = 2,
-  s = 4,
-  d = 8
+  up = 1,
+  left = 2,
+  down = 4,
+  right = 8
 }

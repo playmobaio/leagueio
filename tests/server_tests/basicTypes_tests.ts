@@ -1,5 +1,6 @@
 import * as assert from 'assert';
 import { Velocity, Point, Rectangle } from '../../src/server/models/basicTypes';
+import { UserIO } from '../../src/models/interfaces';
 
 describe('Velocity', function() {
   let velocity: Velocity;
@@ -11,6 +12,26 @@ describe('Velocity', function() {
     it('Velocity should be 5', function(){
       assert.equal(5, velocity.getSpeed());
     });
+  });
+
+  describe('#GetVelocityFromUserIO', function() {
+    it('Velocity should match userIO', function() {
+      velocity =  Velocity.getVelocity(UserIO.left);
+      assert.equal(-5, velocity.x);
+
+      velocity =  Velocity.getVelocity(UserIO.right);
+      assert.equal(5, velocity.x);
+
+      velocity =  Velocity.getVelocity(UserIO.up);
+      assert.equal(-5, velocity.y);
+
+      velocity =  Velocity.getVelocity(UserIO.down);
+      assert.equal(5, velocity.y);
+
+      velocity =  Velocity.getVelocity(UserIO.right | UserIO.up);
+      assert.equal(5, velocity.x);
+      assert.equal(-5, velocity.y);
+    })
   });
 });
 

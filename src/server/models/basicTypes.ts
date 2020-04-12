@@ -26,13 +26,13 @@ export class Velocity {
   static getVelocity(io: UserIO): Velocity {
     let x = 0
     let y = 0;
-    if (io & UserIO.w)
+    if (io & UserIO.up)
       y-= 5;
-    if (io & UserIO.a)
+    if (io & UserIO.left)
       x-= 5;
-    if (io & UserIO.s)
+    if (io & UserIO.down)
       y+= 5;
-    if (io & UserIO.d)
+    if (io & UserIO.right)
       x+= 5;
     return new Velocity(x, y);
   }

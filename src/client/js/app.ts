@@ -25,19 +25,19 @@ window.onkeydown = (event): void => {
     switch(event.code) {
       case "KeyS":
       case "ArrowDown":
-        _game.registerPlayerIO(UserIO.s)
+        _game.registerPlayerIO(UserIO.down)
         break;
       case "KeyW":
       case "ArrowUp":
-        _game.registerPlayerIO(UserIO.w)
+        _game.registerPlayerIO(UserIO.up)
         break;
       case "KeyA":
       case "ArrowLeft":
-        _game.registerPlayerIO(UserIO.a)
+        _game.registerPlayerIO(UserIO.left)
         break;
       case "KeyD":
       case "ArrowRight":
-        _game.registerPlayerIO(UserIO.d)
+        _game.registerPlayerIO(UserIO.right)
         break;
     }
   }
@@ -50,19 +50,19 @@ window.onkeyup = (event): void => {
     switch(event.code) {
       case "KeyS":
       case "ArrowDown":
-        _game.deregisterPlayerIO(UserIO.s)
+        _game.deregisterPlayerIO(UserIO.down)
         break;
       case "KeyW":
       case "ArrowUp":
-        _game.deregisterPlayerIO(UserIO.w)
+        _game.deregisterPlayerIO(UserIO.up)
         break;
       case "KeyA":
       case "ArrowLeft":
-        _game.deregisterPlayerIO(UserIO.a)
+        _game.deregisterPlayerIO(UserIO.left)
         break;
       case "KeyD":
       case "ArrowRight":
-        _game.deregisterPlayerIO(UserIO.d)
+        _game.deregisterPlayerIO(UserIO.right)
         break;
     }
   }

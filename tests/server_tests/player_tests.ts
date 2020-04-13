@@ -17,7 +17,7 @@ describe('Player', function() {
     socket.setup((socket) => socket.id).returns(() => id);
     io = TypeMoq.Mock.ofType<SocketIO.Server>();
     point = new Point(0, 0);
-    player = new Player(id, point, socket.object, io.object);
+    player = new Player(id, point, socket.object);
   });
 
   describe('#PlayerUpdate', function() {
@@ -34,7 +34,7 @@ describe('Player', function() {
     });
 
     it("Verify io emitted on player update", function() {
-      player.update();
+      player.update(io.object);
       io.verify(x => x.emit("S:PLAYER_MOVE", TypeMoq.It.isObjectWith({ id: id })), Times.once());
     });
   });

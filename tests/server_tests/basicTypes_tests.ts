@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 import { Velocity, Point, Rectangle } from '../../src/server/models/basicTypes';
 import { UserIO } from '../../src/models/interfaces';
+import constants from '../../src/server/constants';
 
 describe('Velocity', function() {
   let velocity: Velocity;
@@ -17,21 +18,31 @@ describe('Velocity', function() {
   describe('#GetVelocityFromUserIO', function() {
     it('Velocity should match userIO', function() {
       velocity =  Velocity.getVelocity(UserIO.left);
-      assert.equal(-5, velocity.x);
+      assert.equal(-constants.DEFAULT_VELOCITY, velocity.x);
 
       velocity =  Velocity.getVelocity(UserIO.right);
-      assert.equal(5, velocity.x);
+      assert.equal(constants.DEFAULT_VELOCITY, velocity.x);
 
       velocity =  Velocity.getVelocity(UserIO.up);
-      assert.equal(-5, velocity.y);
+      assert.equal(-constants.DEFAULT_VELOCITY, velocity.y);
 
       velocity =  Velocity.getVelocity(UserIO.down);
-      assert.equal(5, velocity.y);
+      assert.equal(constants.DEFAULT_VELOCITY, velocity.y);
 
       velocity =  Velocity.getVelocity(UserIO.right | UserIO.up);
-      assert.equal(5, velocity.x);
-      assert.equal(-5, velocity.y);
+      assert.equal(constants.DEFAULT_VELOCITY, velocity.x);
+      assert.equal(-constants.DEFAULT_VELOCITY, velocity.y);
     })
+  });
+
+  describe('#GetUnitVector', function() {
+    it('Validating unit vector', function() {
+      const src = new Point(0, 0);
+      const dest = new Point(3, 4);
+      const velocity = Velocity.getUnitVector(src, dest);
+      assert.equal(0.6, velocity.x);
+      assert.equal(0.8, velocity.y);
+    });
   });
 });
 
@@ -48,6 +59,12 @@ describe('Point', function() {
       const retPoint = point.transform(velocity);
       assert.equal(1, retPoint.x);
       assert.equal(1, retPoint.y);
+    });
+
+    it('Point should be found at 10,10', function(){
+      const retPoint = point.transform(velocity, 10);
+      assert.equal(10, retPoint.x);
+      assert.equal(10, retPoint.y);
     });
   });
 });

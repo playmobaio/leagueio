@@ -6,14 +6,12 @@ class Player implements IPlayer{
   position: Point;
   velocity: Velocity;
   socket: SocketIO.Socket;
-  io: SocketIO.Server;
 
-  constructor(id: string, point: Point, socket: SocketIO.Socket, io: SocketIO.Server) {
+  constructor(id: string, point: Point, socket: SocketIO.Socket) {
     this.id = id;
     this.position = point;
     this.velocity = new Velocity(0, 0);
     this.socket = socket;
-    this.io = io;
   }
 
   updatePosition(point: Point): void {
@@ -24,9 +22,9 @@ class Player implements IPlayer{
     this.velocity = Velocity.getVelocity(io);
   }
 
-  update(): void {
+  update(io: SocketIO.Server): void {
     const retPlayer: IPlayer = { id: this.id, position: this.position };
-    this.io.emit("S:PLAYER_MOVE", retPlayer);
+    io.emit("S:PLAYER_MOVE", retPlayer);
     this.updatePosition(this.position.transform(this.velocity));
   }
 }

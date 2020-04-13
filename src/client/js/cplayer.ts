@@ -1,10 +1,11 @@
-import { IPlayer, IPoint, UserIO } from '../../models/interfaces';
+import { IPlayer, IPoint, UserIO, IUserInput } from '../../models/interfaces';
 import Canvas from './canvas';
 
 class CPlayer implements IPlayer {
   id: string;
   position: IPoint;
   userIo: UserIO;
+  ioPoint: IPoint;
 
   constructor(id: string, point: IPoint) {
     this.id = id;
@@ -18,8 +19,9 @@ class CPlayer implements IPlayer {
     canvas.context.stroke();
   }
 
-  registerIo(io: UserIO): void {
+  registerIo(io: UserIO, point: IPoint = null): void {
     this.userIo |= io;
+    this.ioPoint = point;
   }
 
   deregisterIo(io: UserIO): void {
@@ -27,7 +29,8 @@ class CPlayer implements IPlayer {
   }
 
   update(socket: SocketIO.Socket): void {
-    socket.emit("C:USER_MOVE", this.userIo);
+    const userInput: IUserInput = { io: this.userIo, position: this.ioPoint };
+    socket.emit("C:USER_MOVE", userInput);
   }
 }
 

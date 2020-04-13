@@ -1,4 +1,5 @@
 import { IPoint, UserIO } from '../../models/interfaces';
+import constants from '../constants';
 
 export class Point implements IPoint {
   x: number;
@@ -9,8 +10,8 @@ export class Point implements IPoint {
     this.y = y;
   }
 
-  transform(velocity: Velocity): Point {
-    return new Point(this.x + velocity.x, this.y + velocity.y);
+  transform(velocity: Velocity, magnitude = 1): Point {
+    return new Point(this.x + magnitude * velocity.x, this.y + magnitude *velocity.y);
   }
 }
 
@@ -27,14 +28,26 @@ export class Velocity {
     let x = 0
     let y = 0;
     if (io & UserIO.up)
-      y-= 5;
+      y-= constants.DEFAULT_VELOCITY;
     if (io & UserIO.left)
-      x-= 5;
+      x-= constants.DEFAULT_VELOCITY;
     if (io & UserIO.down)
-      y+= 5;
+      y+= constants.DEFAULT_VELOCITY;
     if (io & UserIO.right)
-      x+= 5;
+      x+= constants.DEFAULT_VELOCITY;
     return new Velocity(x, y);
+  }
+
+  static getUnitVector(src: IPoint, dest: IPoint): Velocity {
+    const x = dest.x - src.x;
+    const y = dest.y - src.y;
+    const magnitude = Math.sqrt(x**2 + y**2);
+    return new Velocity(x/magnitude, y/magnitude);
+  }
+
+  updateMagnitude(magnitude: number): void {
+    this.x *= magnitude;
+    this.y *= magnitude;
   }
 
   getSpeed(): number {

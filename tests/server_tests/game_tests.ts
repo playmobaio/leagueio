@@ -1,27 +1,24 @@
 import * as assert from 'assert';
-import * as TypeMoq from "typemoq";
 import Game from '../../src/server/models/game';
 import Player from '../../src/server/models/player';
-import { UserIO } from '../../src/models/interfaces';
-import { Times } from 'typemoq';
+import { UserIO, IPoint } from '../../src/models/interfaces';
+import { Point } from '../../src/server/models/basicTypes';
+import constants from '../../src/server/constants';
+import Projectile from '../../src/server/models/projectile';
 
 describe('Game', function() {
   let game: Game;
-  let player: TypeMoq.IMock<Player>;
-  let socket: TypeMoq.IMock<SocketIO.Socket>;
+  let player: Player;
   const id = "id";
 
   beforeEach(function(){
     game = Game.getInstance();
-    player = TypeMoq.Mock.ofType<Player>();
-    player.setup((player) => player.id).returns(() => id);
-    socket = TypeMoq.Mock.ofType<SocketIO.Socket>();
-    socket.setup((socket) => socket.id).returns(() => id);
+    player = new Player(id, new Point(0, 0), null);
   });
 
   describe('#AddandRemovePlayers', function() {
     it('Game can add and remove players', function() {
-      game.addPlayer(player.object);
+      game.addPlayer(player);
       assert.equal(1, game.players.size);
       game.removePlayer(id);
       assert.equal(0, game.players.size);
@@ -31,14 +28,23 @@ describe('Game', function() {
   describe('#MovePlayers', function() {
     it("Game doesn't throw when player doesn't exist", function() {
       const game: Game = Game.getInstance();
-      const socket = TypeMoq.Mock.ofType<SocketIO.Socket>();
-      assert.doesNotThrow(() => game.movePlayer(socket.object, UserIO.up));
+      assert.doesNotThrow(() => game.movePlayer(id, UserIO.up));
     });
 
     it("Game sucessfully moves player on user io", function() {
-      game.addPlayer(player.object);
-      game.movePlayer(socket.object, UserIO.up);
-      player.verify(x => x.updateVelocity(1), Times.once());
+      game.addPlayer(player);
+      game.movePlayer(id, UserIO.up);
+      assert.equal(constants.DEFAULT_VELOCITY, player.velocity.getSpeed());
     });
   });
+
+  describe('#AddingProjectile', function() {
+    it("Projectile", function() {
+      game.addPlayer(player);
+      const point: IPoint = { x: 0, y: 5 };
+      const projectile: Projectile = game.addProjectile(id, point);
+      assert.equal(constants.PROJECTILE_OFFSET, projectile.position.y);
+      assert.equal(constants.PROJECTILE_MAGNITUDE, projectile.velocity.y);
+    });
+  })
 });

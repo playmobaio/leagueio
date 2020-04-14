@@ -30,11 +30,7 @@ function registerSocket(socket: SocketIO.Socket): void {
     const canvas = _game.canvas;
     const domRect = canvas.canvas.getBoundingClientRect();
     const point: IPoint = { x: event.clientX - domRect.left, y: event.clientY - domRect.top };
-    _game.registerPlayerIO(UserIO.click, point);
-  });
-
-  addEventListener("mouseup", function() {
-    _game.deregisterPlayerIO(UserIO.click);
+    _game.registerMouseClick(point);
   });
 
   function getUserIO(event: KeyboardEvent): UserIO {
@@ -59,7 +55,7 @@ function registerSocket(socket: SocketIO.Socket): void {
     event.preventDefault();
     if (_game.socket) {
       const io: UserIO = getUserIO(event);
-      _game.registerPlayerIO(io);
+      _game.registerUserIO(io);
     }
   }
 
@@ -67,7 +63,7 @@ function registerSocket(socket: SocketIO.Socket): void {
     event.preventDefault();
     if (_game.socket) {
       const io: UserIO = getUserIO(event);
-      _game.deregisterPlayerIO(io);
+      _game.deregisterUserIO(io);
     }
   }
 }

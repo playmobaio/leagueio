@@ -1,6 +1,6 @@
 import Canvas from './canvas';
 import CPlayer from './cplayer';
-import { UserIO, IPoint } from '../../models/interfaces';
+import { IPoint, UserIO, IUserInput, IUserMouseClick } from '../../models/interfaces';
 import CProjectile from './cprojectile';
 
 // Client
@@ -10,12 +10,17 @@ class Game {
   projectiles: Map<string, CProjectile>;
   canvas: Canvas;
   socket: SocketIO.Socket;
+  userIO: UserIO;
+  mouseClick: boolean;
+  cursorPosition: IPoint;
 
   constructor(socket: SocketIO.Socket) {
     this.players = new Map<string, CPlayer>();
     this.projectiles = new Map<string, CProjectile>();
     this.canvas = Canvas.getInstance();
     this.socket = socket;
+    this.userIO = UserIO.none;
+    this.mouseClick = false;
   }
 
   static getInstance(socket: SocketIO.Socket = null): Game {
@@ -29,31 +34,11 @@ class Game {
   }
 
   addOrUpdatePlayer(player: CPlayer): void {
-    if (this.socketExists() && this.socket.id == player.id) {
-      const res: { user: CPlayer, found: boolean } = this.tryGetUserPlayer();
-      if (res.found) {
-        player.userIo = res.user.userIo;
-      }
-    }
     this.players.set(player.id, player);
   }
 
   removePlayer(id: string): void {
     this.players.delete(id);
-  }
-
-  registerPlayerIO(value: UserIO, point: IPoint = null): void {
-    const res: { user: CPlayer, found: boolean } = this.tryGetUserPlayer();
-    if (res.found) {
-      res.user.registerIo(value, point);
-    }
-  }
-
-  deregisterPlayerIO(value: UserIO): void {
-    const res: { user: CPlayer, found: boolean } = this.tryGetUserPlayer();
-    if (res.found) {
-      res.user.deregisterIo(value);
-    }
   }
 
   update(): void {
@@ -64,24 +49,37 @@ class Game {
 
     this.projectiles.forEach((projectile: CProjectile): void => {
       projectile.draw(this.canvas);
-    })
+    });
 
-    const res = this.tryGetUserPlayer();
-    if (res.found) {
-      res.user.sendPlayerInput(this.socket);
+    // TODO: separate player movement from cursor clicking socket updates
+    this.sendPlayerInput();
+    if (this.mouseClick) {
+      this.sendMouseClick();
     }
   }
 
-  private tryGetUserPlayer(): { user: CPlayer, found: boolean } {
-    if (this.socketExists()) {
-      const id: string = this.socket.id;
-      return { user: this.players.get(id), found: this.players.has(id) };
-    }
-    return { user: null, found: false };
+  registerUserIO(io: UserIO): void {
+    this.userIO |= io;
   }
 
-  private socketExists(): boolean {
-    return this.socket != null;
+  deregisterUserIO(io: UserIO): void {
+    this.userIO &= ~io;
+  }
+
+  registerMouseClick(cursorPosition: IPoint): void {
+    this.cursorPosition = cursorPosition;
+    this.mouseClick = true;
+  }
+
+  sendPlayerInput(): void {
+    const userInput: IUserInput = { io: this.userIO };
+    this.socket.emit("C:USER_MOVE", userInput);
+  }
+
+  sendMouseClick(): void {
+    const userMouseClick: IUserMouseClick = { cursorPosition: this.cursorPosition }
+    this.socket.emit("C:USER_MOUSE_CLICK", userMouseClick);
+    this.mouseClick = false;
   }
 }
 

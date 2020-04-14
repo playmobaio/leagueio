@@ -1,7 +1,7 @@
 import Player from "./models/player";
 import Game from "./models/game";
 import { Point } from './models/basicTypes';
-import { IUserInput } from '../models/interfaces';
+import { IUserInput, IUserMouseClick } from '../models/interfaces';
 
 export function clientJoinGame(socket:SocketIO.Socket): void {
   const game: Game = Game.getInstance();
@@ -12,9 +12,14 @@ export function clientJoinGame(socket:SocketIO.Socket): void {
 
 export function clientUserMove(socket:SocketIO.Socket, userInput: IUserInput): void {
   const game: Game = Game.getInstance();
-  game.movePlayer(socket.id, userInput.io);
+  game.updatePlayerVelocity(socket.id, userInput.io);
+}
+
+// TODO: user shooting should be bound by attack speed, not by number of times clicked.
+export function clientMouseClick(socket:SocketIO.Socket, userMouseClick: IUserMouseClick): void {
+  const game: Game = Game.getInstance();
   const player: Player = game.players.get(socket.id);
-  player.addProjectile(userInput.position);
+  player.addProjectile(userMouseClick.cursorPosition);
 }
 
 export function disconnect(socket: SocketIO.Socket, io: SocketIO.Server): void {

@@ -21,8 +21,11 @@ export class Velocity {
   speed: number;
 
   constructor(dest: IPoint, speed: number, src: IPoint = { x: 0, y: 0 }) {
-    const vector: { x: number, y: number } = this.createUnitVector(src, dest);
+    const vector: { x: number, y: number } = Velocity.createUnitVector(src, dest);
     this.unitVector = vector;
+    if (speed < 0) {
+      throw new Error("Speed cannot be negative");
+    }
     this.speed = speed;
   }
 
@@ -40,7 +43,7 @@ export class Velocity {
     return new Velocity(new Point(x, y), constants.DEFAULT_PLAYER_VELOCITY);
   }
 
-  private createUnitVector(src: IPoint, dest: IPoint): { x: number, y: number } {
+  static createUnitVector(src: IPoint, dest: IPoint): { x: number, y: number } {
     const x = dest.x - src.x;
     const y = dest.y - src.y;
     const magnitude = Math.sqrt(x**2 + y**2);

@@ -34,8 +34,8 @@ class Game {
       if (res.found) {
         player.userIo = res.user.userIo;
       }
-      this.players.set(player.id, player);
     }
+    this.players.set(player.id, player);
   }
 
   removePlayer(id: string): void {

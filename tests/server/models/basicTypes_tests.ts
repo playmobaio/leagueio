@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { Velocity, Point, Rectangle } from '../../../src/server/models/basicTypes';
+import { Velocity, Point } from '../../../src/server/models/basicTypes';
 import { UserIO, IPoint } from '../../../src/models/interfaces';
 import constants from '../../../src/server/constants';
 
@@ -72,30 +72,6 @@ describe('Point', function() {
       const retPoint = point.transform(velocity);
       assert.equal(6, retPoint.x);
       assert.equal(8, retPoint.y);
-    });
-  });
-});
-
-describe('Rectangle', function() {
-  let rectangle: Rectangle;
-  beforeEach(function() {
-    rectangle = new Rectangle(new Point(0, 0), 1, 5, 10);
-  });
-
-  describe('#CheckCollisions', function() {
-    it('CheckCollisions', function(){
-      // inside
-      const testRectangle = new Rectangle(new Point(3, 3), 1, 1);
-      assert.throws(() => rectangle.isCollision(testRectangle));
-      // top
-      // top left
-      // left
-      // bottom left
-      // bottom
-      // bottom right
-      // right
-      // top right
-      // outside
     });
   });
 });

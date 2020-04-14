@@ -13,7 +13,8 @@ export function clientJoinGame(socket:SocketIO.Socket): void {
 export function clientUserMove(socket:SocketIO.Socket, userInput: IUserInput): void {
   const game: Game = Game.getInstance();
   game.movePlayer(socket.id, userInput.io);
-  game.addProjectile(socket.id, userInput.position);
+  const player: Player = game.players.get(socket.id);
+  player.addProjectile(userInput.position);
 }
 
 export function disconnect(socket: SocketIO.Socket, io: SocketIO.Server): void {

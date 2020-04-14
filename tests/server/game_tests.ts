@@ -1,10 +1,9 @@
 import * as assert from 'assert';
 import Game from '../../src/server/models/game';
 import Player from '../../src/server/models/player';
-import { UserIO, IPoint } from '../../src/models/interfaces';
+import { UserIO } from '../../src/models/interfaces';
 import { Point } from '../../src/server/models/basicTypes';
 import constants from '../../src/server/constants';
-import Projectile from '../../src/server/models/projectile';
 
 describe('Game', function() {
   let game: Game;
@@ -37,14 +36,4 @@ describe('Game', function() {
       assert.equal(constants.DEFAULT_PLAYER_VELOCITY, player.velocity.speed);
     });
   });
-
-  describe('#AddingProjectile', function() {
-    it("Smoke testing adding projectile", function() {
-      game.addPlayer(player);
-      const point: IPoint = { x: 0, y: 5 };
-      const projectile: Projectile = game.addProjectile(id, point);
-      assert.equal(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET, projectile.position.y);
-      assert.equal(constants.DEFAULT_PROJECTILE_SPEED, projectile.velocity.speed);
-    });
-  })
 });

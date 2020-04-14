@@ -4,6 +4,7 @@ import Player from '../../src/server/models/player';
 import { UserIO } from '../../src/models/interfaces';
 import { Times } from 'typemoq';
 import { Point } from '../../src/server/models/basicTypes';
+import constants from '../../src/server/constants';
 
 describe('Player', function() {
   let player: Player;
@@ -30,12 +31,16 @@ describe('Player', function() {
 
     it("Verify velocity updates correctly", function() {
       player.updateVelocity(UserIO.up);
-      assert.ok(player.velocity.y < 0);
+      assert.equal(-1, player.velocity.getUnitVector().y);
+      assert.equal(constants.DEFAULT_PLAYER_VELOCITY, player.velocity.speed);
     });
 
-    it("Verify io emitted on player update", function() {
+    it("Verify io player update", function() {
+      player.updateVelocity(UserIO.up);
       player.update(io.object);
       io.verify(x => x.emit("S:PLAYER_MOVE", TypeMoq.It.isObjectWith({ id: id })), Times.once());
+      assert.equal(0, player.position.x);
+      assert.equal(-constants.DEFAULT_PLAYER_VELOCITY, player.position.y);
     });
   });
 });

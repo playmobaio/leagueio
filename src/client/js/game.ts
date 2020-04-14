@@ -19,10 +19,10 @@ class Game {
   }
 
   static getInstance(socket: SocketIO.Socket = null): Game {
-    if(!Game.instance) {
+    if(Game.instance == null) {
       Game.instance = new Game(socket);
     }
-    if(socket === null && (Game.instance.socket === null || Game.instance.socket === undefined)) {
+    if(socket == null && Game.instance.socket == null) {
       Game.instance.socket = socket;
     }
     return Game.instance;
@@ -34,8 +34,8 @@ class Game {
       if (res.found) {
         player.userIo = res.user.userIo;
       }
+      this.players.set(player.id, player);
     }
-    this.players.set(player.id, player);
   }
 
   removePlayer(id: string): void {
@@ -58,8 +58,8 @@ class Game {
 
   update(): void {
     this.canvas.context.clearRect(0, 0, this.canvas.canvas.width, this.canvas.canvas.height);
-    this.players.forEach((player: CPlayer): void => {
-      player.draw(this.canvas);
+    this.players.forEach((cPlayer: CPlayer): void => {
+      cPlayer.draw(this.canvas);
     });
 
     this.projectiles.forEach((projectile: CProjectile): void => {
@@ -68,7 +68,7 @@ class Game {
 
     const res = this.tryGetUserPlayer();
     if (res.found) {
-      res.user.update(this.socket);
+      res.user.sendPlayerInput(this.socket);
     }
   }
 
@@ -81,7 +81,7 @@ class Game {
   }
 
   private socketExists(): boolean {
-    return this.socket !== undefined && this.socket !== null;
+    return this.socket != null;
   }
 }
 

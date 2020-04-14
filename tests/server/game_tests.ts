@@ -34,17 +34,17 @@ describe('Game', function() {
     it("Game sucessfully moves player on user io", function() {
       game.addPlayer(player);
       game.movePlayer(id, UserIO.up);
-      assert.equal(constants.DEFAULT_VELOCITY, player.velocity.getSpeed());
+      assert.equal(constants.DEFAULT_PLAYER_VELOCITY, player.velocity.speed);
     });
   });
 
   describe('#AddingProjectile', function() {
-    it("Projectile", function() {
+    it("Smoke testing adding projectile", function() {
       game.addPlayer(player);
       const point: IPoint = { x: 0, y: 5 };
       const projectile: Projectile = game.addProjectile(id, point);
-      assert.equal(constants.PROJECTILE_OFFSET, projectile.position.y);
-      assert.equal(constants.PROJECTILE_MAGNITUDE, projectile.velocity.y);
+      assert.equal(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET, projectile.position.y);
+      assert.equal(constants.DEFAULT_PROJECTILE_SPEED, projectile.velocity.speed);
     });
   })
 });

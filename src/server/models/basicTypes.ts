@@ -10,48 +10,53 @@ export class Point implements IPoint {
     this.y = y;
   }
 
-  transform(velocity: Velocity, magnitude = 1): Point {
-    return new Point(this.x + magnitude * velocity.x, this.y + magnitude *velocity.y);
+  transform(velocity: Velocity): Point {
+    const translation: IPoint = velocity.getVector();
+    return new Point(this.x + translation.x, this.y + translation.y);
   }
 }
 
 export class Velocity {
-  x: number;
-  y: number;
+  private unitVector: IPoint;
+  speed: number;
 
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
+  constructor(dest: IPoint, speed: number, src: IPoint = { x: 0, y: 0 }) {
+    const vector: { x: number, y: number } = this.createUnitVector(src, dest);
+    this.unitVector = vector;
+    this.speed = speed;
   }
 
-  static getVelocity(io: UserIO): Velocity {
+  static getPlayerVelocity(io: UserIO): Velocity {
     let x = 0
     let y = 0;
     if (io & UserIO.up)
-      y-= constants.DEFAULT_VELOCITY;
+      y-= 1;
     if (io & UserIO.left)
-      x-= constants.DEFAULT_VELOCITY;
+      x-= 1;
     if (io & UserIO.down)
-      y+= constants.DEFAULT_VELOCITY;
+      y+= 1;
     if (io & UserIO.right)
-      x+= constants.DEFAULT_VELOCITY;
-    return new Velocity(x, y);
+      x+= 1;
+    return new Velocity(new Point(x, y), constants.DEFAULT_PLAYER_VELOCITY);
   }
 
-  static getUnitVector(src: IPoint, dest: IPoint): Velocity {
+  private createUnitVector(src: IPoint, dest: IPoint): { x: number, y: number } {
     const x = dest.x - src.x;
     const y = dest.y - src.y;
     const magnitude = Math.sqrt(x**2 + y**2);
-    return new Velocity(x/magnitude, y/magnitude);
+    if (magnitude == 0) {
+      return { x: 0, y: 0 }
+    } else {
+      return { x: x/magnitude, y: y/magnitude };
+    }
   }
 
-  updateMagnitude(magnitude: number): void {
-    this.x *= magnitude;
-    this.y *= magnitude;
+  getUnitVector(): IPoint {
+    return this.unitVector;
   }
 
-  getSpeed(): number {
-    return Math.sqrt(this.x**2 + this.y**2);
+  getVector(): IPoint {
+    return { x: this.speed * this.unitVector.x, y: this.speed * this.unitVector.y };
   }
 }
 

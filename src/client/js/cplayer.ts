@@ -28,7 +28,7 @@ class CPlayer implements IPlayer {
     this.userIo ^= io;
   }
 
-  update(socket: SocketIO.Socket): void {
+  sendPlayerInput(socket: SocketIO.Socket): void {
     const userInput: IUserInput = { io: this.userIo, position: this.ioPoint };
     socket.emit("C:USER_MOVE", userInput);
   }

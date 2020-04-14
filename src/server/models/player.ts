@@ -10,7 +10,7 @@ class Player implements IPlayer{
   constructor(id: string, point: Point, socket: SocketIO.Socket) {
     this.id = id;
     this.position = point;
-    this.velocity = new Velocity(0, 0);
+    this.velocity = new Velocity(this.position, 0);
     this.socket = socket;
   }
 
@@ -19,7 +19,7 @@ class Player implements IPlayer{
   }
 
   updateVelocity(io: UserIO): void {
-    this.velocity = Velocity.getVelocity(io);
+    this.velocity = Velocity.getPlayerVelocity(io);
   }
 
   update(io: SocketIO.Server): void {

@@ -44,9 +44,11 @@ class Game {
   addProjectile(playerId: string, dest: IPoint): Projectile {
     if (this.players.has(playerId) && dest) {
       const player: Player = this.players.get(playerId);
-      const velocity = Velocity.getUnitVector(player.position, dest);
-      const origin: Point = player.position.transform(velocity, constants.PROJECTILE_OFFSET);
-      velocity.updateMagnitude(constants.PROJECTILE_MAGNITUDE);
+      const velocity = new Velocity(dest,
+        constants.DEFAULT_PROJECTILE_TO_USER_OFFSET,
+        player.position);
+      const origin: Point = player.position.transform(velocity);
+      velocity.speed = constants.DEFAULT_PROJECTILE_SPEED;
       const projectile = new Projectile(origin, velocity)
       this.projectiles.set(projectile.id, projectile);
       return projectile;

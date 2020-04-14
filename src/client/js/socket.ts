@@ -9,8 +9,8 @@ function registerSocket(socket: SocketIO.Socket): void {
   document.getElementById("startpanel").style.visibility = "hidden";
 
   socket.on("S:PLAYER_MOVE", (player: IPlayer) => {
-    const cplayer = new CPlayer(player.id, player.position);
-    _game.addOrUpdatePlayer(cplayer);
+    const cPlayer = new CPlayer(player.id, player.position);
+    _game.addOrUpdatePlayer(cPlayer);
   });
 
   socket.on("S:PLAYER_DC", (id: string) => {
@@ -37,53 +37,37 @@ function registerSocket(socket: SocketIO.Socket): void {
     _game.deregisterPlayerIO(UserIO.click);
   });
 
+  function getUserIO(event: KeyboardEvent): UserIO {
+    switch(event.code) {
+      case "KeyS":
+      case "ArrowDown":
+        return UserIO.down;
+      case "KeyW":
+      case "ArrowUp":
+        return UserIO.up;
+      case "KeyA":
+      case "ArrowLeft":
+        return UserIO.left;
+      case "KeyD":
+      case "ArrowRight":
+        return UserIO.right;
+    }
+    return UserIO.none;
+  }
+
   window.onkeydown = (event): void => {
     event.preventDefault();
-    const _game = Game.getInstance();
     if (_game.socket) {
-      switch(event.code) {
-        case "KeyS":
-        case "ArrowDown":
-          _game.registerPlayerIO(UserIO.down)
-          break;
-        case "KeyW":
-        case "ArrowUp":
-          _game.registerPlayerIO(UserIO.up)
-          break;
-        case "KeyA":
-        case "ArrowLeft":
-          _game.registerPlayerIO(UserIO.left)
-          break;
-        case "KeyD":
-        case "ArrowRight":
-          _game.registerPlayerIO(UserIO.right)
-          break;
-      }
+      const io: UserIO = getUserIO(event);
+      _game.registerPlayerIO(io);
     }
   }
 
   window.onkeyup = (event): void => {
     event.preventDefault();
-    const _game = Game.getInstance();
     if (_game.socket) {
-      switch(event.code) {
-        case "KeyS":
-        case "ArrowDown":
-          _game.deregisterPlayerIO(UserIO.down)
-          break;
-        case "KeyW":
-        case "ArrowUp":
-          _game.deregisterPlayerIO(UserIO.up)
-          break;
-        case "KeyA":
-        case "ArrowLeft":
-          _game.deregisterPlayerIO(UserIO.left)
-          break;
-        case "KeyD":
-        case "ArrowRight":
-          _game.deregisterPlayerIO(UserIO.right)
-          break;
-      }
+      const io: UserIO = getUserIO(event);
+      _game.deregisterPlayerIO(io);
     }
   }
 }

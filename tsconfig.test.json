@@ -18,6 +18,6 @@
     "strictNullChecks": false
   },
   "include": [
-    "tests/**/*"
+    "tests/**/*.ts"
   ]
 }

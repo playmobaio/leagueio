@@ -8,10 +8,21 @@ export interface IPoint {
   y: number;
 }
 
+export interface IUserInput {
+  io: UserIO;
+  position: IPoint;
+}
+
+export interface IProjectile {
+  id: string;
+  position: IPoint;
+}
+
 export enum UserIO {
   none = 0,
-  w = 1,
-  a = 2,
-  s = 4,
-  d = 8
+  up = 1,
+  left = 2,
+  down = 4,
+  right = 8,
+  click = 16
 }

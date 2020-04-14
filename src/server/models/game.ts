@@ -29,15 +29,25 @@ class Game {
     this.players.delete(id);
   }
 
-  movePlayer(socket: SocketIO.Socket, io: UserIO): void {
-    if (this.players.has(socket.id)) {
-      const player: Player = this.players.get(socket.id);
+  movePlayer(playerId: string, io: UserIO): void {
+    if (this.players.has(playerId)) {
+      const player: Player = this.players.get(playerId);
       player.updateVelocity(io);
     }
   }
 
-  update(): void {
-    this.players.forEach((player): void => player.update());
+  update(io: SocketIO.Server): void {
+    this.players.forEach((player): void => {
+      player.update(io)
+      for (const projectile of player.projectiles.values()) {
+        if (projectile.validPosition()) {
+          projectile.update(io);
+        } else {
+          player.projectiles.delete(projectile.id);
+          io.emit("S:DELETE_PROJECTILE", projectile.id);
+        }
+      }
+    });
   }
 }
 

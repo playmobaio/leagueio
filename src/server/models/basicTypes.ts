@@ -1,4 +1,5 @@
 import { IPoint, UserIO } from '../../models/interfaces';
+import constants from '../constants';
 
 export class Point implements IPoint {
   x: number;
@@ -10,35 +11,55 @@ export class Point implements IPoint {
   }
 
   transform(velocity: Velocity): Point {
-    return new Point(this.x + velocity.x, this.y + velocity.y);
+    const translation: IPoint = velocity.getVector();
+    return new Point(this.x + translation.x, this.y + translation.y);
   }
 }
 
 export class Velocity {
-  x: number;
-  y: number;
+  private unitVector: IPoint;
+  speed: number;
 
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
+  constructor(dest: IPoint, speed: number, src: IPoint = { x: 0, y: 0 }) {
+    const vector: { x: number, y: number } = Velocity.createUnitVector(src, dest);
+    this.unitVector = vector;
+    if (speed < 0) {
+      throw new Error("Speed cannot be negative");
+    }
+    this.speed = speed;
   }
 
-  static getVelocity(io: UserIO): Velocity {
+  static getPlayerVelocity(io: UserIO): Velocity {
     let x = 0
     let y = 0;
-    if (io & UserIO.w)
-      y-= 5;
-    if (io & UserIO.a)
-      x-= 5;
-    if (io & UserIO.s)
-      y+= 5;
-    if (io & UserIO.d)
-      x+= 5;
-    return new Velocity(x, y);
+    if (io & UserIO.up)
+      y-= 1;
+    if (io & UserIO.left)
+      x-= 1;
+    if (io & UserIO.down)
+      y+= 1;
+    if (io & UserIO.right)
+      x+= 1;
+    return new Velocity(new Point(x, y), constants.DEFAULT_PLAYER_VELOCITY);
   }
 
-  getSpeed(): number {
-    return Math.sqrt(this.x**2 + this.y**2);
+  static createUnitVector(src: IPoint, dest: IPoint): { x: number, y: number } {
+    const x = dest.x - src.x;
+    const y = dest.y - src.y;
+    const magnitude = Math.sqrt(x**2 + y**2);
+    if (magnitude == 0) {
+      return { x: 0, y: 0 }
+    } else {
+      return { x: x/magnitude, y: y/magnitude };
+    }
+  }
+
+  getUnitVector(): IPoint {
+    return this.unitVector;
+  }
+
+  getVector(): IPoint {
+    return { x: this.speed * this.unitVector.x, y: this.speed * this.unitVector.y };
   }
 }
 

@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
-    "outDir": "dist",
+    "module": "UMD",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
@@ -19,6 +18,6 @@
     "strictNullChecks": false
   },
   "include": [
-    "src/**/*"
+    "tests/**/*.ts"
   ]
 }

@@ -1,27 +1,24 @@
 import Player from "./models/player";
 import Game from "./models/game";
 import { Point } from './models/basicTypes';
-import { UserIO } from '../models/interfaces';
+import { IUserInput } from '../models/interfaces';
 
-function clientJoinGame(socket:SocketIO.Socket, io: SocketIO.Server): void {
+export function clientJoinGame(socket:SocketIO.Socket): void {
   const game: Game = Game.getInstance();
   const point: Point = game.gamemap.randomMapPosition();
-  const player: Player = new Player(socket.id, point, socket, io);
+  const player: Player = new Player(socket.id, point, socket);
   Game.getInstance().addPlayer(player);
 }
 
-function clientUserMove(socket:SocketIO.Socket, io: UserIO): void {
+export function clientUserMove(socket:SocketIO.Socket, userInput: IUserInput): void {
   const game: Game = Game.getInstance();
-  game.movePlayer(socket, io);
+  game.movePlayer(socket.id, userInput.io);
+  const player: Player = game.players.get(socket.id);
+  player.addProjectile(userInput.position);
 }
 
-function disconnect(socket: SocketIO.Socket): void {
+export function disconnect(socket: SocketIO.Socket, io: SocketIO.Server): void {
   console.log(`Client with id ${socket.id} has disconnected`);
+  io.emit("S:PLAYER_DC", socket.id);
   Game.getInstance().removePlayer(socket.id);
-}
-
-export {
-  clientJoinGame,
-  clientUserMove,
-  disconnect
 }

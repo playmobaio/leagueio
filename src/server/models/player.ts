@@ -19,17 +19,15 @@ class Player implements IPlayer{
   }
 
   addProjectile(dest: IPoint): Projectile {
-    if (dest != undefined) {
-      const velocity = new Velocity(dest,
-        constants.DEFAULT_PROJECTILE_TO_USER_OFFSET,
-        this.position);
-      const origin: Point = this.position.transform(velocity);
-      velocity.speed = constants.DEFAULT_PROJECTILE_SPEED;
-      const projectile = new Projectile(origin, velocity)
-      this.projectiles.set(projectile.id, projectile);
-      return projectile;
-    }
-    return null;
+    if (dest == undefined) return null;
+    const velocity = new Velocity(dest,
+      constants.DEFAULT_PROJECTILE_TO_USER_OFFSET,
+      this.position);
+    const origin: Point = this.position.transform(velocity);
+    velocity.speed = constants.DEFAULT_PROJECTILE_SPEED;
+    const projectile = new Projectile(origin, velocity)
+    this.projectiles.set(projectile.id, projectile);
+    return projectile;
   }
 
   updatePosition(point: Point): void {

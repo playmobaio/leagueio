@@ -1,10 +1,12 @@
 import Game from './game';
+import UserInputController from './UserInputController';
 import CPlayer from './cplayer';
-import { IPlayer, UserIO, IPoint, IProjectile } from '../../models/interfaces';
+import { IPlayer, PlayerMovementIO, IPoint, IProjectile } from '../../models/interfaces';
 import CProjectile from './cprojectile';
 
 function registerSocket(socket: SocketIO.Socket): void {
-  const _game: Game = Game.getInstance(socket);
+  const _game: Game = Game.getInstance();
+  const _userInputController: UserInputController = UserInputController.getInstance(socket);
   document.getElementById("game").style.visibility = "visible";
   document.getElementById("startpanel").style.visibility = "hidden";
 
@@ -30,41 +32,37 @@ function registerSocket(socket: SocketIO.Socket): void {
     const canvas = _game.canvas;
     const domRect = canvas.canvas.getBoundingClientRect();
     const point: IPoint = { x: event.clientX - domRect.left, y: event.clientY - domRect.top };
-    _game.registerMouseClick(point);
+    _userInputController.registerMouseClick(point);
   });
 
-  function getUserIO(event: KeyboardEvent): UserIO {
+  function getPlayerMovementIO(event: KeyboardEvent): PlayerMovementIO {
     switch(event.code) {
       case "KeyS":
       case "ArrowDown":
-        return UserIO.down;
+        return PlayerMovementIO.down;
       case "KeyW":
       case "ArrowUp":
-        return UserIO.up;
+        return PlayerMovementIO.up;
       case "KeyA":
       case "ArrowLeft":
-        return UserIO.left;
+        return PlayerMovementIO.left;
       case "KeyD":
       case "ArrowRight":
-        return UserIO.right;
+        return PlayerMovementIO.right;
     }
-    return UserIO.none;
+    return PlayerMovementIO.none;
   }
 
   window.onkeydown = (event): void => {
     event.preventDefault();
-    if (_game.socket) {
-      const io: UserIO = getUserIO(event);
-      _game.registerUserIO(io);
-    }
+    const io: PlayerMovementIO = getPlayerMovementIO(event);
+    _userInputController.registerPlayerMovement(io);
   }
 
   window.onkeyup = (event): void => {
     event.preventDefault();
-    if (_game.socket) {
-      const io: UserIO = getUserIO(event);
-      _game.deregisterUserIO(io);
-    }
+    const io: PlayerMovementIO = getPlayerMovementIO(event);
+    _userInputController.deregisterPlayerMovement(io);
   }
 }
 

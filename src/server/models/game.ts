@@ -1,6 +1,6 @@
 import Player from './player';
 import Gamemap from './gamemap';
-import { UserIO } from '../../models/interfaces';
+import { PlayerMovementIO } from '../../models/interfaces';
 
 // Server
 class Game {
@@ -29,7 +29,7 @@ class Game {
     this.players.delete(id);
   }
 
-  updatePlayerVelocity(playerId: string, io: UserIO): void {
+  updatePlayerVelocity(playerId: string, io: PlayerMovementIO): void {
     if (this.players.has(playerId)) {
       const player: Player = this.players.get(playerId);
       player.updateVelocity(io);

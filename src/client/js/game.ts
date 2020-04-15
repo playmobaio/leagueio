@@ -1,6 +1,5 @@
 import Canvas from './canvas';
 import CPlayer from './cplayer';
-import { IPoint, UserIO, IUserInput, IUserMouseClick } from '../../models/interfaces';
 import CProjectile from './cprojectile';
 
 // Client
@@ -9,26 +8,16 @@ class Game {
   players: Map<string, CPlayer>;
   projectiles: Map<string, CProjectile>;
   canvas: Canvas;
-  socket: SocketIO.Socket;
-  userIO: UserIO;
-  mouseClick: boolean;
-  cursorPosition: IPoint;
 
-  constructor(socket: SocketIO.Socket) {
+  constructor() {
     this.players = new Map<string, CPlayer>();
     this.projectiles = new Map<string, CProjectile>();
     this.canvas = Canvas.getInstance();
-    this.socket = socket;
-    this.userIO = UserIO.none;
-    this.mouseClick = false;
   }
 
-  static getInstance(socket: SocketIO.Socket = null): Game {
+  static getInstance(): Game {
     if(Game.instance == null) {
-      Game.instance = new Game(socket);
-    }
-    if(socket == null && Game.instance.socket == null) {
-      Game.instance.socket = socket;
+      Game.instance = new Game();
     }
     return Game.instance;
   }
@@ -50,35 +39,6 @@ class Game {
     this.projectiles.forEach((projectile: CProjectile): void => {
       projectile.draw(this.canvas);
     });
-
-    this.sendPlayerInput();
-    if (this.mouseClick) {
-      this.sendMouseClick();
-    }
-  }
-
-  registerUserIO(io: UserIO): void {
-    this.userIO |= io;
-  }
-
-  deregisterUserIO(io: UserIO): void {
-    this.userIO &= ~io;
-  }
-
-  registerMouseClick(cursorPosition: IPoint): void {
-    this.cursorPosition = cursorPosition;
-    this.mouseClick = true;
-  }
-
-  sendPlayerInput(): void {
-    const userInput: IUserInput = { io: this.userIO };
-    this.socket.emit("C:USER_MOVE", userInput);
-  }
-
-  sendMouseClick(): void {
-    const userMouseClick: IUserMouseClick = { cursorPosition: this.cursorPosition }
-    this.socket.emit("C:USER_MOUSE_CLICK", userMouseClick);
-    this.mouseClick = false;
   }
 }
 

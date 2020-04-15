@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import Game from '../../src/server/models/game';
 import Player from '../../src/server/models/player';
-import { UserIO } from '../../src/models/interfaces';
+import { PlayerMovementIO } from '../../src/models/interfaces';
 import { Point } from '../../src/server/models/basicTypes';
 import constants from '../../src/server/constants';
 
@@ -27,7 +27,7 @@ describe('Game', function() {
   describe('#UpdatePlayerVelocity', function() {
     it("Game sucessfully updates player velocity", function() {
       game.addPlayer(player);
-      game.updatePlayerVelocity(id, UserIO.up);
+      game.updatePlayerVelocity(id, PlayerMovementIO.up);
       assert.equal(constants.DEFAULT_PLAYER_VELOCITY, player.velocity.speed);
     });
   });

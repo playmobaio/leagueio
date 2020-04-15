@@ -15,7 +15,6 @@ export function clientUserMove(socket:SocketIO.Socket, userInput: IUserInput): v
   game.updatePlayerVelocity(socket.id, userInput.io);
 }
 
-// TODO: user shooting should be bound by attack speed, not by number of times clicked.
 export function clientMouseClick(socket:SocketIO.Socket, userMouseClick: IUserMouseClick): void {
   const game: Game = Game.getInstance();
   const player: Player = game.players.get(socket.id);

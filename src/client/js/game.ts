@@ -51,7 +51,6 @@ class Game {
       projectile.draw(this.canvas);
     });
 
-    // TODO: separate player movement from cursor clicking socket updates
     this.sendPlayerInput();
     if (this.mouseClick) {
       this.sendMouseClick();

@@ -24,8 +24,12 @@ io.sockets.on(
     console.log("We have a new client: " + socket.id);
 
     socket.on("C:JOIN_GAME", () => socketController.clientJoinGame(socket));
-    socket.on("C:USER_MOVE", (userInput: IUserInput) => socketController.clientUserMove(socket, userInput));
-    socket.on("C:USER_MOUSE_CLICK", (userMouseClick: IUserMouseClick) => socketController.clientMouseClick(socket, userMouseClick));
+    socket.on("C:USER_MOVE", (userInput: IUserInput) => {
+      socketController.clientUserMove(socket, userInput)
+    });
+    socket.on("C:USER_MOUSE_CLICK", (userMouseClick: IUserMouseClick) => {
+      socketController.clientMouseClick(socket, userMouseClick);
+    });
     socket.on('disconnect', () => socketController.disconnect(socket, io));
   }
 );

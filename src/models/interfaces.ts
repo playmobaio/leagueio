@@ -10,7 +10,10 @@ export interface IPoint {
 
 export interface IUserInput {
   io: UserIO;
-  position: IPoint;
+}
+
+export interface IUserMouseClick {
+  cursorPosition: IPoint;
 }
 
 export interface IProjectile {
@@ -24,5 +27,4 @@ export enum UserIO {
   left = 2,
   down = 4,
   right = 8,
-  click = 16
 }

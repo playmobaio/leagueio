@@ -24,15 +24,10 @@ describe('Game', function() {
     });
   });
 
-  describe('#MovePlayers', function() {
-    it("Game doesn't throw when player doesn't exist", function() {
-      const game: Game = Game.getInstance();
-      assert.doesNotThrow(() => game.movePlayer(id, UserIO.up));
-    });
-
-    it("Game sucessfully moves player on user io", function() {
+  describe('#UpdatePlayerVelocity', function() {
+    it("Game sucessfully updates player velocity", function() {
       game.addPlayer(player);
-      game.movePlayer(id, UserIO.up);
+      game.updatePlayerVelocity(id, UserIO.up);
       assert.equal(constants.DEFAULT_PLAYER_VELOCITY, player.velocity.speed);
     });
   });

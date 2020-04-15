@@ -29,7 +29,7 @@ class Game {
     this.players.delete(id);
   }
 
-  movePlayer(playerId: string, io: UserIO): void {
+  updatePlayerVelocity(playerId: string, io: UserIO): void {
     if (this.players.has(playerId)) {
       const player: Player = this.players.get(playerId);
       player.updateVelocity(io);

@@ -7,10 +7,12 @@ class Game {
   private static instance: Game;
   players: Map<string, Player>;
   gamemap: Gamemap;
+  currentFrame: number;
 
   private constructor() {
     this.players = new Map<string, Player>();
     this.gamemap = new Gamemap();
+    this.currentFrame = 0;
   }
 
   static getInstance(): Game {
@@ -48,6 +50,7 @@ class Game {
         }
       }
     });
+    this.currentFrame++;
   }
 }
 

@@ -39,7 +39,7 @@ class Player implements IPlayer{
     }
 
     const framesBetweenAutoAttacks = constants.FRAMES_PER_SECOND * this.attackSpeed;
-    return this.lastAutoAttackFrame + framesBetweenAutoAttacks <= this.game.currentFrame;
+    return (this.lastAutoAttackFrame + framesBetweenAutoAttacks) <= this.game.currentFrame;
   }
 
   addProjectile(dest: IPoint): Projectile {

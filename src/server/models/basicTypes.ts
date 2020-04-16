@@ -1,4 +1,4 @@
-import { IPoint, UserIO } from '../../models/interfaces';
+import { IPoint, PlayerMovementIO } from '../../models/interfaces';
 import constants from '../constants';
 
 export class Point implements IPoint {
@@ -29,16 +29,16 @@ export class Velocity {
     this.speed = speed;
   }
 
-  static getPlayerVelocity(io: UserIO): Velocity {
+  static getPlayerVelocity(io: PlayerMovementIO): Velocity {
     let x = 0
     let y = 0;
-    if (io & UserIO.up)
+    if (io & PlayerMovementIO.up)
       y-= 1;
-    if (io & UserIO.left)
+    if (io & PlayerMovementIO.left)
       x-= 1;
-    if (io & UserIO.down)
+    if (io & PlayerMovementIO.down)
       y+= 1;
-    if (io & UserIO.right)
+    if (io & PlayerMovementIO.right)
       x+= 1;
     return new Velocity(new Point(x, y), constants.DEFAULT_PLAYER_VELOCITY);
   }

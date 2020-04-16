@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import { Velocity, Point } from '../../../src/server/models/basicTypes';
-import { UserIO, IPoint } from '../../../src/models/interfaces';
+import { PlayerMovementIO, IPoint } from '../../../src/models/interfaces';
 import constants from '../../../src/server/constants';
 
 describe('Velocity', function() {
@@ -35,8 +35,8 @@ describe('Velocity', function() {
       assert.equal(0, vector.y);
     });
 
-    it('Validate UserIO', function() {
-      const validUserIO = (io: UserIO, expectedX, expectedY): void => {
+    it('Validate PlayerMovementIO', function() {
+      const validPlayerMovementIO = (io: PlayerMovementIO, expectedX, expectedY): void => {
         const velocity =  Velocity.getPlayerVelocity(io);
         const unitVector: IPoint = velocity.getUnitVector();
         assert.equal(constants.DEFAULT_PLAYER_VELOCITY, velocity.speed);
@@ -44,10 +44,10 @@ describe('Velocity', function() {
         assert.equal(expectedY, unitVector.y);
       }
 
-      validUserIO(UserIO.left, -1, 0);
-      validUserIO(UserIO.right, 1, 0);
-      validUserIO(UserIO.up, 0, -1);
-      validUserIO(UserIO.down, 0, 1);
+      validPlayerMovementIO(PlayerMovementIO.left, -1, 0);
+      validPlayerMovementIO(PlayerMovementIO.right, 1, 0);
+      validPlayerMovementIO(PlayerMovementIO.up, 0, -1);
+      validPlayerMovementIO(PlayerMovementIO.down, 0, 1);
     })
   });
 });

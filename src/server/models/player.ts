@@ -1,4 +1,4 @@
-import { IPlayer, UserIO, IPoint } from '../../models/interfaces';
+import { IPlayer, PlayerMovementIO, IPoint } from '../../models/interfaces';
 import { Point, Velocity } from './basicTypes';
 import Projectile from './projectile';
 import constants from '../constants';
@@ -34,7 +34,7 @@ class Player implements IPlayer{
     this.position = point;
   }
 
-  updateVelocity(io: UserIO): void {
+  updateVelocity(io: PlayerMovementIO): void {
     this.velocity = Velocity.getPlayerVelocity(io);
   }
 

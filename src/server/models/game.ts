@@ -42,7 +42,7 @@ class Game {
     this.players.forEach((player): void => {
       player.update(io)
       for (const projectile of player.projectiles.values()) {
-        if (projectile.validPosition()) {
+        if (!projectile.shouldDelete()) {
           projectile.update(io);
         } else {
           player.projectiles.delete(projectile.id);

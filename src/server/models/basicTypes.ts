@@ -11,22 +11,81 @@ export class Point implements IPoint {
   }
 
   transform(velocity: Velocity): Point {
-    const translation: IPoint = velocity.getVector();
-    return new Point(this.x + translation.x, this.y + translation.y);
+    const vector: Vector = velocity.getVector();
+    return this.transformWithVector(vector);
+  }
+
+  transformWithVector(vector: Vector): Point {
+    return new Point(this.x + vector.x, this.y + vector.y);
+  }
+
+  equals(point: IPoint): boolean {
+    return this.x == point.x && this.y == point.y
+  }
+}
+
+export class Vector {
+  x: number
+  y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+
+  static createFromPoints(src: IPoint, dest: IPoint): Vector {
+    const x = dest.x - src.x;
+    const y = dest.y - src.y;
+    return new Vector(x, y);
+  }
+
+  getMagnitude(): number {
+    return Math.sqrt(this.x**2 + this.y**2);
+  }
+
+  setMagnitude(newMagnitude: number): void {
+    if (newMagnitude == 0) {
+      this.x = 0;
+      this.y = 0;
+      return;
+    }
+
+    const originalMagnitude = this.getMagnitude();
+    this.x *= newMagnitude/originalMagnitude;
+    this.y *= newMagnitude/originalMagnitude;
+  }
+
+  getUnitVector(): Vector {
+    const magnitude = this.getMagnitude();
+
+    // Unit vector of the null vector is the null vector
+    if (magnitude == 0) {
+      return Vector.createNullVector();
+    }
+
+    return new Vector(this.x/magnitude, this.y/magnitude);
+  }
+
+  isNullVector(): boolean {
+    return this.x == 0 && this.y == 0;
+  }
+
+  static createNullVector(): Vector {
+    return new Vector(0, 0);
   }
 }
 
 export class Velocity {
-  private unitVector: IPoint;
-  speed: number;
+  private unitVector: Vector;
+  private speed: number;
 
   constructor(dest: IPoint, speed: number, src: IPoint = { x: 0, y: 0 }) {
-    const vector: { x: number, y: number } = Velocity.createUnitVector(src, dest);
-    this.unitVector = vector;
     if (speed < 0) {
       throw new Error("Speed cannot be negative");
     }
-    this.speed = speed;
+
+    this.unitVector = Vector.createFromPoints(src, dest).getUnitVector();
+    this.speed = this.unitVector.getMagnitude() == 0 ? 0 : speed;
   }
 
   static getPlayerVelocity(io: PlayerMovementIO): Velocity {
@@ -43,23 +102,26 @@ export class Velocity {
     return new Velocity(new Point(x, y), constants.DEFAULT_PLAYER_VELOCITY);
   }
 
-  static createUnitVector(src: IPoint, dest: IPoint): { x: number, y: number } {
-    const x = dest.x - src.x;
-    const y = dest.y - src.y;
-    const magnitude = Math.sqrt(x**2 + y**2);
-    if (magnitude == 0) {
-      return { x: 0, y: 0 }
-    } else {
-      return { x: x/magnitude, y: y/magnitude };
-    }
+  getSpeed(): number {
+    return this.speed;
   }
 
-  getUnitVector(): IPoint {
+  setSpeed(speed: number): boolean {
+    if (this.unitVector.isNullVector()) {
+      return false;
+    }
+    this.speed = speed;
+    return true;
+  }
+
+  getUnitVector(): Vector {
     return this.unitVector;
   }
 
-  getVector(): IPoint {
-    return { x: this.speed * this.unitVector.x, y: this.speed * this.unitVector.y };
+  getVector(): Vector {
+    const x: number = this.speed * this.unitVector.x;
+    const y: number = this.speed * this.unitVector.y;
+    return new Vector(x, y);
   }
 }
 

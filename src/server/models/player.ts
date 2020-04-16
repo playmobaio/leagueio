@@ -1,5 +1,5 @@
 import { IPlayer, PlayerMovementIO, IPoint, IHealth } from '../../models/interfaces';
-import { Point, Velocity } from './basicTypes';
+import { Point, Velocity, Vector } from './basicTypes';
 import Projectile from './projectile';
 import Game from "./game";
 import constants from '../constants';
@@ -47,13 +47,18 @@ class Player implements IPlayer{
   }
 
   addProjectile(dest: IPoint): Projectile {
-    if (dest == undefined) return null;
+    if (dest == undefined || this.position.equals(dest)) {
+      return null;
+    }
+
+    const offsetVector = Vector.createFromPoints(this.position, dest);
+    offsetVector.setMagnitude(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET);
+    const origin: Point = this.position.transformWithVector(offsetVector);
     const velocity = new Velocity(dest,
-      constants.DEFAULT_PROJECTILE_TO_USER_OFFSET,
+      constants.DEFAULT_PROJECTILE_SPEED,
       this.position);
-    const origin: Point = this.position.transform(velocity);
-    velocity.speed = constants.DEFAULT_PROJECTILE_SPEED;
     const projectile = new Projectile(origin, velocity)
+
     this.projectiles.set(projectile.id, projectile);
     return projectile;
   }

@@ -3,6 +3,7 @@ import * as path from "path";
 import *  as socketController from "./socketController";
 import Game from './models/game';
 import { IUserInput, IUserMouseClick } from '../models/interfaces';
+import constants from './constants';
 
 // Create the app
 const app = express();
@@ -36,4 +37,4 @@ io.sockets.on(
 
 setInterval(() => {
   Game.getInstance().update(io);
-}, 1000 / 60) // 60 frames a second
+}, 1000 / constants.FRAMES_PER_SECOND) // 60 frames a second

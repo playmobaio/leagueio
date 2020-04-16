@@ -18,7 +18,7 @@ export function clientUserMove(socket:SocketIO.Socket, userInput: IUserInput): v
 export function clientMouseClick(socket:SocketIO.Socket, userMouseClick: IUserMouseClick): void {
   const game: Game = Game.getInstance();
   const player: Player = game.players.get(socket.id);
-  player.addProjectile(userMouseClick.cursorPosition);
+  player.registerAutoAttack(userMouseClick.cursorPosition);
 }
 
 export function disconnect(socket: SocketIO.Socket, io: SocketIO.Server): void {

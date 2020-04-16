@@ -6,10 +6,10 @@ class CPlayer implements IPlayer {
   position: IPoint;
   health: IHealth;
 
-  constructor(id: string, point: IPoint) {
+  constructor(id: string, point: IPoint, health: IHealth) {
     this.id = id;
     this.position = point;
-    this.health = { current: 100, maximum: 100 };
+    this.health = health;
   }
 
   draw(canvas: Canvas): void {

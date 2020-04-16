@@ -11,7 +11,7 @@ function registerSocket(socket: SocketIO.Socket): void {
   document.getElementById("startpanel").style.visibility = "hidden";
 
   socket.on("S:PLAYER_MOVE", (player: IPlayer) => {
-    const cPlayer = new CPlayer(player.id, player.position);
+    const cPlayer = new CPlayer(player.id, player.position, player.health);
     _game.addOrUpdatePlayer(cPlayer);
   });
 

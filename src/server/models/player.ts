@@ -1,4 +1,4 @@
-import { IPlayer, PlayerMovementIO, IPoint } from '../../models/interfaces';
+import { IPlayer, PlayerMovementIO, IPoint, IHealth } from '../../models/interfaces';
 import { Point, Velocity } from './basicTypes';
 import Projectile from './projectile';
 import Game from "./game";
@@ -13,6 +13,7 @@ class Player implements IPlayer{
   game: Game;
   attackSpeed: number;
   lastAutoAttackFrame: number;
+  health: IHealth;
 
   constructor(id: string, point: Point, socket: SocketIO.Socket) {
     this.id = id;
@@ -23,6 +24,7 @@ class Player implements IPlayer{
     this.attackSpeed = constants.DEFAULT_PLAYER_ATTACK_SPEED;
     this.lastAutoAttackFrame = -1;
     this.game = Game.getInstance();
+    this.health = { current: 100, maximum: 100 };
   }
 
   registerAutoAttack(dest: IPoint): void {
@@ -52,6 +54,7 @@ class Player implements IPlayer{
     const projectile = new Projectile(origin, velocity)
     this.projectiles.set(projectile.id, projectile);
     return projectile;
+
   }
 
   updatePosition(point: Point): void {
@@ -63,7 +66,7 @@ class Player implements IPlayer{
   }
 
   update(io: SocketIO.Server): void {
-    const retPlayer: IPlayer = { id: this.id, position: this.position };
+    const retPlayer: IPlayer = { id: this.id, position: this.position, health: this.health };
     io.emit("S:PLAYER_MOVE", retPlayer);
     this.updatePosition(this.position.transform(this.velocity));
   }

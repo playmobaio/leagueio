@@ -13,6 +13,7 @@ class CProjectile implements IProjectile {
   draw(canvas: Canvas): void {
     canvas.context.beginPath();
     canvas.context.arc(this.position.x, this.position.y, 10, 0, 2 * Math.PI);
+    canvas.context.strokeStyle = "green";
     canvas.context.stroke();
   }
 }

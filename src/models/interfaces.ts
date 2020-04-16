@@ -1,6 +1,7 @@
 export interface IPlayer {
   id: string;
   position: IPoint;
+  health: IHealth;
 }
 
 export interface IPoint {
@@ -27,4 +28,9 @@ export enum PlayerMovementIO {
   left = 2,
   down = 4,
   right = 8,
+}
+
+export interface IHealth {
+  maximum: number;
+  current: number;
 }

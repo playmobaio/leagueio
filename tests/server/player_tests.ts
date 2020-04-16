@@ -22,7 +22,7 @@ describe('Player', function() {
     io = TypeMoq.Mock.ofType<SocketIO.Server>();
     game = Game.getInstance();
     player = new Player(id, new Point(0, 0), socket.object);
-    point = <IPoint> { x: 0, y: 5 };
+    point = { x: 0, y: 5 };
   });
 
   describe('#update', function() {
@@ -55,7 +55,7 @@ describe('Player', function() {
     });
   });
 
-  describe("#registerAutoAttack", function () {
+  describe("#registerAutoAttack", function() {
     it("will autoattack immediately on spawn", function() {
       player.registerAutoAttack(point);
       assert.equal(player.projectiles.size, 1);

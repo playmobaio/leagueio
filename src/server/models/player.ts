@@ -24,7 +24,7 @@ class Player implements IPlayer{
     this.attackSpeed = constants.DEFAULT_PLAYER_ATTACK_SPEED;
     this.lastAutoAttackFrame = -1;
     this.game = Game.getInstance();
-    this.health = { current: 100, maximum: 100 };
+    this.health = { current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH, maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
   }
 
   registerAutoAttack(dest: IPoint): void {
@@ -54,7 +54,6 @@ class Player implements IPlayer{
     const projectile = new Projectile(origin, velocity)
     this.projectiles.set(projectile.id, projectile);
     return projectile;
-
   }
 
   updatePosition(point: Point): void {

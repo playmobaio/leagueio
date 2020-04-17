@@ -37,14 +37,6 @@ describe('Player', function() {
       assert.equal(-1, player.velocity.getUnitVector().y);
       assert.equal(constants.DEFAULT_PLAYER_VELOCITY, player.velocity.speed);
     });
-
-    it("Verify io player update", function() {
-      player.updateVelocity(PlayerMovementIO.up);
-      player.update(io.object);
-      io.verify(x => x.emit("S:PLAYER_MOVE", TypeMoq.It.isObjectWith({ id: id })), Times.once());
-      assert.equal(0, player.position.x);
-      assert.equal(-constants.DEFAULT_PLAYER_VELOCITY, player.position.y);
-    });
   });
 
   describe("#addProjectile", function() {

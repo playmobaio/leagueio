@@ -36,5 +36,7 @@ io.sockets.on(
 );
 
 setInterval(() => {
-  Game.getInstance().update(io);
+  const game: Game = Game.getInstance();
+  game.update();
+  game.sendGameState(io);
 }, 1000 / constants.FRAMES_PER_SECOND) // 60 frames a second

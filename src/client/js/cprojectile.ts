@@ -5,9 +5,9 @@ class CProjectile implements IProjectile {
   id: string;
   position: IPoint;
 
-  constructor(id: string, position: IPoint) {
-    this.id = id;
-    this.position = position;
+  constructor(projectile: IProjectile) {
+    this.id = projectile.id;
+    this.position = projectile.position;
   }
 
   draw(canvas: Canvas): void {

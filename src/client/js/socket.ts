@@ -1,8 +1,6 @@
 import Game from './game';
 import UserInputController from './UserInputController';
-import CPlayer from './cplayer';
-import { IPlayer, PlayerMovementIO, IPoint, IProjectile } from '../../models/interfaces';
-import CProjectile from './cprojectile';
+import { PlayerMovementIO, IPoint, IGameState } from '../../models/interfaces';
 
 function registerSocket(socket: SocketIO.Socket): void {
   const _game: Game = Game.getInstance();
@@ -10,22 +8,10 @@ function registerSocket(socket: SocketIO.Socket): void {
   document.getElementById("game").style.visibility = "visible";
   document.getElementById("startpanel").style.visibility = "hidden";
 
-  socket.on("S:PLAYER_MOVE", (player: IPlayer) => {
-    const cPlayer = new CPlayer(player.id, player.position, player.health);
-    _game.addOrUpdatePlayer(cPlayer);
-  });
-
-  socket.on("S:PLAYER_DC", (id: string) => {
-    _game.removePlayer(id);
-  });
-
-  socket.on("S:PROJECTILE_MOVE", (projectile: IProjectile) => {
-    const cprojectile = new CProjectile(projectile.id, projectile.position);
-    _game.projectiles.set(cprojectile.id, cprojectile);
-  });
-
-  socket.on("S:DELETE_PROJECTILE", (id: string) => {
-    _game.projectiles.delete(id);
+  socket.on("S:UPDATE_GAME_STATE", (gameState: IGameState) => {
+    _game.updatePlayers(gameState.players);
+    _game.updateProjectiles(gameState.projectiles);
+    _game.draw();
   });
 
   addEventListener("mousedown", function(event) {

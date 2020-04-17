@@ -1,5 +1,6 @@
 import Canvas from './canvas';
 import CPlayer from './cplayer';
+import { IProjectile, IPlayer } from "../../models/interfaces";
 import CProjectile from './cprojectile';
 
 // Client
@@ -22,6 +23,20 @@ class Game {
     return Game.instance;
   }
 
+  updatePlayers(players: IPlayer[]): void {
+    this.players = new Map<string, CPlayer>();
+    for (const player of players) {
+      this.players.set(player.id, new CPlayer(player));
+    }
+  }
+
+  updateProjectiles(projectiles: IProjectile[]): void {
+    this.projectiles = new Map<string, CProjectile>();
+    for (const projectile of projectiles) {
+      this.projectiles.set(projectile.id, new CProjectile(projectile));
+    }
+  }
+
   addOrUpdatePlayer(player: CPlayer): void {
     this.players.set(player.id, player);
   }
@@ -30,7 +45,7 @@ class Game {
     this.players.delete(id);
   }
 
-  update(): void {
+  draw(): void {
     this.canvas.context.clearRect(0, 0, this.canvas.canvas.width, this.canvas.canvas.height);
     this.players.forEach((cPlayer: CPlayer): void => {
       cPlayer.draw(this.canvas);

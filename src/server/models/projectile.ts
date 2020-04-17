@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IProjectile } from '../../models/interfaces';
 import constants from '../constants';
 
-class Projectile {
+class Projectile implements IProjectile {
   position: Point;
   velocity: Velocity;
   id: string;
@@ -32,10 +32,12 @@ class Projectile {
     return vector.getMagnitude() > this.range;
   }
 
-  update(io: SocketIO.Server): void {
-    const projectile: IProjectile = { id: this.id, position: this.position }
+  update(): void {
     this.position = this.position.transform(this.velocity);
-    io.emit("S:PROJECTILE_MOVE", projectile);
+  }
+
+  toInterface(): IProjectile {
+    return { id: this.id, position: this.position };
   }
 }
 

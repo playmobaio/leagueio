@@ -4,7 +4,7 @@ import Projectile from './projectile';
 import Game from "./game";
 import constants from '../constants';
 
-class Player implements IPlayer{
+class Player implements IPlayer {
   id: string;
   position: Point;
   velocity: Velocity;
@@ -71,10 +71,12 @@ class Player implements IPlayer{
     this.velocity = Velocity.getPlayerVelocity(io);
   }
 
-  update(io: SocketIO.Server): void {
-    const retPlayer: IPlayer = { id: this.id, position: this.position, health: this.health };
-    io.emit("S:PLAYER_MOVE", retPlayer);
+  update(): void {
     this.updatePosition(this.position.transform(this.velocity));
+  }
+
+  toInterface(): IPlayer {
+    return { id: this.id, position: this.position, health: this.health };
   }
 }
 

@@ -22,6 +22,11 @@ export interface IProjectile {
   position: IPoint;
 }
 
+export interface IGameState {
+  players: IPlayer[];
+  projectiles: IProjectile[];
+}
+
 export enum PlayerMovementIO {
   none = 0,
   up = 1,

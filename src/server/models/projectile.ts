@@ -19,7 +19,7 @@ class Projectile {
   }
 
   shouldDelete(): boolean {
-    return this.validPosition() && this.rangeExpired();
+    return !this.validPosition() || this.rangeExpired();
   }
 
   validPosition(): boolean {

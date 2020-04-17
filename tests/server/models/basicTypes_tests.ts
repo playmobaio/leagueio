@@ -94,15 +94,15 @@ describe('Vector', function() {
   it('getUnitVector returns correct unit vector', function() {
     const unitVector: Vector = vector.getUnitVector();
 
-    assert.equal(unitVector.x, 3/5);
-    assert.equal(unitVector.y, 4/5);
+    assert.equal(3/5, unitVector.x);
+    assert.equal(4/5, unitVector.y);
   });
 
   it('getUnitVector of a null vector is a null vector', function() {
     const nullVector = new Vector(0, 0);
     const unitVector: Vector = nullVector.getUnitVector();
 
-    assert.equal(unitVector.x, 0);
-    assert.equal(unitVector.x, 0);
+    assert.equal(0, unitVector.x);
+    assert.equal(0, unitVector.y);
   });
 });

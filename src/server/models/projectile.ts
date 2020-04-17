@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IProjectile } from '../../models/interfaces';
 import constants from '../constants';
 
-class Projectile {
+class Projectile implements IProjectile {
   position: Point;
   velocity: Velocity;
   id: string;
@@ -37,7 +37,7 @@ class Projectile {
   }
 
   toInterface(): IProjectile {
-    return { id: this.id, position: this.position }
+    return { id: this.id, position: this.position };
   }
 }
 

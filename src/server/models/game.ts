@@ -55,12 +55,12 @@ class Game {
   createGameState(): IGameState {
     const iPlayers: IPlayer[] = [];
     const iProjectiles: IProjectile[] = [];
-    this.players.forEach((player): void => {
+    for (const player of this.players.values()) {
       iPlayers.push(player.toInterface());
       for (const projectile of player.projectiles.values()) {
         iProjectiles.push(projectile.toInterface());
       }
-    });
+    }
     return { players: iPlayers, projectiles: iProjectiles }
   }
 

@@ -4,7 +4,7 @@ import Projectile from './projectile';
 import Game from "./game";
 import constants from '../constants';
 
-class Player implements IPlayer{
+class Player implements IPlayer {
   id: string;
   position: Point;
   velocity: Velocity;

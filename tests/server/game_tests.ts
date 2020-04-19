@@ -12,7 +12,7 @@ describe('Game', function() {
 
   beforeEach(function(){
     game = Game.getInstance();
-    player = new Player(id, new Point(0, 0), null);
+    player = new Player(id, new Point(0, 0), null, game.gamemap);
   });
 
   describe('#AddandRemovePlayers', function() {
@@ -28,7 +28,7 @@ describe('Game', function() {
     it("Game sucessfully updates player velocity", function() {
       game.addPlayer(player);
       game.updatePlayerVelocity(id, PlayerMovementIO.up);
-      assert.equal(constants.DEFAULT_PLAYER_VELOCITY, player.velocity.speed);
+      assert.equal(constants.DEFAULT_PLAYER_VELOCITY, player.velocity.getSpeed());
     });
   });
 });

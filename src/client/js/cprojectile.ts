@@ -1,5 +1,5 @@
 import { IProjectile, IPoint } from "../../models/interfaces";
-import Canvas from './canvas';
+import CGamemap from './cgamemap';
 
 class CProjectile implements IProjectile {
   id: string;
@@ -10,11 +10,11 @@ class CProjectile implements IProjectile {
     this.position = projectile.position;
   }
 
-  draw(canvas: Canvas): void {
-    canvas.context.beginPath();
-    canvas.context.arc(this.position.x, this.position.y, 10, 0, 2 * Math.PI);
-    canvas.context.strokeStyle = "green";
-    canvas.context.stroke();
+  draw(gamemap: CGamemap, position: IPoint): void {
+    gamemap.context.beginPath();
+    gamemap.context.arc(position.x, position.y, 10, 0, 2 * Math.PI);
+    gamemap.context.strokeStyle = "green";
+    gamemap.context.stroke();
   }
 }
 

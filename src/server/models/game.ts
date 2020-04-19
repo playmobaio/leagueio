@@ -1,10 +1,6 @@
 import Player from './player';
 import Gamemap from './gamemap';
-import { PlayerMovementIO,
-  IGameState,
-  IPlayer,
-  IProjectile,
-  IUserGame } from '../../models/interfaces';
+import { PlayerMovementIO, IGameState } from '../../models/interfaces';
 
 // Server
 class Game {
@@ -46,7 +42,7 @@ class Game {
     this.players.forEach((player): void => {
       player.update()
       for (const projectile of player.projectiles.values()) {
-        if (!projectile.shouldDelete()) {
+        if (!projectile.shouldDelete(this.gamemap)) {
           projectile.update();
         } else {
           player.projectiles.delete(projectile.id);
@@ -56,23 +52,11 @@ class Game {
     this.currentFrame++;
   }
 
-  createGameState(): IGameState {
-    const iPlayers: IPlayer[] = [];
-    const iProjectiles: IProjectile[] = [];
-    for (const player of this.players.values()) {
-      iPlayers.push(player.toInterface());
-      for (const projectile of player.projectiles.values()) {
-        iProjectiles.push(projectile.toInterface());
-      }
-    }
-    return { players: iPlayers, projectiles: iProjectiles }
-  }
-
   sendGameState(): void {
-    const gameState: IGameState = this.createGameState();
     this.players.forEach((player) => {
-      const userState: IUserGame = { user: player.toInterface(), gameState: gameState };
-      player.socket.emit("S:UPDATE_GAME_STATE", userState);
+      player.camera.update(player);
+      const gameState: IGameState = player.createGameState(this.players, this.gamemap);
+      player.socket.emit("S:UPDATE_GAME_STATE", gameState);
     });
   }
 }

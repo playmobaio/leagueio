@@ -23,13 +23,10 @@ export interface IProjectile {
 }
 
 export interface IGameState {
+  tiles: Array<Array<ITile>>;
   players: IPlayer[];
   projectiles: IProjectile[];
-}
-
-export interface IUserGame {
-  user: IPlayer;
-  gameState: IGameState;
+  tileSize: number;
 }
 
 export enum PlayerMovementIO {
@@ -43,4 +40,9 @@ export enum PlayerMovementIO {
 export interface IHealth {
   maximum: number;
   current: number;
+}
+
+export interface ITile {
+  tile: number,
+  position: IPoint
 }

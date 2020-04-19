@@ -1,8 +1,15 @@
-import { IPlayer, PlayerMovementIO, IPoint, IHealth } from '../../models/interfaces';
+import { IPlayer,
+  PlayerMovementIO,
+  IPoint,
+  IHealth,
+  IGameState,
+  IProjectile } from '../../models/interfaces';
 import { Point, Velocity, Vector } from './basicTypes';
 import Projectile from './projectile';
 import Game from "./game";
 import constants from '../constants';
+import Camera from './camera';
+import Gamemap from './gamemap';
 
 class Player implements IPlayer {
   id: string;
@@ -14,8 +21,9 @@ class Player implements IPlayer {
   attackSpeed: number;
   lastAutoAttackFrame: number;
   health: IHealth;
+  camera: Camera;
 
-  constructor(id: string, point: Point, socket: SocketIO.Socket) {
+  constructor(id: string, point: Point, socket: SocketIO.Socket, map: Gamemap) {
     this.id = id;
     this.position = point;
     this.velocity = new Velocity(this.position, 0);
@@ -27,6 +35,9 @@ class Player implements IPlayer {
     this.health = {
       current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
       maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
+    this.camera = new Camera(map,
+      constants.DEFAULT_MAP_VIEW_WIDTH,
+      constants.DEFAULT_MAP_VIEW_HEIGHT);
   }
 
   registerAutoAttack(dest: IPoint): void {
@@ -77,6 +88,33 @@ class Player implements IPlayer {
 
   toInterface(): IPlayer {
     return { id: this.id, position: this.position, health: this.health };
+  }
+
+  createGameState(players: Map<string, Player>, map: Gamemap): IGameState {
+    const iPlayers: Array<IPlayer> = new Array<IPlayer>();
+    const iProjectiles: Array<IProjectile> = new Array<IProjectile>();
+
+    this.camera.update(this);
+    players.forEach(player => {
+      const iPlayer: IPlayer = player.toInterface();
+      iPlayer.position = player.id !== this.id ?
+        this.camera.getRelativePosition(player.position) :
+        this.camera.screen;
+      iPlayers.push(iPlayer);
+
+      player.projectiles.forEach(projectile => {
+        const iProjectile: IProjectile = projectile.toInterface();
+        iProjectile.position = this.camera.getRelativePosition(projectile.position);
+        iProjectiles.push(iProjectile);
+      });
+    });
+
+    return {
+      tiles: map.getLayers(this.camera),
+      players: iPlayers,
+      projectiles: iProjectiles,
+      tileSize: map.tileSize
+    };
   }
 }
 

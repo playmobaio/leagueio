@@ -1,6 +1,7 @@
 import Game from './game';
 import UserInputController from './UserInputController';
-import { PlayerMovementIO, IPoint, IGameState } from '../../models/interfaces';
+import { PlayerMovementIO, IPoint, IUserGame } from '../../models/interfaces';
+import CPlayer from './cplayer';
 
 function registerSocket(socket: SocketIO.Socket): void {
   const _game: Game = Game.getInstance();
@@ -8,9 +9,10 @@ function registerSocket(socket: SocketIO.Socket): void {
   document.getElementById("game").style.visibility = "visible";
   document.getElementById("startpanel").style.visibility = "hidden";
 
-  socket.on("S:UPDATE_GAME_STATE", (gameState: IGameState) => {
-    _game.updatePlayers(gameState.players);
-    _game.updateProjectiles(gameState.projectiles);
+  socket.on("S:UPDATE_GAME_STATE", (userGame: IUserGame) => {
+    _game.user = new CPlayer(userGame.user);
+    _game.updatePlayers(userGame.gameState.players);
+    _game.updateProjectiles(userGame.gameState.projectiles);
     _game.draw();
   });
 

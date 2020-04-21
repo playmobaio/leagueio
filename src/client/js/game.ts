@@ -8,6 +8,7 @@ class Game {
   private static instance: Game;
   players: Map<string, CPlayer>;
   projectiles: Map<string, CProjectile>;
+  user: CPlayer;
   canvas: Canvas;
 
   constructor() {

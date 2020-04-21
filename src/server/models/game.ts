@@ -1,6 +1,10 @@
 import Player from './player';
 import Gamemap from './gamemap';
-import { PlayerMovementIO, IGameState, IPlayer, IProjectile } from '../../models/interfaces';
+import { PlayerMovementIO,
+  IGameState,
+  IPlayer,
+  IProjectile,
+  IUserGame } from '../../models/interfaces';
 
 // Server
 class Game {
@@ -64,8 +68,12 @@ class Game {
     return { players: iPlayers, projectiles: iProjectiles }
   }
 
-  sendGameState(io: SocketIO.Server): void {
-    io.emit("S:UPDATE_GAME_STATE", this.createGameState());
+  sendGameState(): void {
+    const gameState: IGameState = this.createGameState();
+    this.players.forEach((player) => {
+      const userState: IUserGame = { user: player.toInterface(), gameState: gameState };
+      player.socket.emit("S:UPDATE_GAME_STATE", userState);
+    });
   }
 }
 

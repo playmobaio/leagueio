@@ -27,6 +27,11 @@ export interface IGameState {
   projectiles: IProjectile[];
 }
 
+export interface IUserGame {
+  user: IPlayer;
+  gameState: IGameState;
+}
+
 export enum PlayerMovementIO {
   none = 0,
   up = 1,

@@ -3,15 +3,18 @@ import { Velocity, Point, Vector } from '../../../src/server/models/basicTypes';
 import Projectile from '../../../src/server/models/projectile';
 import constants from '../../../src/server/constants';
 
+
 describe('Projectile', function() {
   let projectile: Projectile;
   let velocity: Velocity;
   let src: Point;
+  let sourceId: string;
 
   beforeEach(function() {
+    sourceId = "testId";
     src = new Point(0, 0);
-    velocity = new Velocity(1, 0);
-    projectile = new Projectile(src, velocity);
+    velocity = new Velocity({ x: 1, y: 1 }, 0);
+    projectile = new Projectile(sourceId, src, velocity);
   });
 
   describe('#rangeExpired', function() {

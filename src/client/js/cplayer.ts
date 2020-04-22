@@ -26,7 +26,10 @@ class CPlayer implements IPlayer {
     const XStart = -10;
     const Xlength = 20;
     const YOffset = -16;
-    const healthBarCurrent: number = Math.ceil(this.health.current / this.health.maximum) * Xlength;
+    let healthBarCurrent: number = Math.ceil(this.health.current / this.health.maximum * Xlength);
+    if(healthBarCurrent < 0) {
+      healthBarCurrent = 0;
+    }
 
     canvas.context.moveTo(this.position.x + XStart, this.position.y + YOffset);
     canvas.context.lineTo(this.position.x + XStart + healthBarCurrent, this.position.y + YOffset);

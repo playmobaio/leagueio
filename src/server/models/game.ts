@@ -8,11 +8,13 @@ class Game {
   players: Map<string, Player>;
   gamemap: Gamemap;
   currentFrame: number;
+  gameStates: Map<string, IGameState>;
 
   private constructor() {
     this.players = new Map<string, Player>();
     this.gamemap = new Gamemap();
     this.currentFrame = 0;
+    this.gameStates = new Map<string, IGameState>();
   }
 
   static getInstance(): Game {
@@ -52,11 +54,21 @@ class Game {
     this.currentFrame++;
   }
 
-  sendGameState(): void {
-    this.players.forEach((player) => {
+  setState(): void {
+    const states = new Map<string, IGameState>();
+    this.players.forEach((player: Player) => {
       player.camera.update(player);
-      const gameState: IGameState = player.createGameState(this.players, this.gamemap);
-      player.socket.emit("S:UPDATE_GAME_STATE", gameState);
+      states.set(player.id, player.getGameState(this.players, this.gamemap));
+    });
+    this.gameStates = states;
+  }
+
+  sendGameState(): void {
+    this.gameStates.forEach((state: IGameState, playerId: string): void => {
+      if (this.players.has(playerId)) {
+        const player = this.players.get(playerId);
+        player.socket.emit("S:UPDATE_GAME_STATE", state);
+      }
     });
   }
 }

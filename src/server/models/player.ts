@@ -90,7 +90,7 @@ class Player implements IPlayer {
     return { id: this.id, position: this.position, health: this.health };
   }
 
-  createGameState(players: Map<string, Player>, map: Gamemap): IGameState {
+  getGameState(players: Map<string, Player>, map: Gamemap): IGameState {
     const iPlayers: Array<IPlayer> = new Array<IPlayer>();
     const iProjectiles: Array<IProjectile> = new Array<IProjectile>();
 

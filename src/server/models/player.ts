@@ -1,5 +1,5 @@
 import { IPlayer, PlayerMovementIO, IPoint, IHealth } from '../../models/interfaces';
-import { Point, Velocity, Vector } from './basicTypes';
+import { Point, Velocity, Vector, Circle } from './basicTypes';
 import Projectile from './projectile';
 import Game from "./game";
 import constants from '../constants';
@@ -14,6 +14,7 @@ class Player implements IPlayer {
   attackSpeed: number;
   lastAutoAttackFrame: number;
   health: IHealth;
+  model: Circle;
 
   constructor(id: string, point: Point, socket: SocketIO.Socket) {
     this.id = id;
@@ -27,6 +28,7 @@ class Player implements IPlayer {
     this.health = {
       current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
       maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
+    this.model = new Circle(point, constants.DEFAULT_CIRCLE_RADIUS);
   }
 
   registerAutoAttack(dest: IPoint): void {
@@ -57,7 +59,7 @@ class Player implements IPlayer {
     const velocity = new Velocity(dest,
       constants.DEFAULT_PROJECTILE_SPEED,
       this.position);
-    const projectile = new Projectile(origin, velocity)
+    const projectile = new Projectile(this.id,origin, velocity)
 
     this.projectiles.set(projectile.id, projectile);
     return projectile;
@@ -65,10 +67,25 @@ class Player implements IPlayer {
 
   updatePosition(point: Point): void {
     this.position = point;
+    this.model.point = point;
   }
 
   updateVelocity(io: PlayerMovementIO): void {
     this.velocity = Velocity.getPlayerVelocity(io);
+  }
+
+  updateHealth(newCurrentHealth: number, newMaxHealth: number): void {
+    if(newCurrentHealth < 0) {
+      newCurrentHealth = 0;
+    }
+    this.health = { current: newCurrentHealth, maximum: newMaxHealth };
+  }
+
+  respawn(): void {
+    const newPoint: Point = this.game.gamemap.randomMapPosition();
+    this.updatePosition(newPoint);
+    this.updateHealth(constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
+      constants.DEFAULT_PLAYER_MAXIMUM_HEALTH);
   }
 
   update(): void {

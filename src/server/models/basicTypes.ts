@@ -22,6 +22,34 @@ export class Point implements IPoint {
   equals(point: IPoint): boolean {
     return this.x == point.x && this.y == point.y
   }
+
+  distanceFrom(otherPoint: Point) : number {
+    const dx = otherPoint.x - this.x;
+    const dy = otherPoint.y - this.y;
+
+    return Math.sqrt(dx**2 + dy**2);
+  }
+}
+
+export class Circle {
+  point: Point;
+  radius: number;
+
+  constructor(point: Point, radius: number) {
+    this.point = point;
+    this.radius = radius;
+  }
+
+  hasCollisionToCircle(otherCircle: Circle) : boolean {
+    const otherCirclePoint = otherCircle.point;
+    const otherCircleRadius = otherCircle.radius;
+    const distanceFromCenter = this.point.distanceFrom(otherCirclePoint);
+
+    if(distanceFromCenter < this.radius + otherCircleRadius) {
+      return true;
+    }
+    return false;
+  }
 }
 
 export class Vector {

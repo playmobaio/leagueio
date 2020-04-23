@@ -45,7 +45,7 @@ class Game {
   }
 
   update(): void {
-    const listOfProjectiles : Projectile[] = [];
+    const projectiles : Projectile[] = [];
     this.players.forEach((player): void => {
       if(player.health.current <= 0) {
         player.respawn();
@@ -54,7 +54,7 @@ class Game {
       for (const projectile of player.projectiles.values()) {
         if (!projectile.shouldDelete()) {
           projectile.update();
-          listOfProjectiles.push(projectile);
+          projectiles.push(projectile);
         } else {
           player.projectiles.delete(projectile.id);
         }
@@ -63,9 +63,9 @@ class Game {
 
     this.players.forEach((player): void => {
       // check collision with projectiles
-      listOfProjectiles.forEach((projectile): void => {
-        if(player.model.hasCollisionToCircle(projectile.model)
-            && projectile.shooterSourceId != player.id) {
+      projectiles.forEach((projectile): void => {
+        if(projectile.shooterSourceId != player.id &&
+            player.model.collidesWithCircle(projectile.model)) {
           const shooter = this.players.get(projectile.shooterSourceId);
           shooter.projectiles.delete(projectile.id);
           player.updateHealth(player.health.current - constants.DEFAULT_DAMAGE_FROM_PROJECTILE,

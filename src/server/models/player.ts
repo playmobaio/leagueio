@@ -59,7 +59,7 @@ class Player implements IPlayer {
     const velocity = new Velocity(dest,
       constants.DEFAULT_PROJECTILE_SPEED,
       this.position);
-    const projectile = new Projectile(this.id,origin, velocity)
+    const projectile = new Projectile(this.id, origin, velocity)
 
     this.projectiles.set(projectile.id, projectile);
     return projectile;
@@ -67,7 +67,7 @@ class Player implements IPlayer {
 
   updatePosition(point: Point): void {
     this.position = point;
-    this.model.point = point;
+    this.model.center = point;
   }
 
   updateVelocity(io: PlayerMovementIO): void {

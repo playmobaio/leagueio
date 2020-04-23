@@ -26,13 +26,11 @@ class CPlayer implements IPlayer {
     const XStart = -10;
     const Xlength = 20;
     const YOffset = -16;
-    let healthBarCurrent: number = Math.ceil(this.health.current / this.health.maximum * Xlength);
-    if(healthBarCurrent < 0) {
-      healthBarCurrent = 0;
-    }
+    let healthBarSize: number = Math.ceil(this.health.current / this.health.maximum * Xlength);
+    healthBarSize = Math.max(healthBarSize, 0);
 
     canvas.context.moveTo(this.position.x + XStart, this.position.y + YOffset);
-    canvas.context.lineTo(this.position.x + XStart + healthBarCurrent, this.position.y + YOffset);
+    canvas.context.lineTo(this.position.x + XStart + healthBarSize, this.position.y + YOffset);
     canvas.context.stroke();
 
     // display health text

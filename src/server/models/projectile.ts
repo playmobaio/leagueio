@@ -10,11 +10,11 @@ class Projectile implements IProjectile {
   range: number;
   origin: Point;
   model: Circle;
-  shooterSourceId: string;
+  creatorId: string;
 
-  constructor(shooterSourceId: string, src: Point, velocity: Velocity) {
+  constructor(creatorId: string, src: Point, velocity: Velocity) {
     this.id = uuidv4();
-    this.shooterSourceId = shooterSourceId;
+    this.creatorId = creatorId;
     this.range = constants.DEFAULT_PROJECTILE_RANGE;
     this.position = src;
     this.origin = src;
@@ -38,7 +38,7 @@ class Projectile implements IProjectile {
 
   update(): void {
     this.position = this.position.transform(this.velocity);
-    this.model.point = this.position;
+    this.model.center = this.position;
   }
 
   toInterface(): IProjectile {

@@ -8,13 +8,13 @@ describe('Projectile', function() {
   let projectile: Projectile;
   let velocity: Velocity;
   let src: Point;
-  let sourceId: string;
+  let creatorId: string;
 
   beforeEach(function() {
-    sourceId = "testId";
+    creatorId = "testId";
     src = new Point(0, 0);
     velocity = new Velocity({ x: 1, y: 1 }, 0);
-    projectile = new Projectile(sourceId, src, velocity);
+    projectile = new Projectile(creatorId, src, velocity);
   });
 
   describe('#rangeExpired', function() {

@@ -46,3 +46,8 @@ export interface ITile {
   tile: number,
   position: IPoint
 }
+
+export enum Layer {
+  background = 0,
+  foreground = 1
+}

@@ -1,34 +1,33 @@
-import Gamemap from './cgamemap';
 import CPlayer from './cplayer';
 import { IPlayer, IGameState, IProjectile } from "../../models/interfaces";
 import CProjectile from './cprojectile';
 import Loader from './loader';
+import CGameMap from './cgameMap';
 
 // Client
 class Game {
   private static instance: Game;
-  gamemap: Gamemap;
+  gameMap: CGameMap;
   tileAtlas: HTMLImageElement;
   imageloader: Loader;
 
   constructor() {
-    this.gamemap = Gamemap.getInstance();
+    this.gameMap = CGameMap.getInstance();
     this.imageloader = new Loader();
-    this.imageloader.loadImage('tiles', '../assets/tiles.png').then(() => {
-      this.tileAtlas = this.imageloader.getImage('tiles');
-    });
   }
 
-  static getInstance(): Game {
+  static async getInstance(): Promise<Game> {
     if(Game.instance == null) {
-      Game.instance = new Game();
+      const game = new Game();
+      game.tileAtlas = await game.imageloader.loadImage('tiles', '../assets/tiles.png');
+      Game.instance = game;
     }
     return Game.instance;
   }
 
   drawLayer(gameState: IGameState, layer: number): void {
     gameState.tiles[layer].forEach(tile => {
-      this.gamemap.context.drawImage(
+      this.gameMap.context.drawImage(
         this.tileAtlas, // image
         (tile.tile - 1) * gameState.tileSize, // source x
         0, // source y
@@ -43,17 +42,17 @@ class Game {
   }
 
   draw(gameState: IGameState): void {
-    this.gamemap.context.clearRect(0, 0, this.gamemap.canvas.width, this.gamemap.canvas.height);
+    this.gameMap.context.clearRect(0, 0, this.gameMap.canvas.width, this.gameMap.canvas.height);
 
     this.drawLayer(gameState, 0);
     gameState.players.forEach((iPlayer: IPlayer): void => {
       const player = new CPlayer(iPlayer);
-      player.draw(this.gamemap, player.position);
+      player.draw(this.gameMap);
     });
 
     gameState.projectiles.forEach((iProjectile: IProjectile): void => {
       const projectile = new CProjectile(iProjectile);
-      projectile.draw(this.gamemap, projectile.position);
+      projectile.draw(this.gameMap);
     });
 
     this.drawLayer(gameState, 1);

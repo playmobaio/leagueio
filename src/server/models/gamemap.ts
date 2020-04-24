@@ -2,7 +2,7 @@ import { Point } from './basicTypes';
 import { ITile } from '../../models/interfaces';
 import Camera from './camera';
 
-class Gamemap {
+class GameMap {
   width: number;
   height: number;
   cols: number;
@@ -16,8 +16,8 @@ class Gamemap {
     this.rows = 18;
     this.cols = 26;
     this.tileSize = 64;
-    this.width = this.rows * this.tileSize;
-    this.height = this.cols * this.tileSize;
+    this.width = this.cols * this.tileSize;
+    this.height = this.rows * this.tileSize;
     this.layers = [[
       6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
       6, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 6,
@@ -67,12 +67,12 @@ class Gamemap {
 
   getLayers(camera: Camera): Array<Array<ITile>> {
     const tiles = Array<Array<ITile>>();
-    const startCol = Math.floor(camera.position.x / this.tileSize);
+    const startCol = Math.floor(camera.absolutePosition.x / this.tileSize);
     const endCol = startCol + camera.width / this.tileSize;
-    const startRow = Math.floor(camera.position.y / this.tileSize);
+    const startRow = Math.floor(camera.absolutePosition.y / this.tileSize);
     const endRow = startRow + camera.height / this.tileSize;
-    const offsetX = -camera.position.x + startCol * this.tileSize;
-    const offsetY = -camera.position.y + startRow * this.tileSize;
+    const offsetX = -camera.absolutePosition.x + startCol * this.tileSize;
+    const offsetY = -camera.absolutePosition.y + startRow * this.tileSize;
 
     for (let layer = 0; layer < this.layers.length; layer++) {
       const _layers = Array<ITile>();
@@ -128,4 +128,4 @@ class Gamemap {
   }
 }
 
-export default Gamemap;
+export default GameMap;

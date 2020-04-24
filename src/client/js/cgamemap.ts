@@ -1,7 +1,7 @@
 import constants from './constants';
 
-class CGamemap {
-  private static instance: CGamemap;
+class CGameMap {
+  private static instance: CGameMap;
   context: CanvasRenderingContext2D;
   canvas: HTMLCanvasElement;
 
@@ -10,16 +10,16 @@ class CGamemap {
     this.context = context;
   }
 
-  static getInstance(): CGamemap {
-    if(!CGamemap.instance) {
+  static getInstance(): CGameMap {
+    if(!CGameMap.instance) {
       const canvas = document.getElementById("canvas") as HTMLCanvasElement;
       canvas.width = constants.DEFAULT_MAP_VIEW_WIDTH;
       canvas.height = constants.DEFAULT_MAP_VIEW_HEIGHT;
       const context: CanvasRenderingContext2D = canvas.getContext("2d");
-      CGamemap.instance = new CGamemap(canvas, context);
+      CGameMap.instance = new CGameMap(canvas, context);
     }
-    return CGamemap.instance;
+    return CGameMap.instance;
   }
 }
 
-export default CGamemap;
+export default CGameMap;

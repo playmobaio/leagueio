@@ -5,19 +5,18 @@ class Loader {
   }
 
   loadImage(key, src): Promise<HTMLImageElement> {
-    const img = new Image();
-    const d = new Promise<HTMLImageElement>(function(resolve, reject): void {
-      img.onload = function(): void {
-        this.images[key] = img;
-        resolve(img);
-      }.bind(this);
+    const image = new Image();
+    image.src = src;
+    return new Promise<HTMLImageElement>((resolve, reject): void => {
+      image.onload = (): void => {
+        this.images[key] = image;
+        resolve(image);
+      };
 
-      img.onerror = function(): void {
+      image.onerror = (): void => {
         reject('Could not load image: ' + src);
       };
-    }.bind(this));
-    img.src = src;
-    return d;
+    });
   }
 
   getImage(key): HTMLImageElement {

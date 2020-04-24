@@ -2,7 +2,7 @@ import * as express from "express";
 import * as path from "path";
 import *  as socketController from "./socketController";
 import Game from './models/game';
-import { IUserInput, IUserMouseClick } from '../models/interfaces';
+import { IUserInput, IUserMouseClick, IGameState } from '../models/interfaces';
 import constants from './constants';
 
 // Create the app
@@ -37,7 +37,7 @@ io.sockets.on(
 
 setInterval(() => {
   const game: Game = Game.getInstance();
-  new Promise(() => game.update());
-  new Promise(() => game.setState());
-  new Promise(() => game.sendGameState());
+  game.update();
+  const gameState: Map<string,IGameState> = game.getStates();
+  game.sendGameStates(gameState);
 }, 1000 / constants.FRAMES_PER_SECOND) // 60 frames a second

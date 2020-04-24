@@ -1,20 +1,19 @@
 import Player from './player';
-import Gamemap from './gamemap';
+import GameMap from './gameMap';
 import { PlayerMovementIO, IGameState } from '../../models/interfaces';
 
 // Server
 class Game {
   private static instance: Game;
   players: Map<string, Player>;
-  gamemap: Gamemap;
+  gamemap: GameMap;
   currentFrame: number;
   gameStates: Map<string, IGameState>;
 
   private constructor() {
     this.players = new Map<string, Player>();
-    this.gamemap = new Gamemap();
+    this.gamemap = new GameMap();
     this.currentFrame = 0;
-    this.gameStates = new Map<string, IGameState>();
   }
 
   static getInstance(): Game {
@@ -54,17 +53,17 @@ class Game {
     this.currentFrame++;
   }
 
-  setState(): void {
+  getStates(): Map<string,IGameState> {
     const states = new Map<string, IGameState>();
     this.players.forEach((player: Player) => {
       player.camera.update(player);
       states.set(player.id, player.getGameState(this.players, this.gamemap));
     });
-    this.gameStates = states;
+    return states;
   }
 
-  sendGameState(): void {
-    this.gameStates.forEach((state: IGameState, playerId: string): void => {
+  sendGameStates(gameStates: Map<string,IGameState>): void {
+    gameStates.forEach((state: IGameState, playerId: string): void => {
       if (this.players.has(playerId)) {
         const player = this.players.get(playerId);
         player.socket.emit("S:UPDATE_GAME_STATE", state);

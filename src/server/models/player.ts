@@ -9,7 +9,7 @@ import Projectile from './projectile';
 import Game from "./game";
 import constants from '../constants';
 import Camera from './camera';
-import Gamemap from './gamemap';
+import GameMap from './gameMap';
 
 class Player implements IPlayer {
   id: string;
@@ -23,7 +23,7 @@ class Player implements IPlayer {
   health: IHealth;
   camera: Camera;
 
-  constructor(id: string, point: Point, socket: SocketIO.Socket, map: Gamemap) {
+  constructor(id: string, point: Point, socket: SocketIO.Socket, map: GameMap) {
     this.id = id;
     this.position = point;
     this.velocity = new Velocity(this.position, 0);
@@ -90,7 +90,7 @@ class Player implements IPlayer {
     return { id: this.id, position: this.position, health: this.health };
   }
 
-  getGameState(players: Map<string, Player>, map: Gamemap): IGameState {
+  getGameState(players: Map<string, Player>, map: GameMap): IGameState {
     const iPlayers: Array<IPlayer> = new Array<IPlayer>();
     const iProjectiles: Array<IProjectile> = new Array<IProjectile>();
 
@@ -99,7 +99,7 @@ class Player implements IPlayer {
       const iPlayer: IPlayer = player.toInterface();
       iPlayer.position = player.id !== this.id ?
         this.camera.getRelativePosition(player.position) :
-        this.camera.screen;
+        this.camera.realtivePosition;
       iPlayers.push(iPlayer);
 
       player.projectiles.forEach(projectile => {

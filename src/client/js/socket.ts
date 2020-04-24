@@ -2,8 +2,8 @@ import Game from './game';
 import UserInputController from './UserInputController';
 import { PlayerMovementIO, IPoint, IGameState } from '../../models/interfaces';
 
-function registerSocket(socket: SocketIO.Socket): void {
-  const _game: Game = Game.getInstance();
+async function registerSocket(socket: SocketIO.Socket): Promise<void> {
+  const _game: Game = await Game.getInstance();
   const _userInputController: UserInputController = UserInputController.getInstance(socket);
   document.getElementById("game").style.visibility = "visible";
   document.getElementById("startpanel").style.visibility = "hidden";
@@ -13,7 +13,7 @@ function registerSocket(socket: SocketIO.Socket): void {
   });
 
   addEventListener("mousedown", function(event) {
-    const gamemap = _game.gamemap;
+    const gamemap = _game.gameMap;
     const domRect = gamemap.canvas.getBoundingClientRect();
     const point: IPoint = { x: event.clientX - domRect.left, y: event.clientY - domRect.top };
     _userInputController.registerMouseClick(point);

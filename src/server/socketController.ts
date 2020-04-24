@@ -18,7 +18,7 @@ export function clientUserMove(socket:SocketIO.Socket, userInput: IUserInput): v
 export function clientMouseClick(socket:SocketIO.Socket, userMouseClick: IUserMouseClick): void {
   const game: Game = Game.getInstance();
   const player: Player = game.players.get(socket.id);
-  const absolutePosition = player.camera.getAbsolutePosition(userMouseClick.cursorPosition);
+  const absolutePosition = player?.camera?.getAbsolutePosition(userMouseClick.cursorPosition);
   player.registerAutoAttack(absolutePosition);
 }
 

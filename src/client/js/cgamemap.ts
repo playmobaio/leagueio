@@ -1,59 +1,39 @@
+import Layers from './layer';
 import constants from './constants';
-import { IGameState } from '../../models/interfaces';
+import Camera from './camera';
+import { Layer } from '../../models/interfaces';
 
 class CGameMap {
   private static instance: CGameMap;
   context: CanvasRenderingContext2D;
   canvas: HTMLCanvasElement;
-  tileMap: HTMLImageElement;
+  layers: Layers;
 
-  constructor(canvas:HTMLCanvasElement, context: CanvasRenderingContext2D) {
+  constructor(canvas:HTMLCanvasElement, context: CanvasRenderingContext2D, layers: Layers) {
     this.canvas = canvas;
     this.context = context;
-  }
-
-  drawLayer(gameState: IGameState, layer: number): void {
-    gameState.tiles[layer].forEach(tile => {
-      this.context.drawImage(
-        this.tileMap, // image
-        (tile.tile - 1) * gameState.tileSize, // source x
-        0, // source y
-        gameState.tileSize, // source width
-        gameState.tileSize, // source height
-        tile.position.x,  // target x
-        tile.position.y, // target y
-        gameState.tileSize, // target width
-        gameState.tileSize // target height
-      );
-    });
-  }
-
-  loadTileMap(): Promise<void> {
-    const image = new Image();
-    image.src = '../assets/tiles.png';
-    return new Promise<void>((resolve, reject): void => {
-      image.onload = (): void => {
-        this.tileMap = image;
-        resolve();
-      };
-
-      image.onerror = (): void => {
-        reject('Could not load image: ' + image.src);
-      };
-    });
+    this.layers = layers;
   }
 
   static async getInstance(): Promise<CGameMap> {
     if(!CGameMap.instance) {
+      const layers: Layers = await Layers.createAsync();
       const canvas = document.getElementById("canvas") as HTMLCanvasElement;
       canvas.width = constants.DEFAULT_MAP_VIEW_WIDTH;
       canvas.height = constants.DEFAULT_MAP_VIEW_HEIGHT;
       const context: CanvasRenderingContext2D = canvas.getContext("2d");
-      const map = new CGameMap(canvas, context);
-      await map.loadTileMap();
+      const map = new CGameMap(canvas, context, layers);
       CGameMap.instance = map;
     }
     return CGameMap.instance;
+  }
+
+  drawLayer(camera: Camera, layer: Layer): void {
+    this.layers.drawLayer(this.context, camera, layer);
+  }
+
+  resetFrame(): void {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 }
 

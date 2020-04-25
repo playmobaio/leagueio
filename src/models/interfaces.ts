@@ -23,10 +23,9 @@ export interface IProjectile {
 }
 
 export interface IGameState {
-  tiles: Array<Array<ITile>>;
+  client: IPlayer;
   players: IPlayer[];
   projectiles: IProjectile[];
-  tileSize: number;
 }
 
 export enum PlayerMovementIO {

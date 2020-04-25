@@ -13,10 +13,10 @@ async function registerSocket(socket: SocketIO.Socket): Promise<void> {
   });
 
   addEventListener("mousedown", function(event) {
-    const gamemap = _game.gameMap;
-    const domRect = gamemap.canvas.getBoundingClientRect();
+    const gameMap = _game.gameMap;
+    const domRect = gameMap.canvas.getBoundingClientRect();
     const point: IPoint = { x: event.clientX - domRect.left, y: event.clientY - domRect.top };
-    _userInputController.registerMouseClick(point);
+    _userInputController.registerMouseClick(_game.camera.getAbsolutePosition(point));
   });
 
   function getPlayerMovementIO(event: KeyboardEvent): PlayerMovementIO {

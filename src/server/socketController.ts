@@ -6,7 +6,7 @@ import { IUserInput, IUserMouseClick } from '../models/interfaces';
 export function clientJoinGame(socket:SocketIO.Socket): void {
   const game: Game = Game.getInstance();
   const point: Point = game.gamemap.randomValidMapPosition();
-  const player: Player = new Player(socket.id, point, socket, game.gamemap);
+  const player: Player = new Player(socket.id, point, socket);
   Game.getInstance().addPlayer(player);
 }
 
@@ -18,8 +18,7 @@ export function clientUserMove(socket:SocketIO.Socket, userInput: IUserInput): v
 export function clientMouseClick(socket:SocketIO.Socket, userMouseClick: IUserMouseClick): void {
   const game: Game = Game.getInstance();
   const player: Player = game.players.get(socket.id);
-  const absolutePosition = player?.camera?.getAbsolutePosition(userMouseClick.cursorPosition);
-  player.registerAutoAttack(absolutePosition);
+  player?.registerAutoAttack(userMouseClick.cursorPosition);
 }
 
 export function disconnect(socket: SocketIO.Socket, io: SocketIO.Server): void {

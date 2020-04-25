@@ -53,19 +53,19 @@ class Game {
     this.currentFrame++;
   }
 
-  getStates(): Map<string,IGameState> {
-    const states = new Map<string, IGameState>();
+  getStates(): Array<IGameState> {
+    const states = new Array<IGameState>();
     this.players.forEach((player: Player) => {
-      player.camera.update(player);
-      states.set(player.id, player.getGameState(this.players, this.gamemap));
+      states.push(player.getGameState(this.players));
     });
     return states;
   }
 
-  sendGameStates(gameStates: Map<string,IGameState>): void {
-    gameStates.forEach((state: IGameState, playerId: string): void => {
-      if (this.players.has(playerId)) {
-        const player = this.players.get(playerId);
+  sendGameStates(gameStates: Array<IGameState>): void {
+    gameStates.forEach((state: IGameState): void => {
+      const clientId = state.client.id;
+      if (this.players.has(clientId)) {
+        const player = this.players.get(clientId);
         player.socket.emit("S:UPDATE_GAME_STATE", state);
       }
     });

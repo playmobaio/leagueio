@@ -1,5 +1,5 @@
 import Camera from './camera';
-import constants from './constants';
+import constants from '../../models/constants';
 
 class Layers {
   rows: number;
@@ -87,21 +87,25 @@ class Layers {
         const tile = this.getTile(layer, c, r);
         const x = Math.round((c - startCol) * this.tileSize + offsetX);
         const y = Math.round((r - startRow) * this.tileSize + offsetY);
-        if (tile !== 0) { // 0 => empty tile
-          context.drawImage(
-            this.tileMap, // image
-            (tile - 1) * this.tileSize, // source x
-            0, // source y
-            this.tileSize, // source width
-            this.tileSize, // source height
-            x,  // target x
-            y, // target y
-            this.tileSize, // target width
-            this.tileSize // target height
-          );
+        if (tile !== 0 && tile !== 6) { // 0 => empty tile
+          this.drawTile(context, tile, x, y);
         }
       }
     }
+  }
+
+  drawTile(context: CanvasRenderingContext2D, tile: number, x: number, y: number): void {
+    context.drawImage(
+      this.tileMap, // image
+      (tile - 1) * this.tileSize, // source x
+      0, // source y
+      this.tileSize, // source width
+      this.tileSize, // source height
+      x,  // target x
+      y, // target y
+      this.tileSize, // target width
+      this.tileSize // target height
+    );
   }
 
   getTile(layer, col, row): number {

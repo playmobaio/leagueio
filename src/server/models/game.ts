@@ -1,18 +1,18 @@
 import Player from './player';
 import GameMap from './gameMap';
-import { PlayerMovementIO, IGameState } from '../../models/interfaces';
+import { PlayerMovementIO, IGameState, IPlayer, IProjectile } from '../../models/interfaces';
 
 // Server
 class Game {
   private static instance: Game;
   players: Map<string, Player>;
-  gamemap: GameMap;
+  gameMap: GameMap;
   currentFrame: number;
   gameStates: Map<string, IGameState>;
 
   private constructor() {
     this.players = new Map<string, Player>();
-    this.gamemap = new GameMap();
+    this.gameMap = new GameMap();
     this.currentFrame = 0;
   }
 
@@ -43,7 +43,7 @@ class Game {
     this.players.forEach((player): void => {
       player.update()
       for (const projectile of player.projectiles.values()) {
-        if (!projectile.shouldDelete(this.gamemap)) {
+        if (!projectile.shouldDelete(this.gameMap)) {
           projectile.update();
         } else {
           player.projectiles.delete(projectile.id);
@@ -54,10 +54,16 @@ class Game {
   }
 
   getStates(): Array<IGameState> {
+    const iPlayers: IPlayer[] = [];
+    const iProjectiles: IProjectile[] = [];
     const states = new Array<IGameState>();
-    this.players.forEach((player: Player) => {
-      states.push(player.getGameState(this.players));
-    });
+    for (const player of this.players.values()) {
+      iPlayers.push(player.toInterface());
+      for (const projectile of player.projectiles.values()) {
+        iProjectiles.push(projectile.toInterface());
+      }
+      states.push(player.getGameState(iPlayers, iProjectiles));
+    }
     return states;
   }
 

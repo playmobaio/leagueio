@@ -1,14 +1,15 @@
 import { IPlayer, IPoint, IHealth } from '../../models/interfaces';
 import CGameMap from './cgameMap';
+import Camera from './camera';
 
 class CPlayer implements IPlayer {
   id: string;
   position: IPoint;
   health: IHealth;
 
-  constructor(player: IPlayer) {
+  constructor(player: IPlayer, camera: Camera) {
     this.id = player.id;
-    this.position = player.position;
+    this.position = camera.getRelativePosition(player.position);
     this.health = player.health;
   }
 

@@ -31,14 +31,12 @@ class Game {
     this.gameMap.drawLayer(this.camera, Layer.background);
 
     gameState.players.forEach((iPlayer: IPlayer): void => {
-      iPlayer.position = this.camera.getRelativePosition(iPlayer.position)
-      const player = new CPlayer(iPlayer);
+      const player = new CPlayer(iPlayer, this.camera);
       player.draw(this.gameMap);
     });
 
     gameState.projectiles.forEach((iProjectile: IProjectile): void => {
-      iProjectile.position = this.camera.getRelativePosition(iProjectile.position)
-      const projectile = new CProjectile(iProjectile);
+      const projectile = new CProjectile(iProjectile, this.camera);
       projectile.draw(this.gameMap);
     });
 

@@ -19,7 +19,7 @@ describe('Player', function() {
     socket.setup((socket) => socket.id).returns(() => id);
     game = Game.getInstance();
     point = new Point(0, 1);
-    player = new Player(id, new Point(0, 0), socket.object, game.gamemap);
+    player = new Player(id, new Point(0, 0), socket.object);
   });
 
   describe('#update', function() {

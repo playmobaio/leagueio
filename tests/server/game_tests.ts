@@ -12,7 +12,7 @@ describe('Game', function() {
 
   beforeEach(function(){
     game = Game.getInstance();
-    player = new Player(id, new Point(0, 0), null, game.gamemap);
+    player = new Player(id, new Point(0, 0), null);
   });
 
   describe('#AddandRemovePlayers', function() {

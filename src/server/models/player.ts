@@ -84,23 +84,11 @@ class Player implements IPlayer {
     return { id: this.id, position: this.position, health: this.health };
   }
 
-  getGameState(players: Map<string, Player>): IGameState {
-    const iPlayers: Array<IPlayer> = new Array<IPlayer>();
-    const iProjectiles: Array<IProjectile> = new Array<IProjectile>();
-
-    players.forEach(player => {
-      iPlayers.push(player.toInterface());
-
-      player.projectiles.forEach(projectile => {
-        const iProjectile: IProjectile = projectile.toInterface();
-        iProjectiles.push(iProjectile);
-      });
-    });
-
+  getGameState(players: Array<IPlayer>, projectiles: Array<IProjectile>): IGameState {
     return {
       client: this.toInterface(),
-      players: iPlayers,
-      projectiles: iProjectiles
+      players: players,
+      projectiles: projectiles
     };
   }
 }

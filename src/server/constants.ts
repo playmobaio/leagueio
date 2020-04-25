@@ -1,3 +1,4 @@
+// client constants
 export default {
   DEFAULT_PLAYER_ATTACK_SPEED: 0.25,
   DEFAULT_PLAYER_VELOCITY: 3,

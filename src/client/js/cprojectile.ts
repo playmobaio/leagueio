@@ -1,13 +1,14 @@
 import { IProjectile, IPoint } from "../../models/interfaces";
 import CGameMap from './cgameMap';
+import Camera from './camera';
 
 class CProjectile implements IProjectile {
   id: string;
   position: IPoint;
 
-  constructor(projectile: IProjectile) {
+  constructor(projectile: IProjectile, camera: Camera) {
     this.id = projectile.id;
-    this.position = projectile.position;
+    this.position = camera.getRelativePosition(projectile.position);
   }
 
   draw(gamemap: CGameMap): void {

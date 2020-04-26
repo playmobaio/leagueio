@@ -53,7 +53,7 @@ class Game {
     this.currentFrame++;
   }
 
-  getStates(): Array<IGameState> {
+  getGameStates(): Array<IGameState> {
     const iPlayers: IPlayer[] = [];
     const iProjectiles: IProjectile[] = [];
     const states = new Array<IGameState>();

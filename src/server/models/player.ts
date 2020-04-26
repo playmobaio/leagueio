@@ -1,4 +1,9 @@
-import { IPlayer, PlayerMovementIO, IPoint, IHealth } from '../../models/interfaces';
+import { IPlayer,
+  PlayerMovementIO,
+  IPoint,
+  IHealth,
+  IGameState,
+  IProjectile } from '../../models/interfaces';
 import { Point, Velocity, Vector } from './basicTypes';
 import Projectile from './projectile';
 import Game from "./game";
@@ -77,6 +82,14 @@ class Player implements IPlayer {
 
   toInterface(): IPlayer {
     return { id: this.id, position: this.position, health: this.health };
+  }
+
+  getGameState(players: Array<IPlayer>, projectiles: Array<IProjectile>): IGameState {
+    return {
+      client: this.toInterface(),
+      players: players,
+      projectiles: projectiles
+    };
   }
 }
 

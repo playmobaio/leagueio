@@ -1,21 +1,18 @@
 import Player from './player';
-import Gamemap from './gamemap';
-import { PlayerMovementIO,
-  IGameState,
-  IPlayer,
-  IProjectile,
-  IUserGame } from '../../models/interfaces';
+import GameMap from './gameMap';
+import { PlayerMovementIO, IGameState, IPlayer, IProjectile } from '../../models/interfaces';
 
 // Server
 class Game {
   private static instance: Game;
   players: Map<string, Player>;
-  gamemap: Gamemap;
+  gameMap: GameMap;
   currentFrame: number;
+  gameStates: Map<string, IGameState>;
 
   private constructor() {
     this.players = new Map<string, Player>();
-    this.gamemap = new Gamemap();
+    this.gameMap = new GameMap();
     this.currentFrame = 0;
   }
 
@@ -46,7 +43,7 @@ class Game {
     this.players.forEach((player): void => {
       player.update()
       for (const projectile of player.projectiles.values()) {
-        if (!projectile.shouldDelete()) {
+        if (!projectile.shouldDelete(this.gameMap)) {
           projectile.update();
         } else {
           player.projectiles.delete(projectile.id);
@@ -56,23 +53,27 @@ class Game {
     this.currentFrame++;
   }
 
-  createGameState(): IGameState {
+  getGameStates(): Array<IGameState> {
     const iPlayers: IPlayer[] = [];
     const iProjectiles: IProjectile[] = [];
+    const states = new Array<IGameState>();
     for (const player of this.players.values()) {
       iPlayers.push(player.toInterface());
       for (const projectile of player.projectiles.values()) {
         iProjectiles.push(projectile.toInterface());
       }
+      states.push(player.getGameState(iPlayers, iProjectiles));
     }
-    return { players: iPlayers, projectiles: iProjectiles }
+    return states;
   }
 
-  sendGameState(): void {
-    const gameState: IGameState = this.createGameState();
-    this.players.forEach((player) => {
-      const userState: IUserGame = { user: player.toInterface(), gameState: gameState };
-      player.socket.emit("S:UPDATE_GAME_STATE", userState);
+  sendGameStates(gameStates: Array<IGameState>): void {
+    gameStates.forEach((state: IGameState): void => {
+      const clientId = state.client.id;
+      if (this.players.has(clientId)) {
+        const player = this.players.get(clientId);
+        player.socket.emit("S:UPDATE_GAME_STATE", state);
+      }
     });
   }
 }

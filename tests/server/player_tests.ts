@@ -1,8 +1,7 @@
 import * as assert from 'assert';
 import * as TypeMoq from "typemoq";
 import Player from '../../src/server/models/player';
-import { PlayerMovementIO, IPoint } from '../../src/models/interfaces';
-import { Times } from 'typemoq';
+import { PlayerMovementIO } from '../../src/models/interfaces';
 import { Point } from '../../src/server/models/basicTypes';
 import constants from '../../src/server/constants';
 import Projectile from '../../src/server/models/projectile';
@@ -11,7 +10,6 @@ import Game from '../../src/server/models/game';
 describe('Player', function() {
   let player: Player;
   let socket: TypeMoq.IMock<SocketIO.Socket>;
-  let io: TypeMoq.IMock<SocketIO.Server>;
   let point: Point;
   const id = "id";
   let game: Game;
@@ -19,10 +17,9 @@ describe('Player', function() {
   beforeEach(function(){
     socket = TypeMoq.Mock.ofType<SocketIO.Socket>();
     socket.setup((socket) => socket.id).returns(() => id);
-    io = TypeMoq.Mock.ofType<SocketIO.Server>();
     game = Game.getInstance();
+    point = new Point(0, 1);
     player = new Player(id, new Point(0, 0), socket.object);
-    point = { x: 0, y: 5 };
   });
 
   describe('#update', function() {
@@ -35,7 +32,7 @@ describe('Player', function() {
     it("Verify velocity updates correctly", function() {
       player.updateVelocity(PlayerMovementIO.up);
       assert.equal(-1, player.velocity.getUnitVector().y);
-      assert.equal(constants.DEFAULT_PLAYER_VELOCITY, player.velocity.speed);
+      assert.equal(constants.DEFAULT_PLAYER_VELOCITY, player.velocity.getSpeed());
     });
   });
 
@@ -43,7 +40,7 @@ describe('Player', function() {
     it("Smoke", function() {
       const projectile: Projectile = player.addProjectile(point);
       assert.equal(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET, projectile.position.y);
-      assert.equal(constants.DEFAULT_PROJECTILE_SPEED, projectile.velocity.speed);
+      assert.equal(constants.DEFAULT_PROJECTILE_SPEED, projectile.velocity.getSpeed());
     });
   });
 

@@ -1,20 +1,21 @@
 import { IProjectile, IPoint } from "../../models/interfaces";
-import Canvas from './canvas';
+import CGameMap from './cgameMap';
+import Camera from './camera';
 
 class CProjectile implements IProjectile {
   id: string;
   position: IPoint;
 
-  constructor(projectile: IProjectile) {
+  constructor(projectile: IProjectile, camera: Camera) {
     this.id = projectile.id;
-    this.position = projectile.position;
+    this.position = camera.getRelativePosition(projectile.position);
   }
 
-  draw(canvas: Canvas): void {
-    canvas.context.beginPath();
-    canvas.context.arc(this.position.x, this.position.y, 10, 0, 2 * Math.PI);
-    canvas.context.strokeStyle = "green";
-    canvas.context.stroke();
+  draw(gamemap: CGameMap): void {
+    gamemap.context.beginPath();
+    gamemap.context.arc(this.position.x, this.position.y, 10, 0, 2 * Math.PI);
+    gamemap.context.strokeStyle = "green";
+    gamemap.context.stroke();
   }
 }
 

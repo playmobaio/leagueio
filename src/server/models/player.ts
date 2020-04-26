@@ -1,6 +1,5 @@
 import { IPlayer, PlayerMovementIO, IPoint, IHealth } from '../../models/interfaces';
-import { Point, Velocity, Vector, Circle } from './basicTypes';
-import Projectile from './projectile';
+import { Point, Velocity, Circle } from './basicTypes';
 import Game from "./game";
 import constants from '../constants';
 
@@ -9,7 +8,6 @@ class Player implements IPlayer {
   position: Point;
   velocity: Velocity;
   socket: SocketIO.Socket;
-  projectiles: Map<string, Projectile>;
   game: Game;
   attackSpeed: number;
   lastAutoAttackFrame: number;
@@ -21,7 +19,6 @@ class Player implements IPlayer {
     this.position = point;
     this.velocity = new Velocity(this.position, 0);
     this.socket = socket;
-    this.projectiles = new Map<string, Projectile>();
     this.attackSpeed = constants.DEFAULT_PLAYER_ATTACK_SPEED;
     this.lastAutoAttackFrame = -1;
     this.game = Game.getInstance();
@@ -36,7 +33,7 @@ class Player implements IPlayer {
       return;
     }
     this.lastAutoAttackFrame = this.game.currentFrame;
-    this.addProjectile(dest);
+    this.game.addProjectile(this.id, dest);
   }
 
   canAutoAttack(): boolean {
@@ -46,23 +43,6 @@ class Player implements IPlayer {
 
     const framesBetweenAutoAttacks = constants.FRAMES_PER_SECOND * this.attackSpeed;
     return this.lastAutoAttackFrame + framesBetweenAutoAttacks <= this.game.currentFrame;
-  }
-
-  addProjectile(dest: IPoint): Projectile {
-    if (dest == undefined || this.position.equals(dest)) {
-      return null;
-    }
-
-    const offsetVector = Vector.createFromPoints(this.position, dest);
-    offsetVector.setMagnitude(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET);
-    const origin: Point = this.position.transformWithVector(offsetVector);
-    const velocity = new Velocity(dest,
-      constants.DEFAULT_PROJECTILE_SPEED,
-      this.position);
-    const projectile = new Projectile(this.id, origin, velocity)
-
-    this.projectiles.set(projectile.id, projectile);
-    return projectile;
   }
 
   updatePosition(point: Point): void {

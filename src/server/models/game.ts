@@ -39,15 +39,15 @@ class Game {
 
   addProjectile(pId: string, dest: IPoint): Projectile {
     const p: Player = this.players.get(pId);
-    if (dest == undefined || p.position.equals(dest)) {
+    if (p == null || dest == undefined || p.model.center.equals(dest)) {
       return null;
     }
-    const offsetVector = Vector.createFromPoints(p.position, dest);
+    const offsetVector = Vector.createFromPoints(p.model.center, dest);
     offsetVector.setMagnitude(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET);
-    const origin: Point = p.position.transformWithVector(offsetVector);
+    const origin: Point = p.model.center.transformWithVector(offsetVector);
     const velocity = new Velocity(dest,
       constants.DEFAULT_PROJECTILE_SPEED,
-      p.position);
+      p.model.center);
     const projectile = new Projectile(p.id, origin, velocity)
 
     this.projectiles.set(projectile.id, projectile);
@@ -70,26 +70,25 @@ class Game {
       if(player.health.current <= 0) {
         player.respawn();
       }
-      player.update();
+      else {
+        player.update();
+      }
     });
 
     this.projectiles.forEach((projectile): void => {
       if (!projectile.shouldDelete()) {
         projectile.update();
+        // check each player to see if colldes
+        this.players.forEach((player): void => {
+          if(projectile.creatorId != player.id &&
+              player.model.collidesWithCircle(projectile.model)) {
+            this.projectiles.delete(projectile.id);
+            player.receiveDamage(constants.DEFAULT_DAMAGE_FROM_PROJECTILE);
+          }
+        });
       } else {
         this.projectiles.delete(projectile.id);
       }
-    });
-
-    this.players.forEach((player): void => {
-      this.projectiles.forEach((projectile): void => {
-        if(projectile.creatorId != player.id &&
-            player.model.collidesWithCircle(projectile.model)) {
-          this.projectiles.delete(projectile.id);
-          player.updateHealth(player.health.current - constants.DEFAULT_DAMAGE_FROM_PROJECTILE,
-            player.health.maximum);
-        }
-      });
     });
     this.currentFrame++;
   }

@@ -1,7 +1,9 @@
+import { Circle } from '../server/models/basicTypes';
+
 export interface IPlayer {
   id: string;
-  position: IPoint;
   health: IHealth;
+  model: Circle;
 }
 
 export interface IPoint {

@@ -38,17 +38,17 @@ class Game {
   }
 
   addProjectile(pId: string, dest: IPoint): Projectile {
-    const p: Player = this.players.get(pId);
-    if (p == null || dest == undefined || p.model.center.equals(dest)) {
+    const player: Player = this.players.get(pId);
+    if (player == null || dest == undefined || player.model.center.equals(dest)) {
       return null;
     }
-    const offsetVector = Vector.createFromPoints(p.model.center, dest);
+    const offsetVector = Vector.createFromPoints(player.model.center, dest);
     offsetVector.setMagnitude(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET);
-    const origin: Point = p.model.center.transformWithVector(offsetVector);
+    const origin: Point = player.model.center.transformWithVector(offsetVector);
     const velocity = new Velocity(dest,
       constants.DEFAULT_PROJECTILE_SPEED,
-      p.model.center);
-    const projectile = new Projectile(p.id, origin, velocity)
+      player.model.center);
+    const projectile = new Projectile(player.id, origin, velocity)
 
     this.projectiles.set(projectile.id, projectile);
     return projectile;

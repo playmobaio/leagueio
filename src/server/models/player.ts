@@ -56,20 +56,16 @@ class Player implements IPlayer {
     this.velocity = Velocity.getPlayerVelocity(io);
   }
 
-  respawnUpdateHealth(): void {
-    this.health = {
-      current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
-      maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
-  }
-
   receiveDamage(incomingDamage: number): void {
-    this.health = { current: this.health.current - incomingDamage, maximum: this.health.maximum };
+    this.health.current = Math.max(0, this.health.current - incomingDamage);
   }
 
   respawn(): void {
     const newPoint: Point = this.game.gameMap.randomValidMapPosition();
     this.updatePosition(newPoint);
-    this.respawnUpdateHealth();
+    this.health = {
+      current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
+      maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
   }
 
   update(): void {

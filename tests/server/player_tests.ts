@@ -19,7 +19,7 @@ describe('Player', function() {
     socket.setup((socket) => socket.id).returns(() => id);
     game = Game.getInstance();
     // new game not initiated, singleton. So just deleting projectiles
-    // game.projectiles.clear();
+    game.projectiles.clear();
     point = new Point(0, 1);
     player = new Player(id, new Point(0, 0), socket.object);
     player.lastAutoAttackFrame = -1;
@@ -43,7 +43,6 @@ describe('Player', function() {
     it("Smoke", function() {
       game.projectiles.clear();
       const projectile: Projectile = game.addProjectile(player.id, point);
-      console.log(projectile);
       assert.equal(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET, projectile.model.center.y);
       assert.equal(constants.DEFAULT_PROJECTILE_SPEED, projectile.velocity.getSpeed());
     });

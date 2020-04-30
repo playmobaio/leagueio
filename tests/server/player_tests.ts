@@ -42,6 +42,7 @@ describe('Player', function() {
   describe("#addProjectile", function() {
     it("Smoke", function() {
       const projectile: Projectile = game.addProjectile(player.id, point);
+      console.log(projectile);
       assert.equal(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET, projectile.model.center.y);
       assert.equal(constants.DEFAULT_PROJECTILE_SPEED, projectile.velocity.getSpeed());
     });

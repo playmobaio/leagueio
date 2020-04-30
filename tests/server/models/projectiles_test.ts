@@ -1,7 +1,6 @@
 import * as assert from 'assert';
-import { Velocity, Point, Vector } from '../../../src/server/models/basicTypes';
+import { Velocity, Point } from '../../../src/server/models/basicTypes';
 import Projectile from '../../../src/server/models/projectile';
-import constants from '../../../src/server/constants';
 
 describe('Projectile', function() {
   let projectile: Projectile;

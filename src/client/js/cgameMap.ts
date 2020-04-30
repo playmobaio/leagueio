@@ -9,7 +9,9 @@ class CGameMap {
   canvas: HTMLCanvasElement;
   layers: Layers;
 
-  private constructor(canvas:HTMLCanvasElement, context: CanvasRenderingContext2D, layers: Layers) {
+  private constructor(canvas: HTMLCanvasElement,
+      context: CanvasRenderingContext2D,
+      layers: Layers) {
     this.canvas = canvas;
     this.context = context;
     this.layers = layers;

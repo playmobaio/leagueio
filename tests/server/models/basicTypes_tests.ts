@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import { Velocity, Point, Vector } from '../../../src/server/models/basicTypes';
-import { PlayerMovementIO, IPoint } from '../../../src/models/interfaces';
+import { PlayerMovementIO } from '../../../src/models/interfaces';
 import constants from '../../../src/server/constants';
 
 describe('Velocity', function() {

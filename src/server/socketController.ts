@@ -3,18 +3,18 @@ import Game from "./models/game";
 import { Point } from './models/basicTypes';
 import { IUserInput, IUserMouseClick } from '../models/interfaces';
 
-export function clientJoinGame(socket:SocketIO.Socket): void {
+export function clientJoinGame(socket: SocketIO.Socket): void {
   const game: Game = Game.getInstance();
   const point: Point = game.gameMap.randomValidMapPosition();
   Player.create(socket.id, point, socket);
 }
 
-export function clientUserMove(socket:SocketIO.Socket, userInput: IUserInput): void {
+export function clientUserMove(socket: SocketIO.Socket, userInput: IUserInput): void {
   const game: Game = Game.getInstance();
   game.updatePlayerVelocity(socket.id, userInput.io);
 }
 
-export function clientMouseClick(socket:SocketIO.Socket, userMouseClick: IUserMouseClick): void {
+export function clientMouseClick(socket: SocketIO.Socket, userMouseClick: IUserMouseClick): void {
   const game: Game = Game.getInstance();
   const player: Player = game.players.get(socket.id);
   player?.registerAutoAttack(userMouseClick.cursorPosition);

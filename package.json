@@ -17,9 +17,10 @@
     "build-webpack": "webpack --mode=development",
     "watch-webpack": "webpack --mode=development --watch",
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
-    "copy-static-assets": "npm run html && npm run css",
+    "copy-static-assets": "npm run html && npm run css && npm run assets",
     "html": "copyfiles -f src/client/**/*.html dist/client",
     "css": "copyfiles -f src/client/css/* dist/client/css",
+    "assets": "copyfiles -f src/client/assets/* dist/client/assets",
     "debug": "npm run build && npm run watch-debug",
     "clean": "rimraf coverage dist tmp"
   },

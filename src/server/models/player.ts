@@ -1,4 +1,9 @@
-import { IPlayer, PlayerMovementIO, IPoint, IHealth } from '../../models/interfaces';
+import { IPlayer,
+  PlayerMovementIO,
+  IPoint,
+  IHealth,
+  IGameState,
+  IProjectile } from '../../models/interfaces';
 import { Point, Velocity, Circle } from './basicTypes';
 import Game from "./game";
 import constants from '../constants';
@@ -62,7 +67,7 @@ class Player implements IPlayer {
   }
 
   respawn(): void {
-    const newPoint: Point = this.game.gamemap.randomMapPosition();
+    const newPoint: Point = this.game.gameMap.randomValidMapPosition();
     this.updatePosition(newPoint);
     this.respawnUpdateHealth();
   }
@@ -72,7 +77,15 @@ class Player implements IPlayer {
   }
 
   toInterface(): IPlayer {
-    return { id: this.id, model: this.model, health: this.health };
+    return { id: this.id, model: this.model.toInterface(), health: this.health };
+  }
+
+  getGameState(players: Array<IPlayer>, projectiles: Array<IProjectile>): IGameState {
+    return {
+      client: this.toInterface(),
+      players: players,
+      projectiles: projectiles
+    };
   }
 }
 

@@ -1,44 +1,50 @@
-import { IPlayer, IHealth } from '../../models/interfaces';
-import Canvas from './canvas';
-import { Circle } from '../../server/models/basicTypes';
+import { IPlayer, IHealth, ICircle } from '../../models/interfaces';
+import CGameMap from './cgameMap';
+import Camera from './camera';
 
 class CPlayer implements IPlayer {
   id: string;
-  model: Circle;
+  model: ICircle;
   health: IHealth;
 
-  constructor(player: IPlayer) {
+  constructor(player: IPlayer, camera: Camera) {
     this.id = player.id;
     this.model = player.model;
+    this.model.center = camera.getRelativePosition(player.model.center);
     this.health = player.health;
   }
 
-  draw(canvas: Canvas): void {
+  draw(gameMap: CGameMap): void {
     // draw player model
-    canvas.context.beginPath();
-    canvas.context.arc(this.model.center.x, this.model.center.y, 10, 0, 2 * Math.PI);
-    canvas.context.strokeStyle = "black";
-    canvas.context.stroke();
+    gameMap.context.beginPath();
+    gameMap.context.arc(
+      this.model.center.x,
+      this.model.center.y,
+      this.model.radius,
+      0,
+      2 * Math.PI);
+    gameMap.context.strokeStyle = "black";
+    gameMap.context.stroke();
 
     // draw health bar
-    canvas.context.beginPath();
-    canvas.context.lineWidth = 5;
-    canvas.context.strokeStyle = "red";
+    gameMap.context.beginPath();
+    gameMap.context.lineWidth = 5;
+    gameMap.context.strokeStyle = "red";
     const XStart = -10;
     const Xlength = 20;
     const YOffset = -16;
     let healthBarSize: number = Math.ceil(this.health.current / this.health.maximum * Xlength);
     healthBarSize = Math.max(healthBarSize, 0);
 
-    canvas.context.moveTo(this.model.center.x + XStart, this.model.center.y + YOffset);
-    canvas.context.lineTo(
+    gameMap.context.moveTo(this.model.center.x + XStart, this.model.center.y + YOffset);
+    gameMap.context.lineTo(
       this.model.center.x + XStart + healthBarSize,
       this.model.center.y + YOffset);
-    canvas.context.stroke();
+    gameMap.context.stroke();
 
     // display health text
-    canvas.context.font = "30px Arial";
-    canvas.context.fillText(`Health: ${this.health.current}`,10,30);
+    gameMap.context.font = "30px Arial";
+    gameMap.context.fillText(`Health: ${this.health.current}`,10,30);
   }
 }
 

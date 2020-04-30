@@ -1,60 +1,46 @@
-import Canvas from './canvas';
 import CPlayer from './cplayer';
-import { IProjectile, IPlayer } from "../../models/interfaces";
+import { IPlayer, IGameState, IProjectile, Layer } from "../../models/interfaces";
 import CProjectile from './cprojectile';
+import CGameMap from './cgameMap';
+import Camera from './camera';
 
 // Client
 class Game {
   private static instance: Game;
-  players: Map<string, CPlayer>;
-  projectiles: Map<string, CProjectile>;
-  user: CPlayer;
-  canvas: Canvas;
+  gameMap: CGameMap;
+  camera: Camera;
 
-  constructor() {
-    this.players = new Map<string, CPlayer>();
-    this.projectiles = new Map<string, CProjectile>();
-    this.canvas = Canvas.getInstance();
+  constructor(gameMap: CGameMap, camera: Camera) {
+    this.gameMap = gameMap;
+    this.camera = camera;
   }
 
-  static getInstance(): Game {
+  static async getInstance(): Promise<Game> {
     if(Game.instance == null) {
-      Game.instance = new Game();
+      const gameMap: CGameMap = await CGameMap.getInstance();
+      const camera = new Camera(gameMap, gameMap.canvas.width, gameMap.canvas.height);
+      const game = new Game(gameMap, camera);
+      Game.instance = game;
     }
     return Game.instance;
   }
 
-  updatePlayers(players: IPlayer[]): void {
-    this.players = new Map<string, CPlayer>();
-    for (const player of players) {
-      this.players.set(player.id, new CPlayer(player));
-    }
-  }
+  draw(gameState: IGameState): void {
+    this.gameMap.resetFrame();
+    this.camera.setFrameReference(gameState.client);
+    this.gameMap.drawLayer(this.camera, Layer.background);
 
-  updateProjectiles(projectiles: IProjectile[]): void {
-    this.projectiles = new Map<string, CProjectile>();
-    for (const projectile of projectiles) {
-      this.projectiles.set(projectile.id, new CProjectile(projectile));
-    }
-  }
-
-  addOrUpdatePlayer(player: CPlayer): void {
-    this.players.set(player.id, player);
-  }
-
-  removePlayer(id: string): void {
-    this.players.delete(id);
-  }
-
-  draw(): void {
-    this.canvas.context.clearRect(0, 0, this.canvas.canvas.width, this.canvas.canvas.height);
-    this.players.forEach((cPlayer: CPlayer): void => {
-      cPlayer.draw(this.canvas);
+    gameState.players.forEach((iPlayer: IPlayer): void => {
+      const player = new CPlayer(iPlayer, this.camera);
+      player.draw(this.gameMap);
     });
 
-    this.projectiles.forEach((projectile: CProjectile): void => {
-      projectile.draw(this.canvas);
+    gameState.projectiles.forEach((iProjectile: IProjectile): void => {
+      const projectile = new CProjectile(iProjectile, this.camera);
+      projectile.draw(this.gameMap);
     });
+
+    this.gameMap.drawLayer(this.camera, Layer.foreground);
   }
 }
 

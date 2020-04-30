@@ -2,6 +2,7 @@ import { Point, Velocity, Vector, Circle } from './basicTypes';
 import { v4 as uuidv4 } from 'uuid';
 import { IProjectile } from '../../models/interfaces';
 import constants from '../constants';
+import GameMap from './gameMap';
 
 class Projectile implements IProjectile {
   position: Point;
@@ -22,13 +23,13 @@ class Projectile implements IProjectile {
     this.velocity = velocity;
   }
 
-  shouldDelete(): boolean {
-    return !this.validPosition() || this.rangeExpired();
+  shouldDelete(map: GameMap): boolean {
+    return !this.validPosition(map) || this.rangeExpired();
   }
 
-  validPosition(): boolean {
-    return this.position.x > 0 && this.position.x <= constants.DEFAULT_MAP_SIZE
-      && this.position.y > 0 && this.position.y <= constants.DEFAULT_MAP_SIZE;
+  validPosition(map: GameMap): boolean {
+    return this.position.x > 0 && this.position.x <= map.width
+      && this.position.y > 0 && this.position.y <= map.height;
   }
 
   rangeExpired(): boolean {

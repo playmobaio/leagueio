@@ -1,14 +1,17 @@
-import { Circle } from '../server/models/basicTypes';
-
 export interface IPlayer {
   id: string;
   health: IHealth;
-  model: Circle;
+  model: ICircle;
 }
 
 export interface IPoint {
   x: number;
   y: number;
+}
+
+export interface ICircle {
+  center: IPoint;
+  radius: number;
 }
 
 export interface IUserInput {
@@ -25,13 +28,9 @@ export interface IProjectile {
 }
 
 export interface IGameState {
+  client: IPlayer;
   players: IPlayer[];
   projectiles: IProjectile[];
-}
-
-export interface IUserGame {
-  user: IPlayer;
-  gameState: IGameState;
 }
 
 export enum PlayerMovementIO {
@@ -45,4 +44,14 @@ export enum PlayerMovementIO {
 export interface IHealth {
   maximum: number;
   current: number;
+}
+
+export interface ITile {
+  tile: number,
+  position: IPoint
+}
+
+export enum Layer {
+  background = 0,
+  foreground = 1
 }

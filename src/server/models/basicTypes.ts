@@ -1,4 +1,4 @@
-import { IPoint, PlayerMovementIO } from '../../models/interfaces';
+import { IPoint, PlayerMovementIO, ICircle } from '../../models/interfaces';
 import constants from '../constants';
 
 export class Vector {
@@ -79,7 +79,7 @@ export class Point implements IPoint {
   }
 }
 
-export class Circle {
+export class Circle implements ICircle {
   center: Point;
   radius: number;
 
@@ -94,6 +94,13 @@ export class Circle {
     const distanceFromCenter = this.center.distanceFrom(otherCircleCenter);
 
     return distanceFromCenter < this.radius + otherCircleRadius;
+  }
+
+  toInterface(): ICircle {
+    return {
+      center: this.center,
+      radius: this.radius
+    }
   }
 }
 

@@ -41,6 +41,10 @@ class Game {
     });
 
     this.gameMap.drawLayer(this.camera, Layer.foreground);
+
+    // display health text
+    this.gameMap.context.font = "30px Arial";
+    this.gameMap.context.fillText(`Health: ${gameState.client.health.current}`,10,30);
   }
 }
 

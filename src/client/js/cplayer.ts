@@ -41,10 +41,6 @@ class CPlayer implements IPlayer {
       this.model.center.x + XStart + healthBarSize,
       this.model.center.y + YOffset);
     gameMap.context.stroke();
-
-    // display health text
-    gameMap.context.font = "30px Arial";
-    gameMap.context.fillText(`Health: ${this.health.current}`,10,30);
   }
 }
 

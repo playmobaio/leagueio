@@ -1,17 +1,26 @@
 import Player from './player';
 import GameMap from './gameMap';
-import { PlayerMovementIO, IGameState, IPlayer, IProjectile } from '../../models/interfaces';
+import { PlayerMovementIO,
+  IGameState,
+  IPlayer,
+  IProjectile,
+  IPoint } from '../../models/interfaces';
+import Projectile from './projectile';
+import constants from '../constants';
+import { Point, Velocity, Vector } from './basicTypes';
 
 // Server
 class Game {
   private static instance: Game;
   players: Map<string, Player>;
+  projectiles: Map<string, Projectile>;
   gameMap: GameMap;
   currentFrame: number;
   gameStates: Map<string, IGameState>;
 
   private constructor() {
     this.players = new Map<string, Player>();
+    this.projectiles = new Map<string, Projectile>();
     this.gameMap = new GameMap();
     this.currentFrame = 0;
   }
@@ -28,6 +37,23 @@ class Game {
     this.players.set(player.id, player);
   }
 
+  addProjectile(pId: string, dest: IPoint): Projectile {
+    const player: Player = this.players.get(pId);
+    if (player == null || dest == undefined || player.model.center.equals(dest)) {
+      return null;
+    }
+    const offsetVector = Vector.createFromPoints(player.model.center, dest);
+    offsetVector.setMagnitude(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET);
+    const origin: Point = player.model.center.transformWithVector(offsetVector);
+    const velocity = new Velocity(dest,
+      constants.DEFAULT_PROJECTILE_SPEED,
+      player.model.center);
+    const projectile = new Projectile(player.id, origin, velocity)
+
+    this.projectiles.set(projectile.id, projectile);
+    return projectile;
+  }
+
   removePlayer(id: string): void {
     this.players.delete(id);
   }
@@ -41,13 +67,27 @@ class Game {
 
   update(): void {
     this.players.forEach((player): void => {
-      player.update()
-      for (const projectile of player.projectiles.values()) {
-        if (!projectile.shouldDelete(this.gameMap)) {
-          projectile.update();
-        } else {
-          player.projectiles.delete(projectile.id);
-        }
+      if(player.health.current <= 0) {
+        player.respawn();
+      }
+      else {
+        player.update();
+      }
+    });
+
+    this.projectiles.forEach((projectile): void => {
+      if (!projectile.shouldDelete(this.gameMap)) {
+        projectile.update();
+        // check each player to see if colldes
+        this.players.forEach((player): void => {
+          if(projectile.creatorId != player.id &&
+              player.model.collidesWithCircle(projectile.model)) {
+            this.projectiles.delete(projectile.id);
+            player.receiveDamage(constants.DEFAULT_DAMAGE_FROM_PROJECTILE);
+          }
+        });
+      } else {
+        this.projectiles.delete(projectile.id);
       }
     });
     this.currentFrame++;
@@ -59,7 +99,7 @@ class Game {
     const states = new Array<IGameState>();
     for (const player of this.players.values()) {
       iPlayers.push(player.toInterface());
-      for (const projectile of player.projectiles.values()) {
+      for (const projectile of this.projectiles.values()) {
         iProjectiles.push(projectile.toInterface());
       }
       states.push(player.getGameState(iPlayers, iProjectiles));

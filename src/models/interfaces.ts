@@ -1,12 +1,17 @@
 export interface IPlayer {
   id: string;
-  position: IPoint;
   health: IHealth;
+  model: ICircle;
 }
 
 export interface IPoint {
   x: number;
   y: number;
+}
+
+export interface ICircle {
+  center: IPoint;
+  radius: number;
 }
 
 export interface IUserInput {

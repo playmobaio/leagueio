@@ -1,4 +1,4 @@
-import { Point, Velocity, Vector } from './basicTypes';
+import { Point, Velocity, Vector, Circle } from './basicTypes';
 import { v4 as uuidv4 } from 'uuid';
 import { IProjectile } from '../../models/interfaces';
 import constants from '../constants';
@@ -10,12 +10,16 @@ class Projectile implements IProjectile {
   id: string;
   range: number;
   origin: Point;
+  model: Circle;
+  creatorId: string;
 
-  constructor(src: Point, velocity: Velocity) {
+  constructor(creatorId: string, src: Point, velocity: Velocity) {
     this.id = uuidv4();
+    this.creatorId = creatorId;
     this.range = constants.DEFAULT_PROJECTILE_RANGE;
     this.position = src;
     this.origin = src;
+    this.model = new Circle(src, constants.DEFAULT_CIRCLE_RADIUS);
     this.velocity = velocity;
   }
 
@@ -35,6 +39,7 @@ class Projectile implements IProjectile {
 
   update(): void {
     this.position = this.position.transform(this.velocity);
+    this.model.center = this.position;
   }
 
   toInterface(): IProjectile {

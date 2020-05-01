@@ -1,28 +1,5 @@
-import { IPoint, PlayerMovementIO } from '../../models/interfaces';
+import { IPoint, PlayerMovementIO, ICircle } from '../../models/interfaces';
 import constants from '../constants';
-
-export class Point implements IPoint {
-  x: number;
-  y: number;
-
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
-
-  transform(velocity: Velocity): Point {
-    const vector: Vector = velocity.getVector();
-    return this.transformWithVector(vector);
-  }
-
-  transformWithVector(vector: Vector): Point {
-    return new Point(this.x + vector.x, this.y + vector.y);
-  }
-
-  equals(point: IPoint): boolean {
-    return this.x == point.x && this.y == point.y
-  }
-}
 
 export class Vector {
   x: number
@@ -72,6 +49,58 @@ export class Vector {
 
   static createNullVector(): Vector {
     return new Vector(0, 0);
+  }
+}
+
+export class Point implements IPoint {
+  x: number;
+  y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+
+  transform(velocity: Velocity): Point {
+    const vector: Vector = velocity.getVector();
+    return this.transformWithVector(vector);
+  }
+
+  transformWithVector(vector: Vector): Point {
+    return new Point(this.x + vector.x, this.y + vector.y);
+  }
+
+  equals(point: IPoint): boolean {
+    return this.x == point.x && this.y == point.y
+  }
+
+  distanceFrom(otherPoint: Point) : number {
+    return Vector.createFromPoints(this,otherPoint).getMagnitude();
+  }
+}
+
+export class Circle implements ICircle {
+  center: Point;
+  radius: number;
+
+  constructor(point: Point, radius: number) {
+    this.center = point;
+    this.radius = radius;
+  }
+
+  collidesWithCircle(otherCircle: Circle) : boolean {
+    const otherCircleCenter = otherCircle.center;
+    const otherCircleRadius = otherCircle.radius;
+    const distanceFromCenter = this.center.distanceFrom(otherCircleCenter);
+
+    return distanceFromCenter < this.radius + otherCircleRadius;
+  }
+
+  toInterface(): ICircle {
+    return {
+      center: this.center,
+      radius: this.radius
+    }
   }
 }
 

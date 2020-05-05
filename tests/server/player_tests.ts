@@ -19,7 +19,7 @@ describe('Player', function() {
     socket.setup((socket) => socket.id).returns(() => id);
     game = Game.getInstance();
     // new game not initiated, singleton. So just deleting projectiles
-    game.projectiles.clear();
+    game.reset();
     point = new Point(0, 1);
     player = new Player(id, new Point(0, 0), socket.object);
     player.lastAutoAttackFrame = -1;

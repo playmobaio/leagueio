@@ -33,6 +33,13 @@ class Game {
     return Game.instance;
   }
 
+  reset(): void {
+    this.player.clear();
+    this.projectiles.clear();
+    this.gameMap = new GameMap();
+    this.currentFrame = 0;
+  }
+
   addPlayer(player: Player): void {
     this.players.set(player.id, player);
   }

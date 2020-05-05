@@ -39,14 +39,6 @@ describe('Player', function() {
     });
   });
 
-  describe("#addProjectile", function() {
-    it("Smoke", function() {
-      const projectile: Projectile = game.addProjectile(player.id, point);
-      assert.equal(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET, projectile.model.center.y);
-      assert.equal(constants.DEFAULT_PROJECTILE_SPEED, projectile.velocity.getSpeed());
-    });
-  });
-
   describe("#registerAutoAttack", function() {
     it("will autoattack immediately on spawn", function() {
       player.registerAutoAttack(point);

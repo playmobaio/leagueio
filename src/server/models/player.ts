@@ -32,6 +32,7 @@ class Player implements IPlayer {
   }
 
   registerAutoAttack(dest: IPoint): void {
+    console.log("registering auto attack");
     if (!this.canAutoAttack()) {
       return;
     }

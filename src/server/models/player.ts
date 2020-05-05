@@ -29,7 +29,12 @@ class Player implements IPlayer {
     this.health = {
       current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
       maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
-    this.game.addPlayer(this);
+  }
+
+  static create(id: string, point: Point, socket: SocketIO.Socket): Player {
+    const player = new Player(id, point, socket);
+    player.game.addPlayer(player);
+    return player;
   }
 
   registerAutoAttack(dest: IPoint): void {

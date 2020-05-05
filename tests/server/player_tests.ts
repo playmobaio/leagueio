@@ -21,7 +21,7 @@ describe('Player', function() {
     // new game not initiated, singleton. So just deleting projectiles
     game.reset();
     point = new Point(0, 1);
-    player = new Player(id, new Point(0, 0), socket.object);
+    player = Player.create(id, new Point(0, 0), socket.object);
   });
 
   describe('#update', function() {

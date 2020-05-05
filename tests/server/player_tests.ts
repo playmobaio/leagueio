@@ -22,7 +22,6 @@ describe('Player', function() {
     game.reset();
     point = new Point(0, 1);
     player = new Player(id, new Point(0, 0), socket.object);
-    player.lastAutoAttackFrame = -1;
   });
 
   describe('#update', function() {

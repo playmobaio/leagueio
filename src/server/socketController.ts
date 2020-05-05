@@ -7,7 +7,6 @@ export function clientJoinGame(socket:SocketIO.Socket): void {
   const game: Game = Game.getInstance();
   const point: Point = game.gameMap.randomValidMapPosition();
   const player: Player = new Player(socket.id, point, socket);
-  Game.getInstance().addPlayer(player);
 }
 
 export function clientUserMove(socket:SocketIO.Socket, userInput: IUserInput): void {

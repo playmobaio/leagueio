@@ -34,7 +34,7 @@ class Game {
   }
 
   reset(): void {
-    this.player.clear();
+    this.players.clear();
     this.projectiles.clear();
     this.gameMap = new GameMap();
     this.currentFrame = 0;
@@ -44,8 +44,8 @@ class Game {
     this.players.set(player.id, player);
   }
 
-  addProjectile(pId: string, dest: IPoint): Projectile {
-    const player: Player = this.players.get(pId);
+  addProjectile(playerId: string, dest: IPoint): Projectile {
+    const player: Player = this.players.get(playerId);
     if (player == null || dest == undefined || player.model.center.equals(dest)) {
       return null;
     }

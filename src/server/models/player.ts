@@ -29,6 +29,7 @@ class Player implements IPlayer {
     this.health = {
       current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
       maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
+    this.game.addPlayer(this);
   }
 
   registerAutoAttack(dest: IPoint): void {

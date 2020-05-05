@@ -6,7 +6,7 @@ import { IUserInput, IUserMouseClick } from '../models/interfaces';
 export function clientJoinGame(socket:SocketIO.Socket): void {
   const game: Game = Game.getInstance();
   const point: Point = game.gameMap.randomValidMapPosition();
-  const player: Player = new Player(socket.id, point, socket);
+  new Player(socket.id, point, socket);
 }
 
 export function clientUserMove(socket:SocketIO.Socket, userInput: IUserInput): void {

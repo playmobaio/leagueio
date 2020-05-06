@@ -31,6 +31,12 @@ class Player implements IPlayer {
       maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
   }
 
+  static create(id: string, point: Point, socket: SocketIO.Socket): Player {
+    const player = new Player(id, point, socket);
+    player.game.addPlayer(player);
+    return player;
+  }
+
   registerAutoAttack(dest: IPoint): void {
     if (!this.canAutoAttack()) {
       return;

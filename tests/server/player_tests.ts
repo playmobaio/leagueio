@@ -19,10 +19,9 @@ describe('Player', function() {
     socket.setup((socket) => socket.id).returns(() => id);
     game = Game.getInstance();
     // new game not initiated, singleton. So just deleting projectiles
-    game.projectiles.clear();
+    game.reset();
     point = new Point(0, 1);
-    player = new Player(id, new Point(0, 0), socket.object);
-    player.lastAutoAttackFrame = -1;
+    player = Player.create(id, new Point(0, 0), socket.object);
   });
 
   describe('#update', function() {
@@ -39,24 +38,13 @@ describe('Player', function() {
     });
   });
 
-  describe("#addProjectile", function() {
-    it("Smoke", function() {
-      game.projectiles.clear();
-      const projectile: Projectile = game.addProjectile(player.id, point);
-      assert.equal(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET, projectile.model.center.y);
-      assert.equal(constants.DEFAULT_PROJECTILE_SPEED, projectile.velocity.getSpeed());
-    });
-  });
-
   describe("#registerAutoAttack", function() {
     it("will autoattack immediately on spawn", function() {
-      game.projectiles.clear();
       player.registerAutoAttack(point);
       assert.equal(game.projectiles.size, 1);
     });
 
     it("cannot auto attack too soon", function() {
-      game.projectiles.clear();
       player.lastAutoAttackFrame = 0;
       player.attackSpeed = 1;
       game.currentFrame = 59; // Should be able to attack after 1 second, or 60 frams at 60 fps
@@ -66,7 +54,6 @@ describe('Player', function() {
     });
 
     it("can auto attack after set number of frames", function() {
-      game.projectiles.clear();
       player.lastAutoAttackFrame = 0;
       player.attackSpeed = 1;
       game.currentFrame = 60; // Should be able to attack after 1 second, or 60 frams at 60 fps

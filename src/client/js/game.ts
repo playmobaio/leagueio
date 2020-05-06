@@ -9,10 +9,12 @@ class Game {
   private static instance: Game;
   gameMap: CGameMap;
   camera: Camera;
+  currentFrame: number;
 
   constructor(gameMap: CGameMap, camera: Camera) {
     this.gameMap = gameMap;
     this.camera = camera;
+    this.currentFrame = 0;
   }
 
   static async getInstance(): Promise<Game> {
@@ -26,6 +28,7 @@ class Game {
   }
 
   draw(gameState: IGameState): void {
+    this.currentFrame = gameState.currentFrame;
     this.gameMap.resetFrame();
     this.camera.setFrameReference(gameState.client);
     this.gameMap.drawLayer(this.camera, Layer.Background);

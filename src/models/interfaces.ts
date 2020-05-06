@@ -31,6 +31,7 @@ export interface IGameState {
   client: IPlayer;
   players: IPlayer[];
   projectiles: IProjectile[];
+  currentFrame: number;
 }
 
 export enum PlayerMovementIO {

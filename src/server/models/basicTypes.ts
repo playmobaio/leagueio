@@ -74,8 +74,8 @@ export class Point implements IPoint {
     return this.x == point.x && this.y == point.y
   }
 
-  distanceFrom(otherPoint: Point) : number {
-    return Vector.createFromPoints(this,otherPoint).getMagnitude();
+  distanceFrom(otherPoint: Point): number {
+    return Vector.createFromPoints(this, otherPoint).getMagnitude();
   }
 }
 
@@ -88,7 +88,7 @@ export class Circle implements ICircle {
     this.radius = radius;
   }
 
-  collidesWithCircle(otherCircle: Circle) : boolean {
+  collidesWithCircle(otherCircle: Circle): boolean {
     const otherCircleCenter = otherCircle.center;
     const otherCircleRadius = otherCircle.radius;
     const distanceFromCenter = this.center.distanceFrom(otherCircleCenter);

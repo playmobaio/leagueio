@@ -46,6 +46,11 @@
       { "allow": ["arrowFunctions"] }
     ],
 
+    "@typescript-eslint/type-annotation-spacing": ["error"],
+
+    "comma-spacing": "off",
+    "@typescript-eslint/comma-spacing": ["error"],
+
     "no-extra-parens": "off",
     "@typescript-eslint/no-extra-parens": ["error"],
 
@@ -53,7 +58,11 @@
     "@typescript-eslint/no-extra-semi": ["error"],
 
     "indent": "off",
-    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/indent": ["error", 2, {
+      "FunctionExpression": {
+        "parameters": 2
+      }
+    }],
 
     "@typescript-eslint/interface-name-prefix": [
       "error",

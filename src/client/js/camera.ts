@@ -2,8 +2,8 @@ import { IPoint, IPlayer } from '../../models/interfaces';
 import CGameMap from './cgameMap';
 
 export default class Camera {
-  absolutePosition : IPoint;
-  width : number;
+  absolutePosition: IPoint;
+  width: number;
   height: number;
   maxX: number;
   maxY: number;

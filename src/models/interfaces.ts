@@ -46,12 +46,17 @@ export interface IHealth {
   current: number;
 }
 
-export interface ITile {
-  tile: number,
-  position: IPoint
-}
-
 export enum Layer {
   background = 0,
   foreground = 1
+}
+
+export enum Tile {
+  empty = 0,
+  grass = 1,
+  building = 2,
+  trunk = 3,
+  top = 4,
+  bush = 5,
+  blocker = 6
 }

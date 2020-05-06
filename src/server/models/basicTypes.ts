@@ -120,13 +120,13 @@ export class Velocity {
   static getPlayerVelocity(io: PlayerMovementIO): Velocity {
     let x = 0
     let y = 0;
-    if (io & PlayerMovementIO.up)
+    if (io & PlayerMovementIO.Up)
       y-= 1;
-    if (io & PlayerMovementIO.left)
+    if (io & PlayerMovementIO.Left)
       x-= 1;
-    if (io & PlayerMovementIO.down)
+    if (io & PlayerMovementIO.Down)
       y+= 1;
-    if (io & PlayerMovementIO.right)
+    if (io & PlayerMovementIO.Right)
       x+= 1;
     return new Velocity(new Point(x, y), constants.DEFAULT_PLAYER_VELOCITY);
   }

@@ -9,7 +9,7 @@ class UserInputController {
 
   private constructor(socket: SocketIO.Socket) {
     this.socket = socket
-    this.userIO = PlayerMovementIO.none;
+    this.userIO = PlayerMovementIO.None;
     this.mouseClick = false;
   }
 

@@ -34,11 +34,11 @@ export interface IGameState {
 }
 
 export enum PlayerMovementIO {
-  none = 0,
-  up = 1,
-  left = 2,
-  down = 4,
-  right = 8,
+  None = 0,
+  Up = 1,
+  Left = 2,
+  Down = 4,
+  Right = 8,
 }
 
 export interface IHealth {
@@ -47,16 +47,15 @@ export interface IHealth {
 }
 
 export enum Layer {
-  background = 0,
-  foreground = 1
+  Background = 0,
+  Foreground = 1
 }
 
 export enum Tile {
-  empty = 0,
-  grass = 1,
-  building = 2,
-  trunk = 3,
-  top = 4,
-  bush = 5,
-  blocker = 6
+  Empty = 0,
+  Grass = 1,
+  Building = 2,
+  TreeTrunk = 3,
+  TreeTop = 4,
+  Bush = 5
 }

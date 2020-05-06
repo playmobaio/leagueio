@@ -44,10 +44,10 @@ describe('Velocity', function() {
         assert.equal(expectedY, unitVector.y);
       }
 
-      validPlayerMovementIO(PlayerMovementIO.left, -1, 0);
-      validPlayerMovementIO(PlayerMovementIO.right, 1, 0);
-      validPlayerMovementIO(PlayerMovementIO.up, 0, -1);
-      validPlayerMovementIO(PlayerMovementIO.down, 0, 1);
+      validPlayerMovementIO(PlayerMovementIO.Left, -1, 0);
+      validPlayerMovementIO(PlayerMovementIO.Right, 1, 0);
+      validPlayerMovementIO(PlayerMovementIO.Up, 0, -1);
+      validPlayerMovementIO(PlayerMovementIO.Down, 0, 1);
     })
   });
 });

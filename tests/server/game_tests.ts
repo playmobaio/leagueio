@@ -27,7 +27,7 @@ describe('Game', function() {
   describe('#UpdatePlayerVelocity', function() {
     it("Game sucessfully updates player velocity", function() {
       game.addPlayer(player);
-      game.updatePlayerVelocity(id, PlayerMovementIO.up);
+      game.updatePlayerVelocity(id, PlayerMovementIO.Up);
       assert.equal(constants.DEFAULT_PLAYER_VELOCITY, player.velocity.getSpeed());
     });
   });

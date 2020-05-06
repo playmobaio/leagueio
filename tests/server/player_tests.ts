@@ -4,7 +4,6 @@ import Player from '../../src/server/models/player';
 import { PlayerMovementIO } from '../../src/models/interfaces';
 import { Point } from '../../src/server/models/basicTypes';
 import constants from '../../src/server/constants';
-import Projectile from '../../src/server/models/projectile';
 import Game from '../../src/server/models/game';
 
 describe('Player', function() {

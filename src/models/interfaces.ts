@@ -34,11 +34,11 @@ export interface IGameState {
 }
 
 export enum PlayerMovementIO {
-  none = 0,
-  up = 1,
-  left = 2,
-  down = 4,
-  right = 8,
+  None = 0,
+  Up = 1,
+  Left = 2,
+  Down = 4,
+  Right = 8,
 }
 
 export interface IHealth {
@@ -46,12 +46,16 @@ export interface IHealth {
   current: number;
 }
 
-export interface ITile {
-  tile: number,
-  position: IPoint
+export enum Layer {
+  Background = 0,
+  Foreground = 1
 }
 
-export enum Layer {
-  background = 0,
-  foreground = 1
+export enum Tile {
+  Empty = 0,
+  Grass = 1,
+  Building = 2,
+  TreeTrunk = 3,
+  TreeTop = 4,
+  Bush = 5
 }

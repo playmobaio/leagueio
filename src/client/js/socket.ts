@@ -23,18 +23,18 @@ async function registerSocket(socket: SocketIO.Socket): Promise<void> {
     switch(event.code) {
     case "KeyS":
     case "ArrowDown":
-      return PlayerMovementIO.down;
+      return PlayerMovementIO.Down;
     case "KeyW":
     case "ArrowUp":
-      return PlayerMovementIO.up;
+      return PlayerMovementIO.Up;
     case "KeyA":
     case "ArrowLeft":
-      return PlayerMovementIO.left;
+      return PlayerMovementIO.Left;
     case "KeyD":
     case "ArrowRight":
-      return PlayerMovementIO.right;
+      return PlayerMovementIO.Right;
     }
-    return PlayerMovementIO.none;
+    return PlayerMovementIO.None;
   }
 
   window.onkeydown = (event): void => {

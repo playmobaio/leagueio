@@ -31,7 +31,7 @@ describe('Player', function() {
     });
 
     it("Verify velocity updates correctly", function() {
-      player.updateVelocity(PlayerMovementIO.up);
+      player.updateVelocity(PlayerMovementIO.Up);
       assert.equal(-1, player.velocity.getUnitVector().y);
       assert.equal(constants.DEFAULT_PLAYER_VELOCITY, player.velocity.getSpeed());
     });

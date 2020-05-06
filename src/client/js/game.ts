@@ -28,7 +28,7 @@ class Game {
   draw(gameState: IGameState): void {
     this.gameMap.resetFrame();
     this.camera.setFrameReference(gameState.client);
-    this.gameMap.drawLayer(this.camera, Layer.background);
+    this.gameMap.drawLayer(this.camera, Layer.Background);
 
     gameState.players.forEach((iPlayer: IPlayer): void => {
       const player = new CPlayer(iPlayer, this.camera);
@@ -40,7 +40,7 @@ class Game {
       projectile.draw(this.gameMap);
     });
 
-    this.gameMap.drawLayer(this.camera, Layer.foreground);
+    this.gameMap.drawLayer(this.camera, Layer.Foreground);
 
     // display health text
     this.gameMap.context.font = "30px Arial";

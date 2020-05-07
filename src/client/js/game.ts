@@ -1,8 +1,7 @@
-import CPlayer from './cplayer';
 import { IPlayer, IGameState, IProjectile, Layer } from "../../models/interfaces";
-import CProjectile from './cprojectile';
 import CGameMap from './cgameMap';
 import Camera from './camera';
+import { drawPlayer, drawProjectile, drawClientHealth } from './draw';
 
 // Client
 class Game {
@@ -38,20 +37,15 @@ class Game {
     this.gameMap.drawLayer(this.camera, Layer.Background);
 
     gameState.players.forEach((iPlayer: IPlayer): void => {
-      const player = new CPlayer(iPlayer, this.camera);
-      player.draw(this.gameMap);
+      drawPlayer(this.gameMap, iPlayer, this.camera);
     });
 
     gameState.projectiles.forEach((iProjectile: IProjectile): void => {
-      const projectile = new CProjectile(iProjectile, this.camera);
-      projectile.draw(this.gameMap);
+      drawProjectile(this.gameMap, iProjectile, this.camera);
     });
 
     this.gameMap.drawLayer(this.camera, Layer.Foreground);
-
-    // display health text
-    this.gameMap.context.font = "30px Arial";
-    this.gameMap.context.fillText(`Health: ${gameState.client.health.current}`, 10, 30);
+    drawClientHealth(this.gameMap, gameState.client);
   }
 }
 

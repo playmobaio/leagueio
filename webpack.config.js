@@ -2,8 +2,7 @@ const path = require('path');
 
 module.exports = {
   entry: { 
-    webpack_app: './src/client/js/app.ts',
-    webpack_player: './src/client/js/cplayer.ts'
+    webpack_app: './src/client/js/app.ts'
   },
   devtool: 'inline-source-map',
   module: {

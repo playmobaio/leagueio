@@ -1,7 +1,9 @@
 import { IPlayer, IGameState, IProjectile, Layer } from "../../models/interfaces";
 import CGameMap from './cgameMap';
 import Camera from './camera';
-import { drawPlayer, drawProjectile, drawClientHealth } from './draw';
+import { drawPlayer } from './draw/player';
+import { drawProjectile } from './draw/projectile';
+import { drawClientHealth } from './draw/health';
 
 // Client
 class Game {

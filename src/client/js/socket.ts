@@ -9,9 +9,7 @@ async function registerSocket(socket: SocketIO.Socket): Promise<void> {
   document.getElementById("startpanel").style.visibility = "hidden";
 
   socket.on("S:UPDATE_GAME_STATE", (userGame: IGameState) => {
-    if(_game.currentFrame < userGame.currentFrame) {
-      _game.draw(userGame);
-    }
+    _game.draw(userGame);
   });
 
   addEventListener("mousedown", function(event) {

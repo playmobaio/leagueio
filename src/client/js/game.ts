@@ -14,7 +14,7 @@ class Game {
   constructor(gameMap: CGameMap, camera: Camera) {
     this.gameMap = gameMap;
     this.camera = camera;
-    this.currentFrame = 0;
+    this.currentFrame = -1;
   }
 
   static async getInstance(): Promise<Game> {
@@ -28,26 +28,29 @@ class Game {
   }
 
   draw(gameState: IGameState): void {
-    this.currentFrame = gameState.currentFrame;
-    this.gameMap.resetFrame();
-    this.camera.setFrameReference(gameState.client);
-    this.gameMap.drawLayer(this.camera, Layer.Background);
+    if(this.currentFrame < gameState.currentFrame) {
 
-    gameState.players.forEach((iPlayer: IPlayer): void => {
-      const player = new CPlayer(iPlayer, this.camera);
-      player.draw(this.gameMap);
-    });
+      this.currentFrame = gameState.currentFrame;
+      this.gameMap.resetFrame();
+      this.camera.setFrameReference(gameState.client);
+      this.gameMap.drawLayer(this.camera, Layer.Background);
 
-    gameState.projectiles.forEach((iProjectile: IProjectile): void => {
-      const projectile = new CProjectile(iProjectile, this.camera);
-      projectile.draw(this.gameMap);
-    });
+      gameState.players.forEach((iPlayer: IPlayer): void => {
+        const player = new CPlayer(iPlayer, this.camera);
+        player.draw(this.gameMap);
+      });
 
-    this.gameMap.drawLayer(this.camera, Layer.Foreground);
+      gameState.projectiles.forEach((iProjectile: IProjectile): void => {
+        const projectile = new CProjectile(iProjectile, this.camera);
+        projectile.draw(this.gameMap);
+      });
 
-    // display health text
-    this.gameMap.context.font = "30px Arial";
-    this.gameMap.context.fillText(`Health: ${gameState.client.health.current}`, 10, 30);
+      this.gameMap.drawLayer(this.camera, Layer.Foreground);
+
+      // display health text
+      this.gameMap.context.font = "30px Arial";
+      this.gameMap.context.fillText(`Health: ${gameState.client.health.current}`, 10, 30);
+    }
   }
 }
 

@@ -11,8 +11,8 @@ export default class Camera {
   constructor(map: CGameMap, width: number, height: number) {
     this.width = width;
     this.height = height;
-    this.maxX = map.layers.cols * map.layers.tileSize - width;
-    this.maxY = map.layers.rows * map.layers.tileSize - height;
+    this.maxX = map.layers.width - width;
+    this.maxY = map.layers.height - height;
     this.absolutePosition = { x: 0, y: 0 };
   }
 

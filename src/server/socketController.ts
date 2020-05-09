@@ -1,12 +1,9 @@
 import Player from "./models/player";
 import Game from "./models/game";
-import { Point } from './models/basicTypes';
 import { IUserInput, IUserMouseClick } from '../models/interfaces';
 
 export function clientJoinGame(socket: SocketIO.Socket): void {
-  const game: Game = Game.getInstance();
-  const point: Point = game.gameMap.randomValidMapPosition();
-  Player.create(socket.id, point, socket);
+  Player.create(socket.id, socket);
 }
 
 export function clientUserMove(socket: SocketIO.Socket, userInput: IUserInput): void {

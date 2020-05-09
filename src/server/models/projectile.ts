@@ -8,7 +8,6 @@ import Player from './player';
 import { EmitEvent } from '../tools/emitEvent'
 
 class Projectile implements IProjectile {
-  position: Point;
   velocity: Velocity;
   id: string;
   range: number;
@@ -20,9 +19,8 @@ class Projectile implements IProjectile {
     this.id = uuidv4();
     this.creatorId = creatorId;
     this.range = constants.DEFAULT_PROJECTILE_RANGE;
-    this.position = src;
     this.origin = src;
-    this.model = new Circle(src, constants.DEFAULT_CIRCLE_RADIUS);
+    this.model = new Circle(constants.DEFAULT_CIRCLE_RADIUS, src);
     this.velocity = velocity;
   }
 
@@ -40,22 +38,16 @@ class Projectile implements IProjectile {
   }
 
   shouldDelete(map: GameMap): boolean {
-    return !this.validPosition(map) || this.rangeExpired();
-  }
-
-  validPosition(map: GameMap): boolean {
-    return this.position.x > 0 && this.position.x <= map.width
-      && this.position.y > 0 && this.position.y <= map.height;
+    return this.model.isInvalidPosition(map) || this.rangeExpired();
   }
 
   rangeExpired(): boolean {
-    const vector = Vector.createFromPoints(this.origin, this.position);
+    const vector = Vector.createFromPoints(this.origin, this.model.center);
     return vector.getMagnitude() > this.range;
   }
 
   update(): void {
-    this.position = this.position.transform(this.velocity);
-    this.model.center = this.position;
+    this.model.center = this.model.center.transform(this.velocity);
   }
 
   delete(): void {
@@ -63,7 +55,7 @@ class Projectile implements IProjectile {
   }
 
   toInterface(): IProjectile {
-    return { id: this.id, position: this.position };
+    return { id: this.id, model: this.model };
   }
 }
 

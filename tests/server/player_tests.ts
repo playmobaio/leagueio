@@ -2,9 +2,10 @@ import * as assert from 'assert';
 import * as TypeMoq from "typemoq";
 import Player from '../../src/server/models/player';
 import { PlayerMovementIO } from '../../src/models/interfaces';
-import { Point } from '../../src/server/models/basicTypes';
+import { Point, Circle } from '../../src/server/models/basicTypes';
 import constants from '../../src/server/constants';
 import Game from '../../src/server/models/game';
+import { Times } from 'typemoq';
 
 describe('Player', function() {
   let player: Player;
@@ -20,14 +21,21 @@ describe('Player', function() {
     // new game not initiated, singleton. So just deleting projectiles
     game.reset();
     point = new Point(0, 1);
-    player = Player.create(id, new Point(0, 0), socket.object);
+    player = Player.create(id, socket.object);
   });
 
   describe('#update', function() {
     it("Verify player updates position", function() {
-      player.updatePosition(new Point(1, 1));
-      assert.equal(1, player.model.center.x);
-      assert.equal(1, player.model.center.y);
+      const position = new Point(1, 1);
+      const circle = TypeMoq.Mock.ofType<Circle>();
+      circle.setup(x => x.isInvalidPosition(
+        TypeMoq.It.isAny(), TypeMoq.It.isAny(), TypeMoq.It.isAny())
+      ).returns(() => false);
+
+      player.model = circle.object;
+      player.updatePosition(position);
+
+      circle.verify(x => x.center = TypeMoq.It.isValue(position), Times.once());
     });
 
     it("Verify velocity updates correctly", function() {

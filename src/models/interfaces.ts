@@ -24,7 +24,7 @@ export interface IUserMouseClick {
 
 export interface IProjectile {
   id: string;
-  position: IPoint;
+  model: ICircle;
 }
 
 export interface IGameState {

@@ -3,11 +3,13 @@ import GameMap from './gameMap';
 import { PlayerMovementIO,
   IGameState,
   IPlayer,
-  IProjectile,
-  IPoint } from '../../models/interfaces';
+  IProjectile } from '../../models/interfaces';
 import Projectile from './projectile';
 import constants from '../constants';
-import { Point, Velocity, Vector } from './basicTypes';
+import { EmitEvent } from '../tools/emitEvent'
+import { IEmitEventMapping } from '../tools/iEmitEventMapping'
+import { StrictEventEmitter } from 'strict-event-emitter-types';
+import { EventEmitter } from 'events';
 
 // Server
 class Game {
@@ -17,12 +19,15 @@ class Game {
   gameMap: GameMap;
   currentFrame: number;
   gameStates: Map<string, IGameState>;
+  emitter: StrictEventEmitter<EventEmitter, IEmitEventMapping>;
 
   private constructor() {
     this.players = new Map<string, Player>();
     this.projectiles = new Map<string, Projectile>();
     this.gameMap = new GameMap();
     this.currentFrame = 0;
+    this.emitter = new EventEmitter;
+    this.registerEvents();
   }
 
   static getInstance(): Game {
@@ -33,32 +38,29 @@ class Game {
     return Game.instance;
   }
 
+  registerEvents(): void {
+    const addPlayer = (player: Player): void => {
+      this.players.set(player.id, player);
+    }
+
+    const addProjectile = (projectile: Projectile): void => {
+      this.projectiles.set(projectile.id, projectile);
+    }
+
+    const deleteProjectile = (projectileId: string): void => {
+      this.projectiles.delete(projectileId);
+    }
+
+    this.emitter.addListener(EmitEvent.NewPlayer, addPlayer);
+    this.emitter.addListener(EmitEvent.NewProjectile, addProjectile);
+    this.emitter.addListener(EmitEvent.DeleteProjectile, deleteProjectile);
+  }
+
   reset(): void {
     this.players.clear();
     this.projectiles.clear();
     this.gameMap = new GameMap();
     this.currentFrame = 0;
-  }
-
-  addPlayer(player: Player): void {
-    this.players.set(player.id, player);
-  }
-
-  addProjectile(playerId: string, dest: IPoint): Projectile {
-    const player: Player = this.players.get(playerId);
-    if (player == null || dest == undefined || player.model.center.equals(dest)) {
-      return null;
-    }
-    const offsetVector = Vector.createFromPoints(player.model.center, dest);
-    offsetVector.setMagnitude(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET);
-    const origin: Point = player.model.center.transformWithVector(offsetVector);
-    const velocity = new Velocity(dest,
-      constants.DEFAULT_PROJECTILE_SPEED,
-      player.model.center);
-    const projectile = new Projectile(player.id, origin, velocity)
-
-    this.projectiles.set(projectile.id, projectile);
-    return projectile;
   }
 
   removePlayer(id: string): void {
@@ -83,19 +85,17 @@ class Game {
     });
 
     this.projectiles.forEach((projectile): void => {
-      if (!projectile.shouldDelete(this.gameMap)) {
-        projectile.update();
-        // check each player to see if colldes
-        this.players.forEach((player): void => {
-          if(projectile.creatorId != player.id &&
-              player.model.collidesWithCircle(projectile.model)) {
-            this.projectiles.delete(projectile.id);
-            player.receiveDamage(constants.DEFAULT_DAMAGE_FROM_PROJECTILE);
-          }
-        });
-      } else {
-        this.projectiles.delete(projectile.id);
-      }
+      projectile.update(this.gameMap);
+    });
+
+    this.projectiles.forEach((projectile): void => {
+      this.players.forEach((player): void => {
+        if(projectile.creatorId != player.id &&
+            player.model.collidesWithCircle(projectile.model)) {
+          this.projectiles.delete(projectile.id);
+          player.receiveDamage(constants.DEFAULT_DAMAGE_FROM_PROJECTILE);
+        }
+      });
     });
     this.currentFrame++;
   }

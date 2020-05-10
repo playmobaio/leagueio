@@ -4,9 +4,11 @@ import { IPlayer,
   IHealth,
   IGameState,
   IProjectile } from '../../models/interfaces';
-import { Point, Velocity, Circle } from './basicTypes';
+import { Point, Velocity, Circle, Vector } from './basicTypes';
 import Game from "./game";
+import Projectile from "./projectile";
 import constants from '../constants';
+import { EmitEvent } from '../tools/emitEvent'
 
 class Player implements IPlayer {
   id: string;
@@ -18,7 +20,7 @@ class Player implements IPlayer {
   health: IHealth;
   model: Circle;
 
-  constructor(id: string, point: Point, socket: SocketIO.Socket) {
+  private constructor(id: string, point: Point, socket: SocketIO.Socket) {
     this.id = id;
     this.model = new Circle(point, constants.DEFAULT_CIRCLE_RADIUS);
     this.velocity = new Velocity(this.model.center, 0);
@@ -33,16 +35,24 @@ class Player implements IPlayer {
 
   static create(id: string, point: Point, socket: SocketIO.Socket): Player {
     const player = new Player(id, point, socket);
-    player.game.addPlayer(player);
+    player.game.emitter.emit(EmitEvent.NewPlayer, player);
     return player;
   }
 
   registerAutoAttack(dest: IPoint): void {
-    if (!this.canAutoAttack()) {
+    if (dest == undefined || this.model.center.equals(dest) || !this.canAutoAttack()) {
       return;
     }
+
+    const offsetVector = Vector.createFromPoints(this.model.center, dest);
+    offsetVector.setMagnitude(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET);
+    const origin: Point = this.model.center.transformWithVector(offsetVector);
+    const velocity = new Velocity(dest,
+      constants.DEFAULT_PROJECTILE_SPEED,
+      this.model.center);
+
+    Projectile.create(this, origin, velocity);
     this.lastAutoAttackFrame = this.game.currentFrame;
-    this.game.addProjectile(this.id, dest);
   }
 
   canAutoAttack(): boolean {

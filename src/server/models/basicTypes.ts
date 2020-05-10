@@ -20,16 +20,17 @@ export class Vector {
     return Math.sqrt(this.x**2 + this.y**2);
   }
 
-  setMagnitude(newMagnitude: number): void {
+  setMagnitude(newMagnitude: number): Vector {
     if (newMagnitude == 0) {
       this.x = 0;
       this.y = 0;
-      return;
+      return this;
     }
 
     const originalMagnitude = this.getMagnitude();
     this.x *= newMagnitude/originalMagnitude;
     this.y *= newMagnitude/originalMagnitude;
+    return this;
   }
 
   getUnitVector(): Vector {

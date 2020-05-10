@@ -2,7 +2,10 @@ import { Point, Velocity, Vector, Circle } from './basicTypes';
 import { v4 as uuidv4 } from 'uuid';
 import { IProjectile } from '../../models/interfaces';
 import constants from '../constants';
+import Game from './game';
 import GameMap from './gameMap';
+import Player from './player';
+import { EmitEvent } from '../tools/emitEvent'
 
 class Projectile implements IProjectile {
   position: Point;
@@ -23,6 +26,12 @@ class Projectile implements IProjectile {
     this.velocity = velocity;
   }
 
+  static create(player: Player, origin: Point, velocity: Velocity): Projectile {
+    const projectile: Projectile = new Projectile(player.id, origin, velocity)
+    Game.getInstance().emitter.emit(EmitEvent.NewProjectile, projectile);
+    return projectile;
+  }
+
   shouldDelete(map: GameMap): boolean {
     return !this.validPosition(map) || this.rangeExpired();
   }
@@ -37,9 +46,17 @@ class Projectile implements IProjectile {
     return vector.getMagnitude() > this.range;
   }
 
-  update(): void {
+  update(map: GameMap): void {
+    if (this.shouldDelete(map)) {
+      this.delete();
+      return;
+    }
     this.position = this.position.transform(this.velocity);
     this.model.center = this.position;
+  }
+
+  delete(): void {
+    Game.getInstance().emitter.emit(EmitEvent.DeleteProjectile, this.id);
   }
 
   toInterface(): IProjectile {

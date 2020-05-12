@@ -86,7 +86,8 @@ class Player implements IPlayer {
     return {
       client: this.toInterface(),
       players: players,
-      projectiles: projectiles
+      projectiles: projectiles,
+      currentFrame: this.game.currentFrame
     };
   }
 }

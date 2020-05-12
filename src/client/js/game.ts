@@ -28,29 +28,30 @@ class Game {
   }
 
   draw(gameState: IGameState): void {
-    if(this.currentFrame < gameState.currentFrame) {
-
-      this.currentFrame = gameState.currentFrame;
-      this.gameMap.resetFrame();
-      this.camera.setFrameReference(gameState.client);
-      this.gameMap.drawLayer(this.camera, Layer.Background);
-
-      gameState.players.forEach((iPlayer: IPlayer): void => {
-        const player = new CPlayer(iPlayer, this.camera);
-        player.draw(this.gameMap);
-      });
-
-      gameState.projectiles.forEach((iProjectile: IProjectile): void => {
-        const projectile = new CProjectile(iProjectile, this.camera);
-        projectile.draw(this.gameMap);
-      });
-
-      this.gameMap.drawLayer(this.camera, Layer.Foreground);
-
-      // display health text
-      this.gameMap.context.font = "30px Arial";
-      this.gameMap.context.fillText(`Health: ${gameState.client.health.current}`, 10, 30);
+    if(this.currentFrame >= gameState.currentFrame) {
+      return;
     }
+
+    this.currentFrame = gameState.currentFrame;
+    this.gameMap.resetFrame();
+    this.camera.setFrameReference(gameState.client);
+    this.gameMap.drawLayer(this.camera, Layer.Background);
+
+    gameState.players.forEach((iPlayer: IPlayer): void => {
+      const player = new CPlayer(iPlayer, this.camera);
+      player.draw(this.gameMap);
+    });
+
+    gameState.projectiles.forEach((iProjectile: IProjectile): void => {
+      const projectile = new CProjectile(iProjectile, this.camera);
+      projectile.draw(this.gameMap);
+    });
+
+    this.gameMap.drawLayer(this.camera, Layer.Foreground);
+
+    // display health text
+    this.gameMap.context.font = "30px Arial";
+    this.gameMap.context.fillText(`Health: ${gameState.client.health.current}`, 10, 30);
   }
 }
 

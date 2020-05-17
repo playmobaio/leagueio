@@ -87,15 +87,15 @@ export class Circle implements ICircle {
   radius: number;
 
   constructor(radius: number, position?: Point) {
-    this.center = position == null ? this.getValidPosition(radius) : position;
+    this.center = position == null ? this.getRandomValidPosition(radius) : position;
     this.radius = radius;
   }
 
-  getValidPosition(radius: number): Point {
+  getRandomValidPosition(radius: number): Point {
     const game: Game = Game.getInstance();
     const position: Point = game.gameMap.randomMapPosition();
     if (this.isInvalidPosition(game.gameMap, position, radius * 2)) {
-      return this.getValidPosition(radius);
+      return this.getRandomValidPosition(radius);
     }
     return position;
   }

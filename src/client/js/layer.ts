@@ -3,7 +3,7 @@ import { Layer, Tile } from '../../models/interfaces';
 import TileMap from '../../models/tileMap';
 
 class Layers {
-  tiles: HTMLImageElement;
+  tileImage: HTMLImageElement;
   tileMap: TileMap;
   tileSize: number;
   width: number;
@@ -27,7 +27,7 @@ class Layers {
     image.src = '../assets/tiles.png';
     return new Promise<void>((resolve, reject): void => {
       image.onload = (): void => {
-        this.tiles = image;
+        this.tileImage = image;
         resolve();
       };
 
@@ -59,7 +59,7 @@ class Layers {
 
   drawTile(context: CanvasRenderingContext2D, tile: Tile, x: number, y: number): void {
     context.drawImage(
-      this.tiles, // image
+      this.tileImage, // image
       (tile - 1) * this.tileSize, // source x
       0, // source y
       this.tileSize, // source width

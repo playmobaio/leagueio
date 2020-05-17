@@ -19,9 +19,9 @@ class Player implements IPlayer {
   health: IHealth;
   model: Circle;
 
-  private constructor(id: string, point: Point, socket: SocketIO.Socket) {
+  private constructor(id: string, socket: SocketIO.Socket) {
     this.id = id;
-    this.model = new Circle(point, constants.DEFAULT_CIRCLE_RADIUS);
+    this.model = new Circle(constants.DEFAULT_CIRCLE_RADIUS);
     this.velocity = new Velocity(this.model.center, 0);
     this.socket = socket;
     this.attackSpeed = constants.DEFAULT_PLAYER_ATTACK_SPEED;
@@ -31,8 +31,8 @@ class Player implements IPlayer {
       maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
   }
 
-  static create(id: string, point: Point, socket: SocketIO.Socket): Player {
-    const player = new Player(id, point, socket);
+  static create(id: string, socket: SocketIO.Socket): Player {
+    const player = new Player(id, socket);
     Game.getInstance().emitter.emit(EmitEvent.NewPlayer, player);
     return player;
   }
@@ -55,6 +55,10 @@ class Player implements IPlayer {
   }
 
   updatePosition(point: Point): void {
+    if (!Game.getInstance().gameMap.isOnMap(point) ||
+      this.model.isInvalidPosition(Game.getInstance().gameMap, point)) {
+      return;
+    }
     this.model.center = point;
   }
 
@@ -67,11 +71,8 @@ class Player implements IPlayer {
   }
 
   respawn(): void {
-    const newPoint: Point = Game.getInstance().gameMap.randomValidMapPosition();
-    this.updatePosition(newPoint);
-    this.health = {
-      current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
-      maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
+    this.model = new Circle(this.model.radius);
+    this.health.current = constants.DEFAULT_PLAYER_MAXIMUM_HEALTH;
   }
 
   update(): void {

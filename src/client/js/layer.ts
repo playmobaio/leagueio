@@ -1,55 +1,19 @@
 import Camera from './camera';
-import constants from '../../models/constants';
 import { Layer, Tile } from '../../models/interfaces';
+import TileMap from '../../models/tileMap';
 
 class Layers {
-  rows: number;
-  cols: number;
+  tileImage: HTMLImageElement;
+  tileMap: TileMap;
   tileSize: number;
-  foreground: Array<Array<number>>;
-  background: Array<Array<number>>;
-  tileMap: HTMLImageElement;
+  width: number;
+  height: number;
 
-  constructor() {
-    this.rows = constants.DEFAULT_ROWS;
-    this.cols = constants.DEFAULT_COLUMNS;
-    this.tileSize = constants.DEFAULT_TILE_SIZE;
-    this.background = [
-      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1],
-      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1],
-      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 0, 0, 1, 1],
-      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1],
-      [3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3],
-      [1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3],
-      [1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-      [1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    ];
-    this.foreground = [
-      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0],
-      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0],
-      [4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0],
-      [4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4],
-      [0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-      [0, 0, 2, 2, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-      [0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ];
+  private constructor() {
+    this.tileMap = new TileMap();
+    this.tileSize= this.tileMap.tileSize;
+    this.width = this.tileMap.cols * this.tileMap.tileSize
+    this.height = this.tileMap.rows * this.tileMap.tileSize
   }
 
   static async createAsync(): Promise<Layers> {
@@ -63,7 +27,7 @@ class Layers {
     image.src = '../assets/tiles.png';
     return new Promise<void>((resolve, reject): void => {
       image.onload = (): void => {
-        this.tileMap = image;
+        this.tileImage = image;
         resolve();
       };
 
@@ -83,7 +47,7 @@ class Layers {
 
     for (let c = startCol; c <= endCol; c++) {
       for (let r = startRow; r <= endRow; r++) {
-        const tile: Tile = this.getTile(layer, c, r);
+        const tile: Tile = this.tileMap.getTile(layer, c, r);
         const x = Math.round((c - startCol) * this.tileSize + offsetX);
         const y = Math.round((r - startRow) * this.tileSize + offsetY);
         if (tile !== Tile.Empty) {
@@ -95,7 +59,7 @@ class Layers {
 
   drawTile(context: CanvasRenderingContext2D, tile: Tile, x: number, y: number): void {
     context.drawImage(
-      this.tileMap, // image
+      this.tileImage, // image
       (tile - 1) * this.tileSize, // source x
       0, // source y
       this.tileSize, // source width
@@ -105,21 +69,6 @@ class Layers {
       this.tileSize, // target width
       this.tileSize // target height
     );
-  }
-
-  getTile(layer: Layer, col: number, row: number): Tile {
-    if (col < this.cols &&
-      this.cols >= 0 &&
-      row < this.rows &&
-      this.rows >= 0) {
-      switch(layer) {
-      case Layer.Foreground:
-        return this.foreground[row][col];
-      case Layer.Background:
-        return this.background[row][col];
-      }
-    }
-    return Tile.Empty;
   }
 }
 

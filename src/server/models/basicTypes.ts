@@ -1,5 +1,7 @@
 import { IPoint, PlayerMovementIO, ICircle } from '../../models/interfaces';
 import constants from '../constants';
+import GameMap from './gameMap';
+import Game from './game';
 
 export class Vector {
   x: number
@@ -84,9 +86,31 @@ export class Circle implements ICircle {
   center: Point;
   radius: number;
 
-  constructor(point: Point, radius: number) {
-    this.center = point;
+  constructor(radius: number, position?: Point) {
+    this.center = position == null ? this.getRandomValidPosition(radius) : position;
     this.radius = radius;
+  }
+
+  getRandomValidPosition(radius: number): Point {
+    const game: Game = Game.getInstance();
+    const position: Point = game.gameMap.randomMapPosition();
+    if (this.isInvalidPosition(game.gameMap, position, radius * 2)) {
+      return this.getRandomValidPosition(radius);
+    }
+    return position;
+  }
+
+  isInvalidPosition(map: GameMap, point = this.center, radius = this.radius): boolean {
+    const left = point.x - radius;
+    const right = point.x + radius;
+    const top = point.y - radius;
+    const bottom = point.y + radius;
+
+    return map.isSolidTile(left, top) ||
+      map.isSolidTile(right, top) ||
+      map.isSolidTile(right, bottom) ||
+      map.isSolidTile(left, bottom) ||
+      map.isSolidTile(point.x, point.y);
   }
 
   collidesWithCircle(otherCircle: Circle): boolean {

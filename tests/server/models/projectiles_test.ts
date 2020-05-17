@@ -18,13 +18,13 @@ describe('Projectile', function() {
   describe('#rangeExpired', function() {
     it('in range projectiles return false', function() {
       projectile.range = 10;
-      projectile.position = new Point(10, 0);
+      projectile.model.center = new Point(10, 0);
       assert(!projectile.rangeExpired());
     });
 
     it('out of range projectiles return true', function() {
       projectile.range = 10;
-      projectile.position = new Point(11, 0);
+      projectile.model.center = new Point(11, 0);
       assert(projectile.rangeExpired());
     });
   });

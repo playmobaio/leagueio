@@ -85,15 +85,17 @@ class Game {
     });
 
     this.projectiles.forEach((projectile): void => {
-      projectile.update(this.gameMap);
-    });
-
-    this.projectiles.forEach((projectile): void => {
+      if (projectile.shouldDelete(this.gameMap)) {
+        projectile.delete();
+        return;
+      }
+      projectile.update();
+      // check each player to see if collides
       this.players.forEach((player): void => {
         if(projectile.creatorId != player.id &&
             player.model.collidesWithCircle(projectile.model)) {
-          this.projectiles.delete(projectile.id);
           player.receiveDamage(constants.DEFAULT_DAMAGE_FROM_PROJECTILE);
+          projectile.delete();
         }
       });
     });

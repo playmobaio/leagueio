@@ -1,6 +1,6 @@
 import { Point, Velocity, Vector, Circle } from './basicTypes';
 import { v4 as uuidv4 } from 'uuid';
-import { IProjectile } from '../../models/interfaces';
+import { IProjectile, IPoint } from '../../models/interfaces';
 import constants from '../constants';
 import Game from './game';
 import GameMap from './gameMap';
@@ -26,7 +26,14 @@ class Projectile implements IProjectile {
     this.velocity = velocity;
   }
 
-  static create(player: Player, origin: Point, velocity: Velocity): Projectile {
+  static create(player: Player, model: Circle, dest: IPoint): Projectile {
+    const offsetVector = Vector.createFromPoints(model.center, dest)
+      .setMagnitude(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET);
+    const origin: Point = model.center.transformWithVector(offsetVector);
+    const velocity = new Velocity(dest,
+      constants.DEFAULT_PROJECTILE_SPEED,
+      model.center);
+
     const projectile: Projectile = new Projectile(player.id, origin, velocity)
     Game.getInstance().emitter.emit(EmitEvent.NewProjectile, projectile);
     return projectile;
@@ -46,11 +53,7 @@ class Projectile implements IProjectile {
     return vector.getMagnitude() > this.range;
   }
 
-  update(map: GameMap): void {
-    if (this.shouldDelete(map)) {
-      this.delete();
-      return;
-    }
+  update(): void {
     this.position = this.position.transform(this.velocity);
     this.model.center = this.position;
   }

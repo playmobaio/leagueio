@@ -6,26 +6,26 @@ import { IPlayer,
   IProjectile } from '../../models/interfaces';
 import { Point, Velocity, Circle } from './basicTypes';
 import Game from "./game";
+import Projectile from "./projectile";
 import constants from '../constants';
+import { EmitEvent } from '../tools/emitEvent'
 
 class Player implements IPlayer {
   id: string;
   velocity: Velocity;
   socket: SocketIO.Socket;
-  game: Game;
   attackSpeed: number;
   lastAutoAttackFrame: number;
   health: IHealth;
   model: Circle;
 
-  constructor(id: string, point: Point, socket: SocketIO.Socket) {
+  private constructor(id: string, point: Point, socket: SocketIO.Socket) {
     this.id = id;
     this.model = new Circle(point, constants.DEFAULT_CIRCLE_RADIUS);
     this.velocity = new Velocity(this.model.center, 0);
     this.socket = socket;
     this.attackSpeed = constants.DEFAULT_PLAYER_ATTACK_SPEED;
     this.lastAutoAttackFrame = -1;
-    this.game = Game.getInstance();
     this.health = {
       current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
       maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
@@ -33,16 +33,16 @@ class Player implements IPlayer {
 
   static create(id: string, point: Point, socket: SocketIO.Socket): Player {
     const player = new Player(id, point, socket);
-    player.game.addPlayer(player);
+    Game.getInstance().emitter.emit(EmitEvent.NewPlayer, player);
     return player;
   }
 
   registerAutoAttack(dest: IPoint): void {
-    if (!this.canAutoAttack()) {
+    if (dest == undefined || this.model.center.equals(dest) || !this.canAutoAttack()) {
       return;
     }
-    this.lastAutoAttackFrame = this.game.currentFrame;
-    this.game.addProjectile(this.id, dest);
+    Projectile.create(this, this.model, dest);
+    this.lastAutoAttackFrame = Game.getInstance().currentFrame;
   }
 
   canAutoAttack(): boolean {
@@ -51,7 +51,7 @@ class Player implements IPlayer {
     }
 
     const framesBetweenAutoAttacks = constants.FRAMES_PER_SECOND * this.attackSpeed;
-    return this.lastAutoAttackFrame + framesBetweenAutoAttacks <= this.game.currentFrame;
+    return this.lastAutoAttackFrame + framesBetweenAutoAttacks <= Game.getInstance().currentFrame;
   }
 
   updatePosition(point: Point): void {
@@ -67,7 +67,7 @@ class Player implements IPlayer {
   }
 
   respawn(): void {
-    const newPoint: Point = this.game.gameMap.randomValidMapPosition();
+    const newPoint: Point = Game.getInstance().gameMap.randomValidMapPosition();
     this.updatePosition(newPoint);
     this.health = {
       current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
@@ -87,7 +87,7 @@ class Player implements IPlayer {
       client: this.toInterface(),
       players: players,
       projectiles: projectiles,
-      currentFrame: this.game.currentFrame
+      currentFrame: Game.getInstance().currentFrame
     };
   }
 }

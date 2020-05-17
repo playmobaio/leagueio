@@ -7,17 +7,15 @@ import constants from '../../src/server/constants';
 
 describe('Game', function() {
   let game: Game;
-  let player: Player;
   const id = "id";
 
   beforeEach(function(){
     game = Game.getInstance();
-    player = new Player(id, new Point(0, 0), null);
   });
 
   describe('#AddandRemovePlayers', function() {
     it('Game can add and remove players', function() {
-      game.addPlayer(player);
+      Player.create(id, new Point(0, 0), null);
       assert.equal(1, game.players.size);
       game.removePlayer(id);
       assert.equal(0, game.players.size);
@@ -26,7 +24,7 @@ describe('Game', function() {
 
   describe('#UpdatePlayerVelocity', function() {
     it("Game sucessfully updates player velocity", function() {
-      game.addPlayer(player);
+      const player: Player = Player.create(id, new Point(0, 0), null);
       game.updatePlayerVelocity(id, PlayerMovementIO.Up);
       assert.equal(constants.DEFAULT_PLAYER_VELOCITY, player.velocity.getSpeed());
     });

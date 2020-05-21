@@ -1,7 +1,7 @@
 class CastState {
   startTime: number;
   endTime: number;
-  successfulCallback: Function;
+  successCallback: Function;
   failureCallback: Function;
 }
 export default CastState;

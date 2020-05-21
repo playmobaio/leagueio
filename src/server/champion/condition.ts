@@ -4,3 +4,4 @@ enum Condition {
   CASTING,
   DEAD
 }
+export default Condition;

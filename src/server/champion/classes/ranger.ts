@@ -2,13 +2,17 @@ import Hero from "../hero";
 
 class Ranger extends Hero {
 
-  castQ() {
+  castQ(): void {
+    return;
   }
-  castW() {
+  castW(): void {
+    return;
   }
-  castE(){
+  castE(): void {
+    return;
   }
-  performAutoAttack(){
+  performAutoAttack(): void {
+    return;
   }
 }
 

@@ -9,3 +9,4 @@ class Ability {
     return;
   }
 }
+export default Ability;

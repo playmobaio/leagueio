@@ -1,6 +1,7 @@
 import { Velocity, Circle } from "../models/basicTypes";
 import { IHealth } from '../../models/interfaces';
 import HeroState from './heroState';
+import Ability from './ability';
 
 class Hero {
   movementSpeed: Velocity;

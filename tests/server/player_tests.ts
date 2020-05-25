@@ -1,9 +1,7 @@
 import * as assert from 'assert';
 import * as TypeMoq from "typemoq";
 import Player from '../../src/server/models/player';
-import { PlayerMovementIO } from '../../src/models/interfaces';
 import { Point, Circle } from '../../src/server/models/basicTypes';
-import constants from '../../src/server/constants';
 import Game from '../../src/server/models/game';
 import { Times } from 'typemoq';
 
@@ -36,12 +34,6 @@ describe('Player', function() {
       player.updatePosition(position);
 
       circle.verify(x => x.center = TypeMoq.It.isValue(position), Times.once());
-    });
-
-    it("Verify velocity updates correctly", function() {
-      player.updateVelocity(PlayerMovementIO.Up);
-      assert.equal(-1, player.velocity.getUnitVector().y);
-      assert.equal(constants.DEFAULT_PLAYER_VELOCITY, player.velocity.getSpeed());
     });
   });
 

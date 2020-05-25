@@ -4,6 +4,7 @@ import *  as socketController from "./socketController";
 import Game from './models/game';
 import { IUserInput, IUserMouseClick, IGameState } from '../models/interfaces';
 import constants from './constants';
+import { EmitEvent } from './tools/emitEvent';
 
 // Create the app
 const app = express();
@@ -19,6 +20,8 @@ const server = app.listen(process.env.PORT || 3000, function() {
 app.use(express.static(path.join(__dirname, "../client")));
 
 const io = require("socket.io").listen(server);
+const game: Game = Game.getInstance();
+
 io.sockets.on(
   "connect",
   function(socket: SocketIO.Socket) {
@@ -26,17 +29,16 @@ io.sockets.on(
 
     socket.on("C:JOIN_GAME", () => socketController.clientJoinGame(socket));
     socket.on("C:USER_MOVE", (userInput: IUserInput) => {
-      socketController.clientUserMove(socket, userInput)
+      return userInput;
     });
     socket.on("C:USER_MOUSE_CLICK", (userMouseClick: IUserMouseClick) => {
-      socketController.clientMouseClick(socket, userMouseClick);
+      game.emitter.emit(EmitEvent.RegisterUserClick, socket.id, userMouseClick);
     });
     socket.on('disconnect', () => socketController.disconnect(socket, io));
   }
 );
 
 setInterval(() => {
-  const game: Game = Game.getInstance();
   game.update();
   const gameState: Array<IGameState> = game.getGameStates();
   game.sendGameStates(gameState);

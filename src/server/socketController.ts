@@ -1,20 +1,8 @@
 import Player from "./models/player";
 import Game from "./models/game";
-import { IUserInput, IUserMouseClick } from '../models/interfaces';
 
 export function clientJoinGame(socket: SocketIO.Socket): void {
   Player.create(socket.id, socket);
-}
-
-export function clientUserMove(socket: SocketIO.Socket, userInput: IUserInput): void {
-  const game: Game = Game.getInstance();
-  game.updatePlayerVelocity(socket.id, userInput.io);
-}
-
-export function clientMouseClick(socket: SocketIO.Socket, userMouseClick: IUserMouseClick): void {
-  const game: Game = Game.getInstance();
-  const player: Player = game.players.get(socket.id);
-  player?.registerAutoAttack(userMouseClick.cursorPosition);
 }
 
 export function disconnect(socket: SocketIO.Socket, io: SocketIO.Server): void {

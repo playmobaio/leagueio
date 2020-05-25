@@ -1,7 +1,5 @@
 import * as assert from 'assert';
 import { Velocity, Point, Vector } from '../../../src/server/models/basicTypes';
-import { PlayerMovementIO } from '../../../src/models/interfaces';
-import constants from '../../../src/server/constants';
 
 describe('Velocity', function() {
   describe('#VelocityTests', function() {
@@ -34,21 +32,6 @@ describe('Velocity', function() {
       assert.equal(0, vector.x);
       assert.equal(0, vector.y);
     });
-
-    it('Validate PlayerMovementIO', function() {
-      const validPlayerMovementIO = (io: PlayerMovementIO, expectedX, expectedY): void => {
-        const velocity =  Velocity.getPlayerVelocity(io);
-        const unitVector: Vector = velocity.getUnitVector();
-        assert.equal(constants.DEFAULT_PLAYER_VELOCITY, velocity.getSpeed());
-        assert.equal(expectedX, unitVector.x);
-        assert.equal(expectedY, unitVector.y);
-      }
-
-      validPlayerMovementIO(PlayerMovementIO.Left, -1, 0);
-      validPlayerMovementIO(PlayerMovementIO.Right, 1, 0);
-      validPlayerMovementIO(PlayerMovementIO.Up, 0, -1);
-      validPlayerMovementIO(PlayerMovementIO.Down, 0, 1);
-    })
   });
 });
 

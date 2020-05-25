@@ -33,7 +33,9 @@ class UserInputController {
       return;
     }
 
-    this.targetPosition = cursorPosition;
+    if (click == Click.Right) {
+      this.targetPosition = cursorPosition;
+    }
     const userMouseClick: IUserMouseClick = { cursorPosition: cursorPosition, click: click }
     this.socket.emit("C:USER_MOUSE_CLICK", userMouseClick);
   }

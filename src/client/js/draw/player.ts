@@ -12,6 +12,7 @@ function drawPlayerModel(gameMap: CGameMap, player: IPlayer, position: IPoint): 
     2 * Math.PI);
   gameMap.context.strokeStyle = "black";
   gameMap.context.stroke();
+  gameMap.context.fill();
 }
 
 function drawHealthBar(gameMap: CGameMap, player: IPlayer, position: IPoint): void {

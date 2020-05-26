@@ -15,11 +15,12 @@ export interface ICircle {
 }
 
 export interface IUserInput {
-  io: PlayerMovementIO;
+  io: PlayerMoveIO;
 }
 
 export interface IUserMouseClick {
   cursorPosition: IPoint;
+  click: Click;
 }
 
 export interface IProjectile {
@@ -34,12 +35,16 @@ export interface IGameState {
   currentFrame: number;
 }
 
-export enum PlayerMovementIO {
+export enum PlayerMoveIO {
   None = 0,
-  Up = 1,
-  Left = 2,
-  Down = 4,
-  Right = 8,
+  Q = 1,
+  W = 2,
+  E = 3,
+}
+
+export enum Click {
+  Left,
+  Right
 }
 
 export interface IHealth {

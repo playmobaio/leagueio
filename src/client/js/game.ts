@@ -4,6 +4,7 @@ import Camera from './camera';
 import { drawPlayer } from './draw/player';
 import { drawProjectile } from './draw/projectile';
 import { drawClientHealth } from './draw/health';
+import UserInputController from './userInputController';
 
 // Client
 class Game {
@@ -37,6 +38,8 @@ class Game {
     this.gameMap.resetFrame();
     this.camera.setFrameReference(gameState.client);
     this.gameMap.drawLayer(this.camera, Layer.Background);
+
+    UserInputController.getInstance(null).drawTargetPosition(this);
 
     gameState.players.forEach((iPlayer: IPlayer): void => {
       drawPlayer(this.gameMap, iPlayer, this.camera);

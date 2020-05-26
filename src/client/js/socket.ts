@@ -1,6 +1,6 @@
 import Game from './game';
-import UserInputController from './UserInputController';
-import { PlayerMovementIO, IPoint, IGameState } from '../../models/interfaces';
+import UserInputController from './userInputController';
+import { PlayerMoveIO, IPoint, IGameState, Click } from '../../models/interfaces';
 
 async function registerSocket(socket: SocketIO.Socket): Promise<void> {
   const _game: Game = await Game.getInstance();
@@ -16,37 +16,34 @@ async function registerSocket(socket: SocketIO.Socket): Promise<void> {
     const gameMap = _game.gameMap;
     const domRect = gameMap.canvas.getBoundingClientRect();
     const point: IPoint = { x: event.clientX - domRect.left, y: event.clientY - domRect.top };
-    _userInputController.registerMouseClick(_game.camera.getAbsolutePosition(point));
+    let click: Click;
+    switch(event.button) {
+    case 0:
+      click = Click.Left;
+      break;
+    case 2:
+      click = Click.Right;
+      break;
+    }
+    _userInputController.sendMouseClick(click, _game.camera.getAbsolutePosition(point));
   });
 
-  function getPlayerMovementIO(event: KeyboardEvent): PlayerMovementIO {
+  function getPlayerMovementIO(event: KeyboardEvent): PlayerMoveIO {
     switch(event.code) {
-    case "KeyS":
-    case "ArrowDown":
-      return PlayerMovementIO.Down;
+    case "KeyQ":
+      return PlayerMoveIO.Q;
     case "KeyW":
-    case "ArrowUp":
-      return PlayerMovementIO.Up;
-    case "KeyA":
-    case "ArrowLeft":
-      return PlayerMovementIO.Left;
-    case "KeyD":
-    case "ArrowRight":
-      return PlayerMovementIO.Right;
+      return PlayerMoveIO.W;
+    case "KeyE":
+      return PlayerMoveIO.E;
     }
-    return PlayerMovementIO.None;
+    return PlayerMoveIO.None;
   }
 
   window.onkeydown = (event): void => {
     event.preventDefault();
-    const io: PlayerMovementIO = getPlayerMovementIO(event);
-    _userInputController.registerPlayerMovement(io);
-  }
-
-  window.onkeyup = (event): void => {
-    event.preventDefault();
-    const io: PlayerMovementIO = getPlayerMovementIO(event);
-    _userInputController.deregisterPlayerMovement(io);
+    const io: PlayerMoveIO = getPlayerMovementIO(event);
+    _userInputController.registerPlayerMove(io);
   }
 }
 

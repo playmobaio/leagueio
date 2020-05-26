@@ -1,5 +1,4 @@
-import { IPoint, PlayerMovementIO, ICircle } from '../../models/interfaces';
-import constants from '../constants';
+import { IPoint, ICircle } from '../../models/interfaces';
 import GameMap from './gameMap';
 import Game from './game';
 
@@ -140,20 +139,6 @@ export class Velocity {
 
     this.unitVector = Vector.createFromPoints(src, dest).getUnitVector();
     this.speed = this.unitVector.getMagnitude() == 0 ? 0 : speed;
-  }
-
-  static getPlayerVelocity(io: PlayerMovementIO): Velocity {
-    let x = 0
-    let y = 0;
-    if (io & PlayerMovementIO.Up)
-      y-= 1;
-    if (io & PlayerMovementIO.Left)
-      x-= 1;
-    if (io & PlayerMovementIO.Down)
-      y+= 1;
-    if (io & PlayerMovementIO.Right)
-      x+= 1;
-    return new Velocity(new Point(x, y), constants.DEFAULT_PLAYER_VELOCITY);
   }
 
   getSpeed(): number {

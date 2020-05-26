@@ -1,10 +1,9 @@
 import { IPlayer,
-  PlayerMovementIO,
   IPoint,
   IHealth,
   IGameState,
   IProjectile } from '../../models/interfaces';
-import { Point, Velocity, Circle } from './basicTypes';
+import { Point, Velocity, Circle, Vector } from './basicTypes';
 import Game from "./game";
 import Projectile from "./projectile";
 import constants from '../constants';
@@ -23,6 +22,8 @@ class Player implements IPlayer {
   lastAutoAttackFrame: number;
   health: IHealth;
   model: Circle;
+  velocitySource: Point;
+  range: number;
 
   private constructor(id: string, socket: SocketIO.Socket) {
     this.id = id;
@@ -31,6 +32,8 @@ class Player implements IPlayer {
     this.socket = socket;
     this.attackSpeed = constants.DEFAULT_PLAYER_ATTACK_SPEED;
     this.lastAutoAttackFrame = -1;
+    this.range = 0;
+    this.velocitySource = this.model.center;
     this.health = {
       current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
       maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
@@ -67,8 +70,10 @@ class Player implements IPlayer {
     this.model.center = point;
   }
 
-  updateVelocity(io: PlayerMovementIO): void {
-    this.velocity = Velocity.getPlayerVelocity(io);
+  updateVelocity(point: IPoint): void {
+    this.velocitySource = this.model.center;
+    this.range = Vector.createFromPoints(this.velocitySource, point).getMagnitude();
+    this.velocity = new Velocity(point, constants.DEFAULT_PLAYER_VELOCITY, this.model.center);
   }
 
   receiveDamage(incomingDamage: number): void {
@@ -81,7 +86,15 @@ class Player implements IPlayer {
   }
 
   update(): void {
+    if (this.rangeExpired()) {
+      return;
+    }
     this.updatePosition(this.model.center.transform(this.velocity));
+  }
+
+  rangeExpired(): boolean {
+    const vector = Vector.createFromPoints(this.velocitySource, this.model.center);
+    return vector.getMagnitude() > this.range;
   }
 
   toInterface(): IPlayer {

@@ -1,5 +1,6 @@
 import { IPoint, PlayerMoveIO, IUserInput, IUserMouseClick, Click } from '../../models/interfaces';
 import Game from './game';
+import constants from './constants';
 
 class UserInputController {
   private static instance: UserInputController;
@@ -57,12 +58,10 @@ class UserInputController {
     game.gameMap.context.beginPath();
     game.gameMap.context.strokeStyle = "red";
 
-    game.gameMap.context.moveTo(point.x - 2, point.y - 2);
-    game.gameMap.context.lineTo(point.x + 2, point.y + 2);
-
-    game.gameMap.context.moveTo(point.x + 2, point.y - 2);
-    game.gameMap.context.lineTo(point.x - 2, point.y + 2);
-    game.gameMap.context.stroke();
+    game.gameMap.context.strokeRect(point.x,
+      point.y,
+      constants.DEFAULT_CURSOR_PIXEL_LENGTH,
+      constants.DEFAULT_CURSOR_PIXEL_LENGTH);
   }
 }
 

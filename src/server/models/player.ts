@@ -22,7 +22,7 @@ class Player implements IPlayer {
   lastAutoAttackFrame: number;
   health: IHealth;
   model: Circle;
-  src: Point;
+  velocitySource: Point;
   range: number;
 
   private constructor(id: string, socket: SocketIO.Socket) {
@@ -33,7 +33,7 @@ class Player implements IPlayer {
     this.attackSpeed = constants.DEFAULT_PLAYER_ATTACK_SPEED;
     this.lastAutoAttackFrame = -1;
     this.range = 0;
-    this.src = this.model.center;
+    this.velocitySource = this.model.center;
     this.health = {
       current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
       maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
@@ -71,8 +71,8 @@ class Player implements IPlayer {
   }
 
   updateVelocity(point: IPoint): void {
-    this.src = this.model.center;
-    this.range = Vector.createFromPoints(this.src, point).getMagnitude();
+    this.velocitySource = this.model.center;
+    this.range = Vector.createFromPoints(this.velocitySource, point).getMagnitude();
     this.velocity = new Velocity(point, constants.DEFAULT_PLAYER_VELOCITY, this.model.center);
   }
 
@@ -93,7 +93,7 @@ class Player implements IPlayer {
   }
 
   rangeExpired(): boolean {
-    const vector = Vector.createFromPoints(this.src, this.model.center);
+    const vector = Vector.createFromPoints(this.velocitySource, this.model.center);
     return vector.getMagnitude() > this.range;
   }
 

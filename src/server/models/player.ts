@@ -8,7 +8,7 @@ import Game from "./game";
 import Projectile from "./projectile";
 import constants from '../constants';
 import { EmitEvent } from '../tools/emitEvent'
-import Hero from '../champion/hero';
+import Hero from '../hero/hero';
 
 class Player implements IPlayer {
   id: string;

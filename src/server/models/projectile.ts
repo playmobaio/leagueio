@@ -15,16 +15,16 @@ class Projectile implements IProjectile {
   model: Circle;
   creatorId: string;
 
-  constructor(creatorId: string, src: Point, velocity: Velocity) {
+  constructor(creatorId: string, src: Point, velocity: Velocity, range: number) {
     this.id = uuidv4();
     this.creatorId = creatorId;
-    this.range = constants.DEFAULT_PROJECTILE_RANGE;
+    this.range = range;
     this.origin = src;
     this.model = new Circle(constants.DEFAULT_CIRCLE_RADIUS, src);
     this.velocity = velocity;
   }
 
-  static create(player: Player, model: Circle, dest: IPoint): Projectile {
+  static create(player: Player, model: Circle, dest: IPoint, range: number): Projectile {
     const offsetVector = Vector.createFromPoints(model.center, dest)
       .setMagnitude(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET);
     const origin: Point = model.center.transformWithVector(offsetVector);
@@ -32,7 +32,7 @@ class Projectile implements IProjectile {
       constants.DEFAULT_PROJECTILE_SPEED,
       model.center);
 
-    const projectile: Projectile = new Projectile(player.id, origin, velocity)
+    const projectile: Projectile = new Projectile(player.id, origin, velocity, range)
     Game.getInstance().emitter.emit(EmitEvent.NewProjectile, projectile);
     return projectile;
   }

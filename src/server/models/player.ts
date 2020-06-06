@@ -1,42 +1,33 @@
 import { IPlayer,
-  IPoint,
   IHealth,
   IGameState,
   IProjectile } from '../../models/interfaces';
-import { Point, Velocity, Circle, Vector } from './basicTypes';
+import { Circle } from './basicTypes';
 import Game from "./game";
-import Projectile from "./projectile";
 import constants from '../constants';
 import { EmitEvent } from '../tools/emitEvent'
 import Hero from '../hero/hero';
+import Ranger from '../hero/classes/ranger';
 
-class Player implements IPlayer {
+class Player {
   id: string;
   username: string;
   displayName: string;
   team: string;
   hero: Hero;
-  velocity: Velocity;
   socket: SocketIO.Socket;
   attackSpeed: number;
-  lastAutoAttackFrame: number;
   health: IHealth;
-  model: Circle;
-  velocitySource: Point;
   range: number;
 
   private constructor(id: string, socket: SocketIO.Socket) {
     this.id = id;
-    this.model = new Circle(constants.DEFAULT_CIRCLE_RADIUS);
-    this.velocity = new Velocity(this.model.center, 0);
     this.socket = socket;
-    this.attackSpeed = constants.DEFAULT_PLAYER_ATTACK_SPEED;
-    this.lastAutoAttackFrame = -1;
     this.range = 0;
-    this.velocitySource = this.model.center;
     this.health = {
       current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
       maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
+    this.hero = new Ranger(this);
   }
 
   static create(id: string, socket: SocketIO.Socket): Player {
@@ -45,60 +36,21 @@ class Player implements IPlayer {
     return player;
   }
 
-  registerAutoAttack(dest: IPoint): void {
-    if (dest == undefined || this.model.center.equals(dest) || !this.canAutoAttack()) {
-      return;
-    }
-    Projectile.create(this, this.model, dest);
-    this.lastAutoAttackFrame = Game.getInstance().currentFrame;
-  }
-
-  canAutoAttack(): boolean {
-    if (this.lastAutoAttackFrame == -1) {
-      return true;
-    }
-
-    const framesBetweenAutoAttacks = constants.FRAMES_PER_SECOND * this.attackSpeed;
-    return this.lastAutoAttackFrame + framesBetweenAutoAttacks <= Game.getInstance().currentFrame;
-  }
-
-  updatePosition(point: Point): void {
-    if (!Game.getInstance().gameMap.isOnMap(point) ||
-      this.model.isInvalidPosition(Game.getInstance().gameMap, point)) {
-      return;
-    }
-    this.model.center = point;
-  }
-
-  updateVelocity(point: IPoint): void {
-    this.velocitySource = this.model.center;
-    this.range = Vector.createFromPoints(this.velocitySource, point).getMagnitude();
-    this.velocity = new Velocity(point, constants.DEFAULT_PLAYER_VELOCITY, this.model.center);
-  }
-
   receiveDamage(incomingDamage: number): void {
     this.health.current = Math.max(0, this.health.current - incomingDamage);
   }
 
   respawn(): void {
-    this.model = new Circle(this.model.radius);
+    this.hero.model = new Circle(this.hero.model.radius);
     this.health.current = constants.DEFAULT_PLAYER_MAXIMUM_HEALTH;
   }
 
   update(): void {
-    if (this.rangeExpired()) {
-      return;
-    }
-    this.updatePosition(this.model.center.transform(this.velocity));
-  }
-
-  rangeExpired(): boolean {
-    const vector = Vector.createFromPoints(this.velocitySource, this.model.center);
-    return vector.getMagnitude() > this.range;
+    this.hero.update();
   }
 
   toInterface(): IPlayer {
-    return { id: this.id, model: this.model.toInterface(), health: this.health };
+    return { id: this.id, model: this.hero.model.toInterface(), health: this.health };
   }
 
   getGameState(players: Array<IPlayer>, projectiles: Array<IProjectile>): IGameState {

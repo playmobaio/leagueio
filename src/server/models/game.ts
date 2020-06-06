@@ -56,10 +56,10 @@ class Game {
       const player = this.players.get(clientId);
       switch(clickEvent.click) {
       case Click.Left:
-        player?.registerAutoAttack(clickEvent.cursorPosition);
+        player?.hero?.performAutoAttack(clickEvent.cursorPosition);
         break;
       case Click.Right:
-        player?.updateVelocity(clickEvent.cursorPosition);
+        player?.hero?.updateVelocity(clickEvent.cursorPosition);
         break;
       }
     }
@@ -100,7 +100,7 @@ class Game {
       // check each player to see if collides
       this.players.forEach((player): void => {
         if(projectile.creatorId != player.id &&
-            player.model.collidesWithCircle(projectile.model)) {
+            player?.hero?.model?.collidesWithCircle(projectile.model)) {
           player.receiveDamage(constants.DEFAULT_DAMAGE_FROM_PROJECTILE);
           projectile.delete();
         }

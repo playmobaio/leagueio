@@ -4,6 +4,7 @@ import Player from '../../src/server/models/player';
 import { Point, Circle } from '../../src/server/models/basicTypes';
 import Game from '../../src/server/models/game';
 import { Times } from 'typemoq';
+import Ranger from '../../src/server/hero/classes/ranger';
 
 describe('Player', function() {
   let player: Player;
@@ -20,6 +21,7 @@ describe('Player', function() {
     game.reset();
     point = new Point(0, 1);
     player = Player.create(id, socket.object);
+    player.hero = new Ranger(player);
   });
 
   describe('#update', function() {
@@ -29,9 +31,8 @@ describe('Player', function() {
       circle.setup(x => x.isInvalidPosition(
         TypeMoq.It.isAny(), TypeMoq.It.isAny(), TypeMoq.It.isAny())
       ).returns(() => false);
-
-      player.model = circle.object;
-      player.updatePosition(position);
+      player.hero.model = circle.object;
+      player.hero.updatePosition(position);
 
       circle.verify(x => x.center = TypeMoq.It.isValue(position), Times.once());
     });
@@ -39,25 +40,25 @@ describe('Player', function() {
 
   describe("#registerAutoAttack", function() {
     it("will autoattack immediately on spawn", function() {
-      player.registerAutoAttack(point);
+      player.hero.performAutoAttack(point);
       assert.equal(game.projectiles.size, 1);
     });
 
     it("cannot auto attack too soon", function() {
-      player.lastAutoAttackFrame = 0;
-      player.attackSpeed = 1;
+      player.hero.lastAutoAttackFrame = 0;
+      player.hero.attackSpeed = 1;
       game.currentFrame = 59; // Should be able to attack after 1 second, or 60 frams at 60 fps
 
-      player.registerAutoAttack(point);
+      player.hero.performAutoAttack(point);
       assert.equal(game.projectiles.size, 0);
     });
 
     it("can auto attack after set number of frames", function() {
-      player.lastAutoAttackFrame = 0;
-      player.attackSpeed = 1;
+      player.hero.lastAutoAttackFrame = 0;
+      player.hero.attackSpeed = 1;
       game.currentFrame = 60; // Should be able to attack after 1 second, or 60 frams at 60 fps
 
-      player.registerAutoAttack(point);
+      player.hero.performAutoAttack(point);
       assert.equal(game.projectiles.size, 1);
     });
   });

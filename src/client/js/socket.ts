@@ -1,6 +1,6 @@
 import Game from './game';
 import UserInputController from './userInputController';
-import { PlayerMoveIO, IPoint, IGameState, Click } from '../../models/interfaces';
+import { PlayerCastIO, IPoint, IGameState, Click } from '../../models/interfaces';
 
 async function registerSocket(socket: SocketIO.Socket): Promise<void> {
   const _game: Game = await Game.getInstance();
@@ -28,21 +28,21 @@ async function registerSocket(socket: SocketIO.Socket): Promise<void> {
     _userInputController.sendMouseClick(click, _game.camera.getAbsolutePosition(point));
   });
 
-  function getPlayerMovementIO(event: KeyboardEvent): PlayerMoveIO {
+  function getPlayerMovementIO(event: KeyboardEvent): PlayerCastIO {
     switch(event.code) {
     case "KeyQ":
-      return PlayerMoveIO.Q;
+      return PlayerCastIO.Q;
     case "KeyW":
-      return PlayerMoveIO.W;
+      return PlayerCastIO.W;
     case "KeyE":
-      return PlayerMoveIO.E;
+      return PlayerCastIO.E;
     }
-    return PlayerMoveIO.None;
+    return PlayerCastIO.None;
   }
 
   window.onkeydown = (event): void => {
     event.preventDefault();
-    const io: PlayerMoveIO = getPlayerMovementIO(event);
+    const io: PlayerCastIO = getPlayerMovementIO(event);
     _userInputController.registerPlayerMove(io);
   }
 }

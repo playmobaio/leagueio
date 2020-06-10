@@ -4,7 +4,6 @@ import *  as socketController from "./socketController";
 import Game from './models/game';
 import { IUserInput, IUserMouseClick, IGameState } from '../models/interfaces';
 import constants from './constants';
-import { EmitEvent } from './tools/emitEvent';
 
 // Create the app
 const app = express();
@@ -29,10 +28,10 @@ io.sockets.on(
 
     socket.on("C:JOIN_GAME", () => socketController.clientJoinGame(socket));
     socket.on("C:USER_MOVE", (userInput: IUserInput) => {
-      return userInput;
+      socketController.registerPlayerCast(socket.id, userInput);
     });
     socket.on("C:USER_MOUSE_CLICK", (userMouseClick: IUserMouseClick) => {
-      game.emitter.emit(EmitEvent.RegisterUserClick, socket.id, userMouseClick);
+      socketController.registerPlayerClick(socket.id, userMouseClick);
     });
     socket.on('disconnect', () => socketController.disconnect(socket, io));
   }

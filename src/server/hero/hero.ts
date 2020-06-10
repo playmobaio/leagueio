@@ -29,16 +29,7 @@ class Hero {
     this.attackSpeed = constants.DEFAULT_PLAYER_ATTACK_SPEED;
     this.lastAutoAttackFrame = -1;
     this.player = player;
-  }
-
-  castQ(): void {
-    return;
-  }
-  castW(): void {
-    return;
-  }
-  castE(): void {
-    return;
+    this.state = new HeroState();
   }
 
   updateVelocity(point: IPoint): void {
@@ -82,10 +73,10 @@ class Hero {
   }
 
   update(): void {
-    if (this.rangeExpired()) {
-      return;
+    if (!this.rangeExpired()) {
+      this.updatePosition(this.model.center.transform(this.velocity));
     }
-    this.updatePosition(this.model.center.transform(this.velocity));
+    this.state.update();
   }
 }
 export default Hero;

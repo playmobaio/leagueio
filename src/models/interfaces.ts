@@ -15,7 +15,7 @@ export interface ICircle {
 }
 
 export interface IUserInput {
-  io: PlayerMoveIO;
+  io: PlayerCastIO;
 }
 
 export interface IUserMouseClick {
@@ -35,7 +35,7 @@ export interface IGameState {
   currentFrame: number;
 }
 
-export enum PlayerMoveIO {
+export enum PlayerCastIO {
   None = 0,
   Q = 1,
   W = 2,

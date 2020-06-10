@@ -84,7 +84,13 @@ class Game {
   update(): void {
     this.players.forEach((player): void => {
       if(player.health.current <= 0) {
-        player.respawn();
+        if(player.stocks > 1) {
+          player.stocks -= 1;
+          player.respawn();
+        }
+        else {
+          player.endPlayerGame();
+        }
       }
       else {
         player.update();

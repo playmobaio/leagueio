@@ -19,11 +19,13 @@ class Player {
   attackSpeed: number;
   health: IHealth;
   range: number;
+  stocks: number;
 
   private constructor(id: string, socket: SocketIO.Socket) {
     this.id = id;
     this.socket = socket;
     this.range = 0;
+    this.stocks = constants.DEFAULT_STARTING_STOCK;
     this.health = {
       current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
       maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
@@ -45,12 +47,20 @@ class Player {
     this.health.current = constants.DEFAULT_PLAYER_MAXIMUM_HEALTH;
   }
 
+  endPlayerGame(): void {
+    Game.getInstance().removePlayer(this.id);
+  }
+
   update(): void {
     this.hero.update();
   }
 
   toInterface(): IPlayer {
-    return { id: this.id, model: this.hero.model.toInterface(), health: this.health };
+    return {
+      id: this.id,
+      model: this.hero.model.toInterface(),
+      health: this.health,
+      stocks: this.stocks };
   }
 
   getGameState(players: Array<IPlayer>, projectiles: Array<IProjectile>): IGameState {

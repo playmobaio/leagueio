@@ -2,9 +2,7 @@ import Player from './player';
 import GameMap from './gameMap';
 import { IGameState,
   IPlayer,
-  IProjectile,
-  IUserMouseClick,
-  Click } from '../../models/interfaces';
+  IProjectile } from '../../models/interfaces';
 import Projectile from './projectile';
 import constants from '../constants';
 import { EmitEvent } from '../tools/emitEvent'
@@ -52,22 +50,9 @@ class Game {
       this.projectiles.delete(projectileId);
     }
 
-    const registerPlayerClick = (clientId: string, clickEvent: IUserMouseClick): void => {
-      const player = this.players.get(clientId);
-      switch(clickEvent.click) {
-      case Click.Left:
-        player?.hero?.performAutoAttack(clickEvent.cursorPosition);
-        break;
-      case Click.Right:
-        player?.hero?.updateVelocity(clickEvent.cursorPosition);
-        break;
-      }
-    }
-
     this.emitter.addListener(EmitEvent.NewPlayer, addPlayer);
     this.emitter.addListener(EmitEvent.NewProjectile, addProjectile);
     this.emitter.addListener(EmitEvent.DeleteProjectile, deleteProjectile);
-    this.emitter.addListener(EmitEvent.RegisterUserClick, registerPlayerClick);
   }
 
   reset(): void {

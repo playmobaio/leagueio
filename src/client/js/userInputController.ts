@@ -1,16 +1,16 @@
-import { IPoint, PlayerMoveIO, IUserInput, IUserMouseClick, Click } from '../../models/interfaces';
+import { IPoint, PlayerCastIO, IUserInput, IUserMouseClick, Click } from '../../models/interfaces';
 import Game from './game';
 import constants from './constants';
 
 class UserInputController {
   private static instance: UserInputController;
   socket: SocketIO.Socket;
-  userIO: PlayerMoveIO;
+  userIO: PlayerCastIO;
   targetPosition: IPoint;
 
   private constructor(socket: SocketIO.Socket) {
     this.socket = socket
-    this.userIO = PlayerMoveIO.None;
+    this.userIO = PlayerCastIO.None;
   }
 
   static getInstance(socket: SocketIO.Socket): UserInputController {
@@ -24,7 +24,7 @@ class UserInputController {
     return UserInputController.instance;
   }
 
-  registerPlayerMove(io: PlayerMoveIO): void {
+  registerPlayerMove(io: PlayerCastIO): void {
     this.userIO = io;
     this.sendPlayerInput();
   }

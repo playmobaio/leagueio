@@ -12,7 +12,7 @@ describe('Projectile', function() {
     creatorId = "testId";
     src = new Point(0, 0);
     velocity = new Velocity({ x: 1, y: 1 }, 0);
-    projectile = new Projectile(creatorId, src, velocity);
+    projectile = new Projectile(creatorId, src, velocity, 10);
   });
 
   describe('#rangeExpired', function() {

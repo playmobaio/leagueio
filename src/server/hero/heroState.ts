@@ -17,6 +17,8 @@ class HeroState {
   }
 
   addEffect(effect: Effect): void {
+    effect.start();
+    console.log(`Using ${effect.description}`);
     this.effects.push(effect);
   }
 
@@ -27,7 +29,8 @@ class HeroState {
     this.effects = this.effects.filter((effect: Effect) => {
       const expired = effect.isExpired();
       if (expired) {
-        effect.effectFinishCallback();
+        effect.finish();
+        console.log(`Resetting ${effect.description}`);
       }
       return !expired;
     });

@@ -7,17 +7,18 @@ import constants from '../../constants';
 import RapidFire from '../abilities/rapidFire';
 
 class Ranger extends Hero {
+  qAbility = new RapidFire(this);
+  wAbility = null;
+  eAbility = null;
+
   constructor(player: Player) {
     super(player);
     this.model = new Circle(constants.DEFAULT_CIRCLE_RADIUS);
     this.attackSpeed = 3;
-    this.qAbility = new RapidFire(this);
   }
 
-  performAutoAttack(dest: IPoint): void {
-    super.performAutoAttack(dest, () => {
-      Projectile.create(this.player, this.model, dest, constants.RANGER_PROJECTILE_RANGE);
-    });
+  onAutoAttack(dest: IPoint): void {
+    Projectile.create(this.player, this.model, dest, constants.RANGER_PROJECTILE_RANGE);
   }
 }
 

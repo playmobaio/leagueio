@@ -2,8 +2,11 @@ import Effect from '../effect';
 
 class StunEffect extends Effect {
   duration: number;
+  start(): void {
+    return;
+  }
 
-  effectFinishCallback(): void {
+  finish(): void {
     return;
   }
 }

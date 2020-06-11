@@ -2,8 +2,11 @@ import Effect from '../effect';
 
 class MovementSpeedModifierEffect extends Effect {
   modiferValue: number
+  start(): void {
+    return;
+  }
 
-  effectFinishCallback(): void {
+  finish(): void {
     return;
   }
 }

@@ -6,14 +6,14 @@ import Player from '../models/player';
 import Game from '../models/game';
 import constants from '../constants';
 
-class Hero {
+abstract class Hero {
   movementSpeed: Velocity;
   attackSpeed: number;
   health: IHealth;
   model: Circle;
-  qAbility: Ability;
-  wAbility: Ability;
-  eAbility: Ability;
+  abstract qAbility: Ability;
+  abstract wAbility: Ability;
+  abstract eAbility: Ability;
   state: HeroState;
   level: number;
   lastAutoAttackFrame: number;
@@ -46,15 +46,15 @@ class Hero {
     return vector.getMagnitude() > this.range;
   }
 
-  performAutoAttack(dest: IPoint, onAutoAttack?: Function): void {
+  performAutoAttack(dest: IPoint): void {
     if (dest == undefined || this.model.center.equals(dest) || !this.canAutoAttack()) {
       return;
     }
-    if (onAutoAttack) {
-      onAutoAttack();
-    }
+    this.onAutoAttack(dest);
     this.lastAutoAttackFrame = Game.getInstance().currentFrame;
   }
+
+  abstract onAutoAttack(dest: IPoint): void;
 
   canAutoAttack(): boolean {
     if (this.lastAutoAttackFrame == -1) {

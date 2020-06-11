@@ -18,11 +18,12 @@ abstract class Effect {
     this.description = description;
   }
 
+  abstract start(): void;
+  abstract finish(): void;
+
   isExpired(): boolean {
     return this.endTime < Game.getInstance().currentFrame;
   }
-
-  abstract effectFinishCallback(): void;
 }
 
 export default Effect;

@@ -60,7 +60,8 @@ class Player {
       id: this.id,
       model: this.hero.model.toInterface(),
       health: this.health,
-      stocks: this.stocks };
+      stocks: this.stocks
+    };
   }
 
   getGameState(players: Array<IPlayer>, projectiles: Array<IProjectile>): IGameState {

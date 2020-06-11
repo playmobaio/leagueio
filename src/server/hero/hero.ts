@@ -6,14 +6,14 @@ import Player from '../models/player';
 import Game from '../models/game';
 import constants from '../constants';
 
-class Hero {
+abstract class Hero {
   movementSpeed: Velocity;
   attackSpeed: number;
   health: IHealth;
   model: Circle;
-  qAbility: Ability;
-  wAbility: Ability;
-  eAbility: Ability;
+  abstract qAbility: Ability;
+  abstract wAbility: Ability;
+  abstract eAbility: Ability;
   state: HeroState;
   level: number;
   lastAutoAttackFrame: number;
@@ -29,16 +29,7 @@ class Hero {
     this.attackSpeed = constants.DEFAULT_PLAYER_ATTACK_SPEED;
     this.lastAutoAttackFrame = -1;
     this.player = player;
-  }
-
-  castQ(): void {
-    return;
-  }
-  castW(): void {
-    return;
-  }
-  castE(): void {
-    return;
+    this.state = new HeroState();
   }
 
   updateVelocity(point: IPoint): void {
@@ -55,15 +46,15 @@ class Hero {
     return vector.getMagnitude() > this.range;
   }
 
-  performAutoAttack(dest: IPoint, onAutoAttack?: Function): void {
+  performAutoAttack(dest: IPoint): void {
     if (dest == undefined || this.model.center.equals(dest) || !this.canAutoAttack()) {
       return;
     }
-    if (onAutoAttack) {
-      onAutoAttack();
-    }
+    this.onAutoAttack(dest);
     this.lastAutoAttackFrame = Game.getInstance().currentFrame;
   }
+
+  abstract onAutoAttack(dest: IPoint): void;
 
   canAutoAttack(): boolean {
     if (this.lastAutoAttackFrame == -1) {
@@ -82,10 +73,10 @@ class Hero {
   }
 
   update(): void {
-    if (this.rangeExpired()) {
-      return;
+    if (!this.rangeExpired()) {
+      this.updatePosition(this.model.center.transform(this.velocity));
     }
-    this.updatePosition(this.model.center.transform(this.velocity));
+    this.state.update();
   }
 }
 export default Hero;

@@ -2,6 +2,7 @@ export interface IPlayer {
   id: string;
   health: IHealth;
   model: ICircle;
+  stocks: number;
 }
 
 export interface IPoint {

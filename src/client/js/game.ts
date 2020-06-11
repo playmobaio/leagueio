@@ -4,6 +4,7 @@ import Camera from './camera';
 import { drawPlayer } from './draw/player';
 import { drawProjectile } from './draw/projectile';
 import { drawClientHealth } from './draw/health';
+import { drawClientStocks } from './draw/stocks';
 import UserInputController from './userInputController';
 
 // Client
@@ -51,6 +52,7 @@ class Game {
 
     this.gameMap.drawLayer(this.camera, Layer.Foreground);
     drawClientHealth(this.gameMap, gameState.client);
+    drawClientStocks(this.gameMap, gameState.client)
   }
 }
 

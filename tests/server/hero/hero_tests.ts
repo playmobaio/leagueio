@@ -27,7 +27,7 @@ describe('Hero', function() {
     mock.setup(x => x.state).returns(() => stateMock.object);
   });
 
-  it("Verify player updates position", function() {
+  it("verify player updates position", function() {
     const position = new Point(1, 1);
     const circle = TypeMoq.Mock.ofType<Circle>();
     circle.setup(x => x.isInvalidPosition(

@@ -35,7 +35,7 @@ describe('HeroState', function() {
     assert.equal(heroState.casting, null);
   });
 
-  it("Update does not clear expired abilities", function() {
+  it("Update does not clear non-expired abilities", function() {
     ability.setup(x => x.isExpired()).returns(() => false);
     heroState.addCasting(ability.object);
 

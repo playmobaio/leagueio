@@ -4,7 +4,7 @@ import AttackSpeedModifierEffect from
   '../../../../src/server/hero/effects/attackSpeedModifierEffect';
 import { Times } from 'typemoq';
 
-describe('attackSpeedModifierEffect', function() {
+describe('AttackSpeedModifierEffect', function() {
   let hero: TypeMoq.IMock<Hero>;
   let attackSpeedModifierEffect: AttackSpeedModifierEffect;
   const seconds = 10;
@@ -15,7 +15,7 @@ describe('attackSpeedModifierEffect', function() {
     attackSpeedModifierEffect = new AttackSpeedModifierEffect(hero.object, seconds, multiplier);
   });
 
-  it('Start will increase attack speed', function() {
+  it('Starting effect will increase attack speed', function() {
     const attackSpeed = 1;
     hero.object.attackSpeed = attackSpeed;
     attackSpeedModifierEffect.start();

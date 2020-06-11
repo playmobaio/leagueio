@@ -23,7 +23,7 @@ describe('Ability', function() {
     game.reset();
   });
 
-  it('casting after cooldown', function() {
+  it('can cast after cooldown', function() {
     game.currentFrame = secondsToFrames(21);
 
     ability.cast();
@@ -33,19 +33,19 @@ describe('Ability', function() {
     assert.equal(ability.lastCastFrame, game.currentFrame);
   });
 
-  it('casting during cooldown', function() {
+  it('cannot cast during cooldown', function() {
     game.currentFrame = secondsToFrames(12);
     ability.cast();
     assert.equal(ability.lastCastFrame, 0);
     assert.equal(ability.used, false);
   });
 
-  it('ability is not expired', function() {
+  it('verify ability is not expired at current frame', function() {
     game.currentFrame = secondsToFrames(1);
     assert.equal(ability.isExpired(), false);
   });
 
-  it('ability is expired', function() {
+  it('verify ability is expired at current frame', function() {
     game.currentFrame = secondsToFrames(10) + 1;
     assert.ok(ability.isExpired());
   });

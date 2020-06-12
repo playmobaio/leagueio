@@ -6,6 +6,7 @@ import HeroState from "../../../src/server/hero/heroState";
 import Hero from "../../../src/server/hero/hero";
 import { secondsToFrames } from '../../../src/server/tools/frame';
 import { TestAbility } from '../testClasses';
+import constants from '../../../src/server/constants';
 
 describe('Ability', function() {
   let ability: TestAbility;
@@ -18,7 +19,7 @@ describe('Ability', function() {
     hero = TypeMoq.Mock.ofType<Hero>();
     hero.setup(x => x.state).returns(() => heroState.object);
     ability = new TestAbility(hero.object);
-    ability.lastCastFrame = 0;
+    ability.lastCastFrame = constants.DEFAULT_LAST_CAST_FRAME;
     game = Game.getInstance();
     game.reset();
   });
@@ -34,19 +35,42 @@ describe('Ability', function() {
   });
 
   it('cannot cast during cooldown', function() {
+    ability.lastCastFrame = 1;
     game.currentFrame = secondsToFrames(12);
     ability.cast();
-    assert.equal(ability.lastCastFrame, 0);
+    assert.equal(ability.lastCastFrame, 1);
     assert.equal(ability.used, false);
   });
 
   it('verify ability is not expired at current frame', function() {
-    game.currentFrame = secondsToFrames(1);
+    ability.lastCastFrame = 1;
+    game.currentFrame = secondsToFrames(2);
     assert.equal(ability.isExpired(), false);
   });
 
   it('verify ability is expired at current frame', function() {
     game.currentFrame = secondsToFrames(10) + 1;
     assert.ok(ability.isExpired());
+  });
+
+  it('toInterface without cast will return cooldownLeft of 0', function() {
+    const ret = ability.toInterface();
+    assert.equal(ret.cooldownLeft, 0);
+  });
+
+  it('toInterface before cooldown finishes will return nonzero cooldownLeft', function() {
+    ability.lastCastFrame = 1
+    const gameFrame = 2;
+    game.currentFrame = secondsToFrames(gameFrame);
+    const ret = ability.toInterface();
+    assert.equal(ret.cooldownLeft, ability.cooldown - gameFrame + ability.lastCastFrame);
+  });
+
+  it('toInterface after cooldown finishes will return zero cooldownLeft', function() {
+    ability.lastCastFrame = 1
+    const gameFrame = 21;
+    game.currentFrame = secondsToFrames(gameFrame);
+    const ret = ability.toInterface();
+    assert.equal(ret.cooldownLeft, 0);
   });
 });

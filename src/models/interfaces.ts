@@ -1,8 +1,19 @@
 export interface IPlayer {
   id: string;
   health: IHealth;
-  model: ICircle;
+  hero: IHero;
   stocks: number;
+}
+
+export interface IAbility {
+  cooldownLeft: number;
+}
+
+export interface IHero {
+  model: ICircle;
+  qAbility: IAbility;
+  wAbility: IAbility;
+  eAbility: IAbility;
 }
 
 export interface IPoint {

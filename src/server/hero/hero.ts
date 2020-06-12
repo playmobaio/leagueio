@@ -1,5 +1,5 @@
 import { Velocity, Circle, Vector, Point } from "../models/basicTypes";
-import { IHealth, IPoint } from '../../models/interfaces';
+import { IHealth, IPoint, IHero } from '../../models/interfaces';
 import HeroState from './heroState';
 import Ability from './ability';
 import Player from '../models/player';
@@ -70,6 +70,15 @@ abstract class Hero {
       return;
     }
     this.model.center = point;
+  }
+
+  toInterface(_private: boolean): IHero {
+    return {
+      model: this.model.toInterface(),
+      qAbility: _private ? null: this.qAbility?.toInterface(),
+      wAbility: _private ? null: this.wAbility?.toInterface(),
+      eAbility: _private ? null: this.eAbility?.toInterface(),
+    }
   }
 
   update(): void {

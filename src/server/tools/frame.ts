@@ -4,4 +4,8 @@ function secondsToFrames(seconds: number): number {
   return constants.FRAMES_PER_SECOND * seconds;
 }
 
-export { secondsToFrames }
+function framesToSeconds(frames: number): number {
+  return Math.floor(frames / constants.FRAMES_PER_SECOND);
+}
+
+export { secondsToFrames, framesToSeconds }

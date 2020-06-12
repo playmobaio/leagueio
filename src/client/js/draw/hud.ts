@@ -27,9 +27,9 @@ function drawAbilityButtons(gameMap: CGameMap, clientPlayer: IPlayer): void {
       text = Math.floor(ability.cooldownLeft).toString();
     }
     gameMap.context.fillRect(x, y, abilityButtonWidth, abilityButtonWidth);
-    const textOffset = (abilityButtonWidth - gameMap.context.measureText(text).width) / 2;
     gameMap.context.font = "20px Arial";
     gameMap.context.fillStyle = "black";
+    const textOffset = (abilityButtonWidth - gameMap.context.measureText(text).width) / 2;
     gameMap.context.fillText(text, x + textOffset, y + 28);
   }
 }

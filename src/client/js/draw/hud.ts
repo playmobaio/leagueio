@@ -14,8 +14,8 @@ function drawAbilityButtons(gameMap: CGameMap, clientPlayer: IPlayer): void {
   for (let i = 0; i < 3; i++) {
     const x = buttonAreaXOffset + i * (abilityButtonWidth + gapBetweenButtons);
     const y = canvasHeight - 60;
-    let text: string;
     const ability: IAbility = clientPlayer.hero[constants.ABILITY_KEYS[i].key];
+    let text: string;
     if (ability == null) {
       gameMap.context.fillStyle = "gray";
       text = constants.ABILITY_KEYS[i].letter;
@@ -26,11 +26,11 @@ function drawAbilityButtons(gameMap: CGameMap, clientPlayer: IPlayer): void {
       gameMap.context.fillStyle = "gray";
       text = Math.floor(ability.cooldownLeft).toString();
     }
-    gameMap.context.fillRect(x, y, 40, 40);
-
+    gameMap.context.fillRect(x, y, abilityButtonWidth, abilityButtonWidth);
+    const textOffset = (abilityButtonWidth - gameMap.context.measureText(text).width) / 2;
     gameMap.context.font = "20px Arial";
     gameMap.context.fillStyle = "black";
-    gameMap.context.fillText(text, x + 11, y + 28);
+    gameMap.context.fillText(text, x + textOffset, y + 28);
   }
 }
 

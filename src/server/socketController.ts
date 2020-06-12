@@ -1,9 +1,9 @@
 import Player from "./models/player";
 import Game from "./models/game";
-import { IUserInput, PlayerCastIO, IUserMouseClick, Click } from '../models/interfaces';
+import { IJoinGame, IUserInput, PlayerCastIO, IUserMouseClick, Click } from '../models/interfaces';
 
-export function clientJoinGame(socket: SocketIO.Socket): void {
-  Player.create(socket.id, socket);
+export function clientJoinGame(socket: SocketIO.Socket, joinGame: IJoinGame): void {
+  Player.create(socket.id, socket, joinGame.name, joinGame.heroId);
 }
 
 export function registerPlayerCast(clientId: string, userInput: IUserInput): void {

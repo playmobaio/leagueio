@@ -3,8 +3,8 @@ import CGameMap from './cgameMap';
 import Camera from './camera';
 import { drawPlayer } from './draw/player';
 import { drawProjectile } from './draw/projectile';
-import { drawClientHealth } from './draw/health';
 import { drawClientStocks } from './draw/stocks';
+import { drawClientHud } from './draw/hud';
 import UserInputController from './userInputController';
 
 // Client
@@ -37,6 +37,7 @@ class Game {
 
     this.currentFrame = gameState.currentFrame;
     this.gameMap.resetFrame();
+    this.gameMap.context.fillStyle = "black";
     this.camera.setFrameReference(gameState.client);
     this.gameMap.drawLayer(this.camera, Layer.Background);
 
@@ -51,7 +52,7 @@ class Game {
     });
 
     this.gameMap.drawLayer(this.camera, Layer.Foreground);
-    drawClientHealth(this.gameMap, gameState.client);
+    drawClientHud(this.gameMap, gameState.client);
     drawClientStocks(this.gameMap, gameState.client)
   }
 }

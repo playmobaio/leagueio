@@ -1,6 +1,8 @@
 import Hero from './hero';
 import Game from '../models/game';
-import { secondsToFrames } from '../tools/frame';
+import { secondsToFrames, framesToSeconds } from '../tools/frame';
+import { IAbility } from '../../models/interfaces';
+import constants from '../constants';
 
 abstract class Ability {
   cooldown: number;
@@ -10,7 +12,7 @@ abstract class Ability {
 
   constructor(hero: Hero) {
     this.hero = hero;
-    this.lastCastFrame = -1000000;
+    this.lastCastFrame = constants.DEFAULT_LAST_CAST_FRAME;
   }
 
   abstract onSuccess(): void;
@@ -29,6 +31,18 @@ abstract class Ability {
 
   isExpired(): boolean {
     return this.lastCastFrame + secondsToFrames(this.castLength) < Game.getInstance().currentFrame;
+  }
+
+  toInterface(): IAbility {
+    let secondsLeft = 0;
+    if (this.lastCastFrame > 0) {
+      const sinceCast = framesToSeconds(Game.getInstance().currentFrame - this.lastCastFrame);
+      const cooldownLeft = this.cooldown - sinceCast;
+      secondsLeft = Math.max(secondsLeft, cooldownLeft);
+    }
+    return {
+      cooldownLeft: secondsLeft
+    }
   }
 }
 export default Ability;

@@ -55,10 +55,10 @@ class Player {
     this.hero.update();
   }
 
-  toInterface(): IPlayer {
+  toInterface(_private: boolean): IPlayer {
     return {
       id: this.id,
-      model: this.hero.model.toInterface(),
+      hero: this.hero.toInterface(_private),
       health: this.health,
       stocks: this.stocks
     };
@@ -66,7 +66,7 @@ class Player {
 
   getGameState(players: Array<IPlayer>, projectiles: Array<IProjectile>): IGameState {
     return {
-      client: this.toInterface(),
+      client: this.toInterface(false),
       players: players,
       projectiles: projectiles,
       currentFrame: Game.getInstance().currentFrame

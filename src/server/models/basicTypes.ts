@@ -84,6 +84,7 @@ export class Point implements IPoint {
 export class Circle implements ICircle {
   center: Point;
   radius: number;
+  type = "circle"
 
   constructor(radius: number, position?: Point) {
     this.center = position == null ? this.getRandomValidPosition(radius) : position;
@@ -123,7 +124,8 @@ export class Circle implements ICircle {
   toInterface(): ICircle {
     return {
       center: this.center,
-      radius: this.radius
+      radius: this.radius,
+      type: this.type
     }
   }
 }

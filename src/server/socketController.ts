@@ -27,7 +27,7 @@ export function registerPlayerClick(clientId: string, clickEvent: IUserMouseClic
   const player: Player = Game.getInstance().players.get(clientId);
   switch(clickEvent.click) {
   case Click.Left:
-    player?.hero?.performAutoAttack(clickEvent.cursorPosition);
+    player?.hero?.performAttack(clickEvent.cursorPosition);
     break;
   case Click.Right:
     player?.hero?.updateVelocity(clickEvent.cursorPosition);

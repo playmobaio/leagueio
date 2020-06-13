@@ -1,23 +1,25 @@
 import Hero from './hero';
 import Game from '../models/game';
 import { secondsToFrames, framesToSeconds } from '../tools/frame';
-import { IAbility } from '../../models/interfaces';
 import constants from '../constants';
+import { IAbility, IShape } from '../../models/interfaces';
 
 abstract class Ability {
   cooldown: number;
   castLength: number;
   lastCastFrame: number;
+  range: number;
   hero: Hero;
+  area: IShape;
 
   constructor(hero: Hero) {
     this.hero = hero;
     this.lastCastFrame = constants.DEFAULT_LAST_CAST_FRAME;
+    this.castLength = constants.DEFAULT_CAST_LENGTH;
   }
 
-  abstract onSuccess(): void;
-  abstract onFailure(): void;
   abstract onCast(): void;
+  abstract useAbility(): void;
 
   cast(): void {
     const currFrame = Game.getInstance().currentFrame;
@@ -33,15 +35,20 @@ abstract class Ability {
     return this.lastCastFrame + secondsToFrames(this.castLength) < Game.getInstance().currentFrame;
   }
 
-  toInterface(): IAbility {
+  getCooldownLeft(): number {
     let secondsLeft = 0;
     if (this.lastCastFrame > 0) {
       const sinceCast = framesToSeconds(Game.getInstance().currentFrame - this.lastCastFrame);
       const cooldownLeft = this.cooldown - sinceCast;
       secondsLeft = Math.max(secondsLeft, cooldownLeft);
     }
+    return secondsLeft;
+  }
+
+  toInterface(): IAbility {
     return {
-      cooldownLeft: secondsLeft
+      area: this.area,
+      range: this.range
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Velocity, Circle, Vector, Point } from "../models/basicTypes";
-import { IHealth, IPoint, IHero } from '../../models/interfaces';
+import { IHealth, IPoint, IHero, Condition } from '../../models/interfaces';
 import HeroState from './heroState';
 import Ability from './ability';
 import Player from '../models/player';
@@ -46,6 +46,17 @@ abstract class Hero {
     return vector.getMagnitude() > this.range;
   }
 
+  performAttack(dest: IPoint): void {
+    switch (this.state.condition) {
+    case Condition.CASTING:
+      this.state?.casting?.useAbility();
+      return;
+    case Condition.ACTIVE:
+      this.performAutoAttack(dest);
+      return;
+    }
+  }
+
   performAutoAttack(dest: IPoint): void {
     if (dest == undefined || this.model.center.equals(dest) || !this.canAutoAttack()) {
       return;
@@ -75,9 +86,10 @@ abstract class Hero {
   toInterface(_private: boolean): IHero {
     return {
       model: this.model.toInterface(),
-      qAbility: _private ? null: this.qAbility?.toInterface(),
-      wAbility: _private ? null: this.wAbility?.toInterface(),
-      eAbility: _private ? null: this.eAbility?.toInterface(),
+      state: _private ? null: this.state.toInterface(),
+      qAbility: _private ? null: this.qAbility?.getCooldownLeft(),
+      wAbility: _private ? null: this.wAbility?.getCooldownLeft(),
+      eAbility: _private ? null: this.eAbility?.getCooldownLeft(),
     }
   }
 

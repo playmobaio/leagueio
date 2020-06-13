@@ -5,7 +5,8 @@ import Player from '../../../src/server/models/player';
 import Game from '../../../src/server/models/game';
 import { Point, Circle, Velocity } from '../../../src/server/models/basicTypes';
 import HeroState from '../../../src/server/hero/heroState';
-import { TestHero } from '../testClasses';
+import { TestHero, TestAbility } from '../testClasses';
+import { Condition } from '../../../src/models/interfaces';
 
 describe('Hero', function() {
   let player: TypeMoq.IMock<Player>;
@@ -79,6 +80,7 @@ describe('Hero', function() {
 
   it("calling toInterface with private true will not return abilities", function() {
     const ret = hero.toInterface(true);
+    assert.equal(ret.state, null);
     assert.equal(ret.qAbility, null);
     assert.equal(ret.wAbility, null);
     assert.equal(ret.eAbility, null);
@@ -86,8 +88,23 @@ describe('Hero', function() {
 
   it("calling toInterface with private false will return abilities if they exist", function() {
     const ret = hero.toInterface(false);
+    assert.notEqual(ret.state, null);
     assert.notEqual(ret.qAbility, null);
     assert.equal(ret.wAbility, null);
     assert.notEqual(ret.eAbility, null);
+  });
+
+  it("calling perform attack while heroState is active will autoAttack", function() {
+    stateMock.setup(x => x.condition).returns(() => Condition.ACTIVE);
+    mock.object.performAttack(point);
+    mock.verify(x => x.performAutoAttack(TypeMoq.It.isAny()), TypeMoq.Times.once());
+  });
+
+  it("calling perform attack while heroState is casting will useAbility", function() {
+    const abilityMock = TypeMoq.Mock.ofType<TestAbility>();
+    stateMock.setup(x => x.condition).returns(() => Condition.CASTING);
+    stateMock.setup(x => x.casting).returns(() => abilityMock.object);
+    mock.object.performAttack(point);
+    abilityMock.verify(x => x.useAbility(), TypeMoq.Times.once());
   });
 });

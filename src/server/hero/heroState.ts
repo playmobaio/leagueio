@@ -1,6 +1,6 @@
 import Effect from './effect';
-import Condition from './condition';
 import Ability from './ability';
+import { Condition, IHeroState } from '../../models/interfaces';
 
 class HeroState {
   effects: Effect[];
@@ -20,6 +20,13 @@ class HeroState {
     effect.start();
     console.log(`Using ${effect.description}`);
     this.effects.push(effect);
+  }
+
+  toInterface(): IHeroState {
+    return {
+      condition: this.condition,
+      casting: this.casting?.toInterface()
+    }
   }
 
   update(): void {

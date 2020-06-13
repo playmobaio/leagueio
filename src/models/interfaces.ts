@@ -29,7 +29,7 @@ export interface IPoint {
 }
 
 export interface IShape {
-  type: string;
+  type: Shape;
 }
 
 export interface ICircle extends IShape {
@@ -104,4 +104,9 @@ export enum Condition {
   Stunned,
   Casting,
   Dead
+}
+
+export enum Shape {
+  Circle,
+  Line
 }

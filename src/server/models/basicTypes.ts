@@ -1,4 +1,4 @@
-import { IPoint, ICircle } from '../../models/interfaces';
+import { IPoint, ICircle, Shape } from '../../models/interfaces';
 import GameMap from './gameMap';
 import Game from './game';
 
@@ -84,7 +84,7 @@ export class Point implements IPoint {
 export class Circle implements ICircle {
   center: Point;
   radius: number;
-  type = "circle"
+  type = Shape.Circle;
 
   constructor(radius: number, position?: Point) {
     this.center = position == null ? this.getRandomValidPosition(radius) : position;

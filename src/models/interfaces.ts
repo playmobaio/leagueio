@@ -100,8 +100,8 @@ export enum Tile {
 }
 
 export enum Condition {
-  ACTIVE,
-  STUNNED,
-  CASTING,
-  DEAD
+  Active,
+  Stunned,
+  Casting,
+  Dead
 }

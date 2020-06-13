@@ -9,7 +9,7 @@ class HeroState {
 
   constructor() {
     this.effects = [];
-    this.condition = Condition.ACTIVE;
+    this.condition = Condition.Active;
   }
 
   addCasting(ability: Ability): void {

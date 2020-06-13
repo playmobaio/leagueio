@@ -95,14 +95,14 @@ describe('Hero', function() {
   });
 
   it("calling perform attack while heroState is active will autoAttack", function() {
-    stateMock.setup(x => x.condition).returns(() => Condition.ACTIVE);
+    stateMock.setup(x => x.condition).returns(() => Condition.Active);
     mock.object.performAttack(point);
     mock.verify(x => x.performAutoAttack(TypeMoq.It.isAny()), TypeMoq.Times.once());
   });
 
   it("calling perform attack while heroState is casting will useAbility", function() {
     const abilityMock = TypeMoq.Mock.ofType<TestAbility>();
-    stateMock.setup(x => x.condition).returns(() => Condition.CASTING);
+    stateMock.setup(x => x.condition).returns(() => Condition.Casting);
     stateMock.setup(x => x.casting).returns(() => abilityMock.object);
     mock.object.performAttack(point);
     abilityMock.verify(x => x.useAbility(), TypeMoq.Times.once());

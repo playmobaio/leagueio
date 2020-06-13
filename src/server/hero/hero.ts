@@ -48,10 +48,10 @@ abstract class Hero {
 
   performAttack(dest: IPoint): void {
     switch (this.state.condition) {
-    case Condition.CASTING:
+    case Condition.Casting:
       this.state?.casting?.useAbility();
       return;
-    case Condition.ACTIVE:
+    case Condition.Active:
       this.performAutoAttack(dest);
       return;
     }

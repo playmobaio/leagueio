@@ -14,17 +14,17 @@ function drawAbilityButtons(gameMap: CGameMap, clientPlayer: IPlayer): void {
   for (let i = 0; i < 3; i++) {
     const x = buttonAreaXOffset + i * (abilityButtonWidth + gapBetweenButtons);
     const y = canvasHeight - 60;
-    const ability: number = clientPlayer.hero[constants.ABILITY_KEYS[i].key];
+    const coolDownLeft: number = clientPlayer.hero[constants.ABILITY_KEYS[i].key];
     let text: string;
-    if (ability == null) {
+    if (coolDownLeft == null) {
       gameMap.context.fillStyle = "gray";
       text = constants.ABILITY_KEYS[i].letter;
-    } else if (ability == 0) {
+    } else if (coolDownLeft == 0) {
       gameMap.context.fillStyle = "white";
       text = constants.ABILITY_KEYS[i].letter
-    } else if (ability > 0) {
+    } else if (coolDownLeft > 0) {
       gameMap.context.fillStyle = "gray";
-      text = Math.floor(ability).toString();
+      text = Math.floor(coolDownLeft).toString();
     }
     gameMap.context.fillRect(x, y, abilityButtonWidth, abilityButtonWidth);
     gameMap.context.font = "20px Arial";

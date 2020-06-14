@@ -4,7 +4,7 @@ import Camera from '../camera';
 import { drawCircle } from './shape';
 
 function drawProjectile(gameMap: CGameMap, projectile: IProjectile, camera: Camera): void {
-  const position = camera.getRelativePosition(projectile.model.origin);
+  const position = camera.absoluteToRelativePosition(projectile.model.origin);
   drawCircle(gameMap, position, projectile.model.radius, "green");
 }
 

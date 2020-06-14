@@ -26,7 +26,7 @@ function drawHealthBar(gameMap: CGameMap, player: IPlayer, position: IPoint): vo
 }
 
 function drawPlayer(gameMap: CGameMap, player: IPlayer, camera: Camera): void {
-  const position = camera.getRelativePosition(player.hero.model.origin);
+  const position = camera.absoluteToRelativePosition(player.hero.model.origin);
   gameMap.context.lineWidth = 5;
   drawPlayerModel(gameMap, player, position);
   drawHealthBar(gameMap, player, position);

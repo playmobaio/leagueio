@@ -16,14 +16,26 @@ export default class Camera {
     this.absolutePosition = { x: 0, y: 0 };
   }
 
-  getRelativePosition(absolutePosition: IPoint): IPoint {
+  absoluteToRelativePosition(absolutePosition: IPoint): IPoint {
     return {
       x: absolutePosition.x - this.absolutePosition.x,
       y: absolutePosition.y - this.absolutePosition.y
     };
   }
 
-  getAbsolutePosition(relativePosition: IPoint): IPoint {
+  getAbsolutePosition(canvasWidth: number, canvasHeight: number, screenPoint: IPoint): IPoint {
+    console.log(screenPoint);
+    console.log(canvasWidth);
+    console.log(canvasHeight);
+    const relativePosition: IPoint = {
+      x: screenPoint.x/canvasWidth * this.width,
+      y: screenPoint.y/canvasHeight * this.height
+    };
+    console.log(relativePosition);
+    return this.relativeToAbsolutePosition(relativePosition);
+  }
+
+  relativeToAbsolutePosition(relativePosition: IPoint): IPoint {
     return {
       x: relativePosition.x + this.absolutePosition.x,
       y: relativePosition.y + this.absolutePosition.y

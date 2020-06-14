@@ -1,4 +1,5 @@
 import { IPlayer,
+  HeroID,
   IHealth,
   IGameState,
   IProjectile } from '../../models/interfaces';
@@ -8,6 +9,7 @@ import constants from '../constants';
 import { EmitEvent } from '../tools/emitEvent'
 import Hero from '../hero/hero';
 import Ranger from '../hero/classes/ranger';
+import Brute from '../hero/classes/brute';
 
 class Player {
   id: string;
@@ -15,25 +17,41 @@ class Player {
   displayName: string;
   team: string;
   hero: Hero;
+  name: string;
   socket: SocketIO.Socket;
   attackSpeed: number;
   health: IHealth;
   range: number;
   stocks: number;
 
-  private constructor(id: string, socket: SocketIO.Socket) {
+  constructor(id: string, socket: SocketIO.Socket, name: string, heroId: HeroID) {
     this.id = id;
+    this.displayName = name;
     this.socket = socket;
     this.range = 0;
     this.stocks = constants.DEFAULT_STARTING_STOCK;
     this.health = {
       current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
       maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
-    this.hero = new Ranger(this);
+    this.hero = this.createHero(heroId);
   }
 
-  static create(id: string, socket: SocketIO.Socket): Player {
-    const player = new Player(id, socket);
+  createHero(heroId: HeroID): Hero {
+    switch (heroId) {
+    case HeroID.Ranger: {
+      return new Ranger(this);
+    }
+    case HeroID.Brute: {
+      return new Brute(this);
+    }
+    default: {
+      throw new Error("HeroId: " + heroId + " does not exist");
+    }
+    }
+  }
+
+  static create(id: string, socket: SocketIO.Socket, name: string, heroId: HeroID): Player {
+    const player = new Player(id, socket, name, heroId);
     Game.getInstance().emitter.emit(EmitEvent.NewPlayer, player);
     return player;
   }

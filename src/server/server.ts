@@ -2,7 +2,7 @@ import * as express from "express";
 import * as path from "path";
 import *  as socketController from "./socketController";
 import Game from './models/game';
-import { IUserInput, IUserMouseClick, IGameState } from '../models/interfaces';
+import { IUserInput, IUserMouseClick, IGameState, IJoinGame } from '../models/interfaces';
 import constants from './constants';
 
 // Create the app
@@ -26,7 +26,9 @@ io.sockets.on(
   function(socket: SocketIO.Socket) {
     console.log("We have a new client: " + socket.id);
 
-    socket.on("C:JOIN_GAME", () => socketController.clientJoinGame(socket));
+    socket.on("C:JOIN_GAME", (joinGame: IJoinGame) => {
+      socketController.clientJoinGame(socket, joinGame)
+    });
     socket.on("C:USER_MOVE", (userInput: IUserInput) => {
       socketController.registerPlayerCast(socket.id, userInput);
     });

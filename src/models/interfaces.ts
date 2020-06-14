@@ -47,6 +47,16 @@ export interface IGameState {
   currentFrame: number;
 }
 
+export enum HeroID {
+  Ranger = 1,
+  Brute = 2,
+}
+
+export interface IJoinGame {
+  name: string;
+  heroId: HeroID;
+}
+
 export enum PlayerCastIO {
   None = 0,
   Q = 1,

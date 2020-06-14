@@ -7,6 +7,8 @@ describe('Player', function() {
   let player: Player;
   let socket: TypeMoq.IMock<SocketIO.Socket>;
   const id = "id";
+  const defaultName = "DEFAULT_NAME";
+  const defaultHeroID = 1;
   let game: Game;
 
   beforeEach(function(){
@@ -15,7 +17,7 @@ describe('Player', function() {
     game = Game.getInstance();
     // new game not initiated, singleton. So just deleting projectiles
     game.reset();
-    player = Player.create(id, socket.object);
+    player = Player.create(id, socket.object, defaultName, defaultHeroID);
   });
 
   it("health cannot be negative", function() {

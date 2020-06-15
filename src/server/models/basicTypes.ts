@@ -82,12 +82,12 @@ export class Point implements IPoint {
 }
 
 export class Circle implements ICircle {
-  center: Point;
+  origin: Point;
   radius: number;
   type = Shape.Circle;
 
   constructor(radius: number, position?: Point) {
-    this.center = position == null ? this.getRandomValidPosition(radius) : position;
+    this.origin = position == null ? this.getRandomValidPosition(radius) : position;
     this.radius = radius;
   }
 
@@ -100,7 +100,7 @@ export class Circle implements ICircle {
     return position;
   }
 
-  isInvalidPosition(map: GameMap, point = this.center, radius = this.radius): boolean {
+  isInvalidPosition(map: GameMap, point = this.origin, radius = this.radius): boolean {
     const left = point.x - radius;
     const right = point.x + radius;
     const top = point.y - radius;
@@ -114,19 +114,11 @@ export class Circle implements ICircle {
   }
 
   collidesWithCircle(otherCircle: Circle): boolean {
-    const otherCircleCenter = otherCircle.center;
+    const otherCircleCenter = otherCircle.origin;
     const otherCircleRadius = otherCircle.radius;
-    const distanceFromCenter = this.center.distanceFrom(otherCircleCenter);
+    const distanceFromCenter = this.origin.distanceFrom(otherCircleCenter);
 
     return distanceFromCenter < this.radius + otherCircleRadius;
-  }
-
-  toInterface(): ICircle {
-    return {
-      center: this.center,
-      radius: this.radius,
-      type: this.type
-    }
   }
 }
 

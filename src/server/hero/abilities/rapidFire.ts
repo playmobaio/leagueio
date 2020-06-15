@@ -5,10 +5,6 @@ class RapidFire extends Ability {
   castLength = 7;
   cooldown = 20;
 
-  useAbility(): void {
-    return;
-  }
-
   onCast(): void {
     const effect = new AttackSpeedModifierEffect(this.hero, this.castLength, 2);
     this.hero.state.addEffect(effect);

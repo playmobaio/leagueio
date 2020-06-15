@@ -1,23 +1,17 @@
 import CGameMap from "../cgameMap";
 import { IPlayer, IPoint } from '../../../models/interfaces';
 import Camera from '../camera';
+import { drawCircle } from './shape';
 
 function drawPlayerModel(gameMap: CGameMap, player: IPlayer, position: IPoint): void {
   gameMap.context.beginPath();
-  gameMap.context.arc(
-    position.x,
-    position.y,
-    player.hero.model.radius,
-    0,
-    2 * Math.PI);
-  gameMap.context.strokeStyle = "black";
-  gameMap.context.stroke();
-  gameMap.context.fill();
+  const model = player.hero.model;
+  player.hero.model.origin = position;
+  drawCircle(gameMap, model.origin, model.radius, "black", true);
 }
 
 function drawHealthBar(gameMap: CGameMap, player: IPlayer, position: IPoint): void {
   gameMap.context.beginPath();
-  gameMap.context.lineWidth = 5;
   gameMap.context.strokeStyle = "red";
   const XStart = -10;
   const Xlength = 20;
@@ -33,7 +27,8 @@ function drawHealthBar(gameMap: CGameMap, player: IPlayer, position: IPoint): vo
 }
 
 function drawPlayer(gameMap: CGameMap, player: IPlayer, camera: Camera): void {
-  const position = camera.getRelativePosition(player.hero.model.center);
+  const position = camera.getRelativePosition(player.hero.model.origin);
+  gameMap.context.lineWidth = 5;
   drawPlayerModel(gameMap, player, position);
   drawHealthBar(gameMap, player, position);
 }

@@ -33,16 +33,16 @@ abstract class Hero {
   }
 
   updateVelocity(point: IPoint): void {
-    this.velocitySource = this.model.center;
+    this.velocitySource = this.model.origin;
     this.range = Vector.createFromPoints(this.velocitySource, point).getMagnitude();
-    this.velocity = new Velocity(point, this.velocityMagnitude, this.model.center);
+    this.velocity = new Velocity(point, this.velocityMagnitude, this.model.origin);
   }
 
   rangeExpired(): boolean {
-    if (!this.velocitySource || !this.model?.center) {
+    if (!this.velocitySource || !this.model?.origin) {
       return true;
     }
-    const vector = Vector.createFromPoints(this.velocitySource, this.model.center);
+    const vector = Vector.createFromPoints(this.velocitySource, this.model.origin);
     return vector.getMagnitude() > this.range;
   }
 
@@ -58,7 +58,7 @@ abstract class Hero {
   }
 
   performAutoAttack(dest: IPoint): void {
-    if (dest == undefined || this.model.center.equals(dest) || !this.canAutoAttack()) {
+    if (dest == undefined || this.model.origin.equals(dest) || !this.canAutoAttack()) {
       return;
     }
     this.onAutoAttack(dest);
@@ -80,12 +80,12 @@ abstract class Hero {
       this.model.isInvalidPosition(Game.getInstance().gameMap, point)) {
       return;
     }
-    this.model.center = point;
+    this.model.origin = point;
   }
 
   toInterface(_private: boolean): IHero {
     return {
-      model: this.model.toInterface(),
+      model: this.model,
       state: _private ? null: this.state.toInterface(),
       qAbility: _private ? null: this.qAbility?.getCooldownLeft(),
       wAbility: _private ? null: this.wAbility?.getCooldownLeft(),
@@ -95,7 +95,7 @@ abstract class Hero {
 
   update(): void {
     if (!this.rangeExpired()) {
-      this.updatePosition(this.model.center.transform(this.velocity));
+      this.updatePosition(this.model.origin.transform(this.velocity));
     }
     this.state.update();
   }

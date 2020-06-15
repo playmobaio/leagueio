@@ -37,7 +37,7 @@ describe('Hero', function() {
     hero.model = circle.object;
     hero.updatePosition(position);
 
-    circle.verify(x => x.center = TypeMoq.It.isValue(position), Times.once());
+    circle.verify(x => x.origin = TypeMoq.It.isValue(position), Times.once());
   });
 
   it("will autoattack immediately on spawn", function() {

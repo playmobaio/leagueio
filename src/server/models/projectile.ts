@@ -25,12 +25,12 @@ class Projectile implements IProjectile {
   }
 
   static create(player: Player, model: Circle, dest: IPoint, range: number): Projectile {
-    const offsetVector = Vector.createFromPoints(model.center, dest)
+    const offsetVector = Vector.createFromPoints(model.origin, dest)
       .setMagnitude(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET);
-    const origin: Point = model.center.transformWithVector(offsetVector);
+    const origin: Point = model.origin.transformWithVector(offsetVector);
     const velocity = new Velocity(dest,
       constants.DEFAULT_PROJECTILE_SPEED,
-      model.center);
+      model.origin);
 
     const projectile: Projectile = new Projectile(player.id, origin, velocity, range)
     Game.getInstance().emitter.emit(EmitEvent.NewProjectile, projectile);
@@ -42,12 +42,12 @@ class Projectile implements IProjectile {
   }
 
   rangeExpired(): boolean {
-    const vector = Vector.createFromPoints(this.origin, this.model.center);
+    const vector = Vector.createFromPoints(this.origin, this.model.origin);
     return vector.getMagnitude() > this.range;
   }
 
   update(): void {
-    this.model.center = this.model.center.transform(this.velocity);
+    this.model.origin = this.model.origin.transform(this.velocity);
   }
 
   delete(): void {

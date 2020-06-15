@@ -29,11 +29,11 @@ export interface IPoint {
 }
 
 export interface IShape {
+  origin: IPoint;
   type: Shape;
 }
 
 export interface ICircle extends IShape {
-  center: IPoint;
   radius: number;
 }
 

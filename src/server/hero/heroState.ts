@@ -12,6 +12,10 @@ class HeroState {
     this.condition = Condition.Active;
   }
 
+  setCondition(condition: Condition): void {
+    this.condition = condition;
+  }
+
   addCasting(ability: Ability): void {
     this.casting = ability;
   }

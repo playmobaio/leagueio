@@ -19,7 +19,10 @@ abstract class Ability {
   }
 
   abstract onCast(): void;
-  abstract useAbility(): void;
+
+  useAbility(): void {
+    return;
+  }
 
   cast(): void {
     const currFrame = Game.getInstance().currentFrame;
@@ -46,6 +49,9 @@ abstract class Ability {
   }
 
   toInterface(): IAbility {
+    if (this.area == null || this.range == null) {
+      return null;
+    }
     return {
       area: this.area,
       range: this.range

@@ -1,13 +1,14 @@
 import Layers from './layer';
 import constants from './constants';
 import Camera from './camera';
-import { Layer } from '../../models/interfaces';
+import { Layer, IShape } from '../../models/interfaces';
 
 class CGameMap {
   private static instance: CGameMap;
   context: CanvasRenderingContext2D;
   canvas: HTMLCanvasElement;
   layers: Layers;
+  castingShape: IShape;
 
   private constructor(canvas: HTMLCanvasElement,
       context: CanvasRenderingContext2D,

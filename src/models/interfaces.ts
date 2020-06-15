@@ -18,9 +18,9 @@ export interface IAbility {
 export interface IHero {
   model: ICircle;
   state: IHeroState;
-  qAbility: number;
-  wAbility: number;
-  eAbility: number;
+  qAbilityCooldown: number;
+  wAbilityCooldown: number;
+  eAbilityCooldown: number;
 }
 
 export interface IPoint {

@@ -87,9 +87,9 @@ abstract class Hero {
     return {
       model: this.model,
       state: _private ? null: this.state.toInterface(),
-      qAbility: _private ? null: this.qAbility?.getCooldownLeft(),
-      wAbility: _private ? null: this.wAbility?.getCooldownLeft(),
-      eAbility: _private ? null: this.eAbility?.getCooldownLeft(),
+      qAbilityCooldown: _private ? null: this.qAbility?.getCooldownLeft(),
+      wAbilityCooldown: _private ? null: this.wAbility?.getCooldownLeft(),
+      eAbilityCooldown: _private ? null: this.eAbility?.getCooldownLeft(),
     }
   }
 

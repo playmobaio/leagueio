@@ -2,6 +2,7 @@ import { IGameState, IHero, IPoint, Shape, IShape, ICircle } from '../../../mode
 import CGameMap from '../cgameMap';
 import Camera from '../camera';
 import { drawCircle } from './shape';
+import constants from '../constants';
 
 function drawRange(gameMap: CGameMap, camera: Camera, hero: IHero): void {
   const range = hero.state.casting.range;
@@ -10,7 +11,7 @@ function drawRange(gameMap: CGameMap, camera: Camera, hero: IHero): void {
   }
   const center: IPoint = camera.getRelativePosition(hero.model.origin);
   gameMap.context.lineWidth = 2;
-  drawCircle(gameMap, center, range, "#ff6961");
+  drawCircle(gameMap, center, range, constants.PASTEL_RED_HEX);
 }
 
 function drawCastArea(gameMap: CGameMap): void {
@@ -18,13 +19,18 @@ function drawCastArea(gameMap: CGameMap): void {
   switch(shape.type) {
   case Shape.Circle: {
     const circle = shape as ICircle;
-    drawCircle(gameMap, circle.origin, circle.radius, "#ff6961", true, "#ff6961");
+    drawCircle(gameMap,
+      circle.origin,
+      circle.radius,
+      constants.PASTEL_RED_HEX,
+      true,
+      constants.PASTEL_RED_HEX);
     break;
   }
   }
 }
 
-async function setCastingAreaOrigin(evt): Promise<void> {
+async function setCastingAreaOrigin(evt: MouseEvent): Promise<void> {
   const gameMap = await CGameMap.getInstance();
   if (gameMap.castingShape == null) {
     return;

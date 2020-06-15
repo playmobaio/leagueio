@@ -6,7 +6,7 @@ class HailOfArrows extends Ability {
   cooldown = 18;
 
   useAbility(): void {
-    console.log("using arrows");
+    console.log("using hail of arrows");
     this.range = null;
     this.area = null;
     this.hero.state.setCondition(Condition.Active);

@@ -81,17 +81,17 @@ describe('Hero', function() {
   it("calling toInterface with private true will not return abilities", function() {
     const ret = hero.toInterface(true);
     assert.equal(ret.state, null);
-    assert.equal(ret.qAbility, null);
-    assert.equal(ret.wAbility, null);
-    assert.equal(ret.eAbility, null);
+    assert.equal(ret.qAbilityCooldown, null);
+    assert.equal(ret.wAbilityCooldown, null);
+    assert.equal(ret.eAbilityCooldown, null);
   });
 
   it("calling toInterface with private false will return abilities if they exist", function() {
     const ret = hero.toInterface(false);
     assert.notEqual(ret.state, null);
-    assert.notEqual(ret.qAbility, null);
-    assert.equal(ret.wAbility, null);
-    assert.notEqual(ret.eAbility, null);
+    assert.notEqual(ret.qAbilityCooldown, null);
+    assert.equal(ret.wAbilityCooldown, null);
+    assert.notEqual(ret.eAbilityCooldown, null);
   });
 
   it("calling perform attack while heroState is active will autoAttack", function() {

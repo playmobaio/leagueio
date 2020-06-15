@@ -6,8 +6,7 @@ import { drawCircle } from './shape';
 function drawPlayerModel(gameMap: CGameMap, player: IPlayer, position: IPoint): void {
   gameMap.context.beginPath();
   const model = player.hero.model;
-  player.hero.model.origin = position;
-  drawCircle(gameMap, model.origin, model.radius, "black", true);
+  drawCircle(gameMap, position, model.radius, "black", true);
 }
 
 function drawHealthBar(gameMap: CGameMap, player: IPlayer, position: IPoint): void {

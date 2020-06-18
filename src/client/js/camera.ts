@@ -24,14 +24,10 @@ export default class Camera {
   }
 
   getAbsolutePosition(canvasWidth: number, canvasHeight: number, screenPoint: IPoint): IPoint {
-    console.log(screenPoint);
-    console.log(canvasWidth);
-    console.log(canvasHeight);
     const relativePosition: IPoint = {
       x: screenPoint.x/canvasWidth * this.width,
       y: screenPoint.y/canvasHeight * this.height
     };
-    console.log(relativePosition);
     return this.relativeToAbsolutePosition(relativePosition);
   }
 

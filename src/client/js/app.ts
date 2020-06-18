@@ -28,8 +28,8 @@ document.getElementById("joinGame").onclick = async(): Promise<void> => {
   const socket: SocketIO.Socket = io();
   await registerSocket(socket);
   InitializeGameUI();
+  window.addEventListener('resize', resizeCanvas);
   socket.emit("C:JOIN_GAME", joinGame);
 };
 
-window.addEventListener('resize', resizeCanvas);
 

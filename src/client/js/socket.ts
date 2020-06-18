@@ -2,7 +2,7 @@ import Game from './game';
 import UserInputController from './userInputController';
 import { PlayerCastIO, IPoint, IGameState, Click } from '../../models/interfaces';
 
-const CHARS_IN_PX: number = 2;
+const CHARS_IN_PX = 2;
 
 async function registerSocket(socket: SocketIO.Socket): Promise<void> {
   const _game: Game = await Game.getInstance();
@@ -30,7 +30,9 @@ async function registerSocket(socket: SocketIO.Socket): Promise<void> {
       click = Click.Right;
       break;
     }
-    _userInputController.sendMouseClick(click, _game.camera.getAbsolutePosition(width, height, screenPoint));
+    _userInputController.sendMouseClick(
+      click,
+      _game.camera.getAbsolutePosition(width, height, screenPoint));
   });
 
   function getPlayerMovementIO(event: KeyboardEvent): PlayerCastIO {

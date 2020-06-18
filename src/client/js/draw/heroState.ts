@@ -9,7 +9,7 @@ function drawRange(gameMap: CGameMap, camera: Camera, hero: IHero): void {
   if (range == null) {
     return;
   }
-  const center: IPoint = camera.getRelativePosition(hero.model.origin);
+  const center: IPoint = camera.absoluteToRelativePosition(hero.model.origin);
   gameMap.context.lineWidth = 2;
   drawCircle(gameMap, center, range, constants.PASTEL_RED_HEX);
 }

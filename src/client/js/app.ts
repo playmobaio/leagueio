@@ -13,9 +13,10 @@ function resizeCanvas(): void {
 
 function InitializeGameUI(): void {
   document.getElementsByTagName("body")[0].style.margin = "0px 0px 0px 0px";
+  document.getElementById("startpanel").style.visibility = "hidden";
   document.getElementById("startpanel").style.height = "0px";
   document.getElementById("game").style.visibility = "visible";
-  document.getElementById("startpanel").style.visibility = "hidden";
+  document.getElementById("game").requestFullscreen();
   resizeCanvas();
 }
 

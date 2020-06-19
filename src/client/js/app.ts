@@ -1,6 +1,7 @@
 import * as io from 'socket.io-client';
 import { HeroID, IJoinGame } from "../../models/interfaces";
 import { registerSocket } from './socket';
+import Layers from './layer';
 
 function resizeCanvas(): void {
   const canvas: HTMLElement = document.getElementById("canvas");
@@ -20,17 +21,22 @@ function InitializeGameUI(): void {
   resizeCanvas();
 }
 
-document.getElementById("joinGame").onclick = async(): Promise<void> => {
+document.getElementById("joinGame").onclick = (): void => {
+  if (Layers.getLayers() == null) {
+    console.log("Loading");
+    return;
+  }
   console.log("Initializing Socket");
   const name: string = (document.getElementById("playerName") as HTMLInputElement).value;
   const heroId: HeroID = parseInt((document.getElementById("hero") as HTMLInputElement).value);
   const joinGame: IJoinGame = { name, heroId };
 
   const socket: SocketIO.Socket = io();
-  await registerSocket(socket);
+  registerSocket(socket);
   InitializeGameUI();
   window.addEventListener('resize', resizeCanvas);
   socket.emit("C:JOIN_GAME", joinGame);
 };
 
+Layers.createAsync();
 

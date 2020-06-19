@@ -18,9 +18,9 @@ class CGameMap {
     this.layers = layers;
   }
 
-  static async getInstance(): Promise<CGameMap> {
+  static getInstance(): CGameMap {
     if(!CGameMap.instance) {
-      const layers: Layers = await Layers.createAsync();
+      const layers: Layers = Layers.getLayers();
       const canvas = document.getElementById("canvas") as HTMLCanvasElement;
       canvas.width = constants.DEFAULT_MAP_VIEW_WIDTH;
       canvas.height = constants.DEFAULT_MAP_VIEW_HEIGHT;

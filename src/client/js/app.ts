@@ -22,8 +22,8 @@ function InitializeGameUI(): void {
 }
 
 document.getElementById("joinGame").onclick = (): void => {
-  if (Layers.getLayers() == null) {
-    console.log("Loading");
+  if (Layers.getLayers() == undefined) {
+    alert("Loading assets. Please try again");
     return;
   }
   console.log("Initializing Socket");
@@ -39,4 +39,3 @@ document.getElementById("joinGame").onclick = (): void => {
 };
 
 Layers.createAsync();
-

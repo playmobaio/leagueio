@@ -1,7 +1,9 @@
 import Layers from './layer';
 import constants from './constants';
 import Camera from './camera';
-import { Layer, IShape } from '../../models/interfaces';
+import { Layer } from '../../models/interfaces';
+
+const CHARS_IN_PX = 2;
 
 const CHARS_IN_PX = 2;
 
@@ -10,7 +12,6 @@ class CGameMap {
   context: CanvasRenderingContext2D;
   canvas: HTMLCanvasElement;
   layers: Layers;
-  castingShape: IShape;
 
   private constructor(canvas: HTMLCanvasElement,
       context: CanvasRenderingContext2D,

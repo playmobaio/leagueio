@@ -5,4 +5,6 @@ export default {
   DEFAULT_TILE_SIZE: 64,
   DEFAULT_MAP_WIDTH: 24 * 64,
   DEFAULT_MAP_HEIGHT: 16 * 64,
+  HAIL_OF_ARROWS: "HailOfArrows",
+  RAPID_FIRE: "RapidFire",
 }

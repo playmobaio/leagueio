@@ -1,12 +1,14 @@
 import Ability from "../ability";
 import AttackSpeedModifierEffect from '../effects/attackSpeedModifierEffect';
+import constants from '../../../models/constants';
 
 class RapidFire extends Ability {
-  castLength = 7;
   cooldown = 20;
+  name = constants.RAPID_FIRE;
 
   onCast(): void {
-    const effect = new AttackSpeedModifierEffect(this.hero, this.castLength, 2);
+    console.log("Using RapidFire");
+    const effect = new AttackSpeedModifierEffect(this.hero, 7, 2);
     this.hero.state.addEffect(effect);
   }
 }

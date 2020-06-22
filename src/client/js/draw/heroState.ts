@@ -1,11 +1,20 @@
-import { IGameState, IHero, IPoint, Shape, IShape, ICircle } from '../../../models/interfaces';
+import {
+  IGameState,
+  IHero,
+  IPoint,
+  Shape,
+  IShape,
+  ICircle,
+  IAbility
+} from '../../../models/interfaces';
 import CGameMap from '../cgameMap';
 import Camera from '../camera';
 import { drawCircle } from './shape';
 import constants from '../constants';
+import UserInputController from '../userInputController';
 
-function drawRange(gameMap: CGameMap, camera: Camera, hero: IHero): void {
-  const range = hero.state.casting.range;
+function drawRange(gameMap: CGameMap, camera: Camera, hero: IHero, ability: IAbility): void {
+  const range: number = ability.range;
   if (range == null) {
     return;
   }
@@ -14,8 +23,8 @@ function drawRange(gameMap: CGameMap, camera: Camera, hero: IHero): void {
   drawCircle(gameMap, center, range, constants.PASTEL_RED_HEX);
 }
 
-function drawCastArea(gameMap: CGameMap): void {
-  const shape: IShape = gameMap.castingShape;
+function drawCastShape(gameMap: CGameMap, ability: IAbility): void {
+  const shape: IShape = ability.castingShape;
   switch(shape.type) {
   case Shape.Circle: {
     const circle = shape as ICircle;
@@ -30,36 +39,16 @@ function drawCastArea(gameMap: CGameMap): void {
   }
 }
 
-function setCastingAreaOrigin(evt: MouseEvent): void {
-  const gameMap = CGameMap.getInstance();
-  if (gameMap.castingShape == null) {
-    return;
-  }
-
-  const rect = gameMap.canvas.getBoundingClientRect();
-  const point: IPoint = {
-    x: evt.clientX - rect.left,
-    y: evt.clientY - rect.top
-  }
-  gameMap.castingShape.origin = point;
-}
-
 function drawHeroState(gameMap: CGameMap, camera: Camera, state: IGameState): void {
-  if (state?.client?.hero?.state?.casting == null) {
-    if (gameMap.castingShape) {
-      gameMap.castingShape = null;
-      gameMap.canvas.removeEventListener("mousemove", setCastingAreaOrigin)
-    }
+  const ability: IAbility = UserInputController
+    .getInstance(null)
+    .getCastingAbility(state?.client?.hero);
+  if (ability == null) {
     return;
   }
 
-  drawRange(gameMap, camera, state.client.hero);
-  if (gameMap.castingShape == null) {
-    gameMap.castingShape = state.client.hero.state.casting.area;
-    gameMap.canvas.addEventListener("mousemove", setCastingAreaOrigin);
-  } else {
-    drawCastArea(gameMap);
-  }
+  drawRange(gameMap, camera, state.client.hero, ability);
+  drawCastShape(gameMap, ability);
 }
 
 export default drawHeroState

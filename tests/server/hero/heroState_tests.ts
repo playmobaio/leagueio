@@ -27,16 +27,17 @@ describe('HeroState', function() {
     effect.verify(x => x.start(), TypeMoq.Times.once());
   });
 
-  it("Update clears expired abilities", function() {
-    ability.setup(x => x.isExpired()).returns(() => true);
+  it("Update clears expired abilities and calls onCast", function() {
+    ability.setup(x => x.hasCastTimeElapsed()).returns(() => true);
     heroState.addCasting(ability.object);
 
     heroState.update();
+    ability.verify(x => x.onCast(), TypeMoq.Times.once());
     assert.equal(heroState.casting, null);
   });
 
   it("Update does not clear non-expired abilities", function() {
-    ability.setup(x => x.isExpired()).returns(() => false);
+    ability.setup(x => x.hasCastTimeElapsed()).returns(() => false);
     heroState.addCasting(ability.object);
 
     heroState.update();

@@ -5,7 +5,7 @@ function secondsToFrames(seconds: number): number {
 }
 
 function framesToSeconds(frames: number): number {
-  return Math.floor(frames / constants.FRAMES_PER_SECOND);
+  return frames / constants.FRAMES_PER_SECOND;
 }
 
 export { secondsToFrames, framesToSeconds }

@@ -43,8 +43,6 @@ class Game {
     this.gameMap.drawLayer(this.camera, Layer.Background);
 
     UserInputController.getInstance(null).drawTargetPosition(this);
-
-    drawHeroState(this.gameMap, this.camera, gameState);
     gameState.players.forEach((iPlayer: IPlayer): void => {
       drawPlayer(this.gameMap, iPlayer, this.camera);
     });
@@ -52,6 +50,7 @@ class Game {
     gameState.projectiles.forEach((iProjectile: IProjectile): void => {
       drawProjectile(this.gameMap, iProjectile, this.camera);
     });
+    drawHeroState(this.gameMap, this.camera, gameState);
 
     this.gameMap.drawLayer(this.camera, Layer.Foreground);
     drawClientHud(this.gameMap, gameState.client);

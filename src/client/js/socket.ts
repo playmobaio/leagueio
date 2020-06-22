@@ -1,6 +1,6 @@
 import Game from './game';
 import UserInputController from './userInputController';
-import { PlayerCastIO, IPoint, IGameState, Click } from '../../models/interfaces';
+import { PlayerCastIO, IPoint, IGameState, Click, IEffect } from '../../models/interfaces';
 
 async function registerSocket(socket: SocketIO.Socket): Promise<void> {
   const _game: Game = await Game.getInstance();
@@ -10,6 +10,10 @@ async function registerSocket(socket: SocketIO.Socket): Promise<void> {
 
   socket.on("S:UPDATE_GAME_STATE", (userGame: IGameState) => {
     _game.draw(userGame);
+  });
+
+  socket.on("S:PLAYER_EFFECTS", (effect: IEffect) => {
+    _game.addEffect(effect);
   });
 
   addEventListener("mousedown", function(event) {

@@ -1,4 +1,4 @@
-import { IPlayer, IGameState, IProjectile, Layer } from "../../models/interfaces";
+import { IPlayer, IGameState, IProjectile, Layer, IEffect } from "../../models/interfaces";
 import CGameMap from './cgameMap';
 import Camera from './camera';
 import { drawPlayer } from './draw/player';
@@ -13,11 +13,13 @@ class Game {
   gameMap: CGameMap;
   camera: Camera;
   currentFrame: number;
+  effects: IEffect[];
 
   constructor(gameMap: CGameMap, camera: Camera) {
     this.gameMap = gameMap;
     this.camera = camera;
     this.currentFrame = -1;
+    this.effects = [];
   }
 
   static async getInstance(): Promise<Game> {
@@ -54,6 +56,10 @@ class Game {
     this.gameMap.drawLayer(this.camera, Layer.Foreground);
     drawClientHud(this.gameMap, gameState.client);
     drawClientStocks(this.gameMap, gameState.client)
+  }
+
+  addEffect(effect: IEffect): void {
+    this.effects.push(effect);
   }
 }
 

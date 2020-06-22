@@ -16,6 +16,12 @@ export interface IHero {
   eAbility: IAbility;
 }
 
+export interface IEffect {
+  startTime: number;
+  endTime: number;
+  description: string;
+}
+
 export interface IPoint {
   x: number;
   y: number;

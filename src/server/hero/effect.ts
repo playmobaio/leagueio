@@ -1,8 +1,9 @@
 import Hero from './hero';
 import Game from '../models/game';
 import { secondsToFrames } from '../tools/frame';
+import { IEffect } from '../../models/interfaces';
 
-abstract class Effect {
+abstract class Effect implements IEffect{
   startTime: number;
   endTime: number;
   description: string;

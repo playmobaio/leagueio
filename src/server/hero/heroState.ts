@@ -1,15 +1,19 @@
 import Effect from './effect';
 import Condition from './condition';
 import Ability from './ability';
+import { IEffect } from '../../models/interfaces';
+import Player from '../models/player';
 
 class HeroState {
   effects: Effect[];
   condition: Condition;
   casting: Ability;
+  player: Player;
 
-  constructor() {
+  constructor(player: Player) {
     this.effects = [];
     this.condition = Condition.ACTIVE;
+    this.player = player;
   }
 
   addCasting(ability: Ability): void {
@@ -18,6 +22,7 @@ class HeroState {
 
   addEffect(effect: Effect): void {
     effect.start();
+    this.player.socket.emit('S:PLAYER_EFFECTS', effect);
     console.log(`Using ${effect.description}`);
     this.effects.push(effect);
   }

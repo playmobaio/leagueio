@@ -29,7 +29,7 @@ abstract class Hero {
     this.attackSpeed = constants.DEFAULT_PLAYER_ATTACK_SPEED;
     this.lastAutoAttackFrame = -1;
     this.player = player;
-    this.state = new HeroState();
+    this.state = new HeroState(player);
   }
 
   updateVelocity(point: IPoint): void {

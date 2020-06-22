@@ -1,6 +1,7 @@
 import CGameMap from "../cgameMap";
 import { IPlayer, IAbility } from '../../../models/interfaces';
 import constants from '../constants';
+import Game from '../game';
 
 const abilityButtonWidth = 40;
 const gapBetweenButtons = 10;
@@ -61,10 +62,20 @@ function drawPlayerHealthText(gameMap: CGameMap, clientPlayer: IPlayer): void {
     buttonAreaXOffset + textOffset, canvasHeight - 5);
 }
 
+async function drawEffects(gameMap: CGameMap): Promise<void> {
+  const effects = (await Game.getInstance()).effects;
+  // effects.forEach(effect => {
+  //   console.log(effect.description);
+  //   console.log(effect.startTime);
+  //   console.log(effect.endTime);
+  // });
+}
+
 function drawClientHud(gameMap: CGameMap, clientPlayer: IPlayer): void {
   drawAbilityButtons(gameMap, clientPlayer);
   drawPlayerHealthBar(gameMap, clientPlayer);
   drawPlayerHealthText(gameMap, clientPlayer);
+  // drawEffects(gameMap);
 }
 
 export {

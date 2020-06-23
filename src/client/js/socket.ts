@@ -4,8 +4,8 @@ import { PlayerCastIO, IPoint, IGameState, Click } from '../../models/interfaces
 
 const CHARS_IN_PX = 2;
 
-async function registerSocket(socket: SocketIO.Socket): Promise<void> {
-  const _game: Game = await Game.getInstance();
+function registerSocket(socket: SocketIO.Socket): void {
+  const _game: Game = Game.getInstance();
   const _userInputController: UserInputController = UserInputController.getInstance(socket);
 
   socket.on("S:UPDATE_GAME_STATE", (userGame: IGameState) => {

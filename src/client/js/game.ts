@@ -21,9 +21,9 @@ class Game {
     this.currentFrame = -1;
   }
 
-  static async getInstance(): Promise<Game> {
+  static getInstance(): Game {
     if(Game.instance == null) {
-      const gameMap: CGameMap = await CGameMap.getInstance();
+      const gameMap: CGameMap = CGameMap.getInstance();
       const camera = new Camera(gameMap, gameMap.canvas.width, gameMap.canvas.height);
       const game = new Game(gameMap, camera);
       Game.instance = game;

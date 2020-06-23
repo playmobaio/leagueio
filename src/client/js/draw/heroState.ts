@@ -30,8 +30,8 @@ function drawCastArea(gameMap: CGameMap): void {
   }
 }
 
-async function setCastingAreaOrigin(evt: MouseEvent): Promise<void> {
-  const gameMap = await CGameMap.getInstance();
+function setCastingAreaOrigin(evt: MouseEvent): void {
+  const gameMap = CGameMap.getInstance();
   if (gameMap.castingShape == null) {
     return;
   }

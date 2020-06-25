@@ -7,6 +7,7 @@ export default class Camera {
   height: number;
   maxX: number;
   maxY: number;
+  map: CGameMap;
 
   constructor(map: CGameMap, width: number, height: number) {
     this.width = width;
@@ -14,6 +15,7 @@ export default class Camera {
     this.maxX = map.layers.width - width;
     this.maxY = map.layers.height - height;
     this.absolutePosition = { x: 0, y: 0 };
+    this.map = map;
   }
 
   absoluteToRelativePosition(absolutePosition: IPoint): IPoint {
@@ -23,12 +25,16 @@ export default class Camera {
     };
   }
 
-  getAbsolutePosition(canvasWidth: number, canvasHeight: number, screenPoint: IPoint): IPoint {
-    const relativePosition: IPoint = {
+  getAbsolutePosition(screenPoint: IPoint): IPoint {
+    return this.relativeToAbsolutePosition(this.getRelativePosition(screenPoint));
+  }
+
+  getRelativePosition(screenPoint: IPoint): IPoint {
+    const [canvasWidth, canvasHeight] = this.map.getCanvasDimensions();
+    return {
       x: screenPoint.x/canvasWidth * this.width,
       y: screenPoint.y/canvasHeight * this.height
     };
-    return this.relativeToAbsolutePosition(relativePosition);
   }
 
   relativeToAbsolutePosition(relativePosition: IPoint): IPoint {

@@ -3,6 +3,8 @@ import constants from './constants';
 import Camera from './camera';
 import { Layer, IShape } from '../../models/interfaces';
 
+const CHARS_IN_PX = 2;
+
 class CGameMap {
   private static instance: CGameMap;
   context: CanvasRenderingContext2D;
@@ -29,6 +31,14 @@ class CGameMap {
       CGameMap.instance = map;
     }
     return CGameMap.instance;
+  }
+
+  getCanvasDimensions(): [number, number] {
+    const widthStr: string = this.canvas.style.width;
+    const width: number = parseInt(widthStr.substring(0, widthStr.length - CHARS_IN_PX))
+    const heightStr: string = this.canvas.style.height;
+    const height: number = parseInt(heightStr.substring(0, heightStr.length - CHARS_IN_PX))
+    return [width, height];
   }
 
   drawLayer(camera: Camera, layer: Layer): void {

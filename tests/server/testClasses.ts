@@ -7,6 +7,7 @@ export class TestAbility extends Ability {
   used = false;
   castLength = 10;
   cooldown = 20;
+  name = "TestAbility";
 
   onCast(): void {
     this.used = true;

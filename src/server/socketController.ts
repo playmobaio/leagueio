@@ -1,6 +1,13 @@
+import {
+  IJoinGame,
+  IUserInput,
+  PlayerCastIO,
+  IUserMouseClick,
+  Click
+} from '../models/interfaces';
 import Player from "./models/player";
 import Game from "./models/game";
-import { IJoinGame, IUserInput, PlayerCastIO, IUserMouseClick, Click } from '../models/interfaces';
+import Ability from './hero/ability';
 
 export function clientJoinGame(socket: SocketIO.Socket, joinGame: IJoinGame): void {
   Player.create(socket.id, socket, joinGame.name, joinGame.heroId);
@@ -9,16 +16,21 @@ export function clientJoinGame(socket: SocketIO.Socket, joinGame: IJoinGame): vo
 export function registerPlayerCast(clientId: string, userInput: IUserInput): void {
   console.log("Player casting");
   const player: Player = Game.getInstance().players.get(clientId);
+  let ability: Ability;
   switch(userInput.io) {
   case PlayerCastIO.Q:
-    player?.hero?.qAbility?.cast();
+    ability = player?.hero?.qAbility;
     break;
   case PlayerCastIO.W:
-    player?.hero?.wAbility?.cast();
+    ability = player?.hero?.wAbility;
     break;
   case PlayerCastIO.E:
-    player?.hero?.eAbility?.cast();
+    ability = player?.hero?.eAbility;
     break;
+  }
+  if (ability != null) {
+    ability.targetPosition = userInput.cursorPosition;
+    ability.cast();
   }
 }
 

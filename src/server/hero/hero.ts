@@ -48,9 +48,6 @@ abstract class Hero {
 
   performAttack(dest: IPoint): void {
     switch (this.state.condition) {
-    case Condition.Casting:
-      this.state?.casting?.useAbility();
-      return;
     case Condition.Active:
       this.performAutoAttack(dest);
       return;
@@ -86,10 +83,9 @@ abstract class Hero {
   toInterface(_private: boolean): IHero {
     return {
       model: this.model,
-      state: _private ? null: this.state.toInterface(),
-      qAbilityCooldown: _private ? null: this.qAbility?.getCooldownLeft(),
-      wAbilityCooldown: _private ? null: this.wAbility?.getCooldownLeft(),
-      eAbilityCooldown: _private ? null: this.eAbility?.getCooldownLeft(),
+      qAbility: _private ? null: this.qAbility?.toInterface(),
+      wAbility: _private ? null: this.wAbility?.toInterface(),
+      eAbility: _private ? null: this.eAbility?.toInterface(),
     }
   }
 

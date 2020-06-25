@@ -1,6 +1,6 @@
 import CGameMap from "../cgameMap";
 import { IPlayer } from '../../../models/interfaces';
-import constants from '../constants';
+import { AbilityKeys, IAbilityKey } from '../../../models/data/abilityKeys';
 
 const abilityButtonWidth = 40;
 const gapBetweenButtons = 10;
@@ -14,14 +14,15 @@ function drawAbilityButtons(gameMap: CGameMap, clientPlayer: IPlayer): void {
   for (let i = 0; i < 3; i++) {
     const x = buttonAreaXOffset + i * (abilityButtonWidth + gapBetweenButtons);
     const y = canvasHeight - 60;
-    const coolDownLeft: number = clientPlayer.hero[constants.ABILITY_KEYS[i].key];
+    const abilityKey: IAbilityKey = AbilityKeys[i];
+    const coolDownLeft: number = clientPlayer.hero[abilityKey.key]?.cooldown;
     let text: string;
     if (coolDownLeft == null) {
       gameMap.context.fillStyle = "gray";
-      text = constants.ABILITY_KEYS[i].letter;
+      text = abilityKey.letter;
     } else if (coolDownLeft == 0) {
       gameMap.context.fillStyle = "white";
-      text = constants.ABILITY_KEYS[i].letter
+      text = abilityKey.letter
     } else if (coolDownLeft > 0) {
       gameMap.context.fillStyle = "gray";
       text = Math.floor(coolDownLeft).toString();

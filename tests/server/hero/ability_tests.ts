@@ -29,7 +29,7 @@ describe('Ability', function() {
 
     ability.cast();
     heroState.verify(x =>
-      x.addCasting(TypeMoq.It.is((x: TestAbility) => x.used == true)),
+      x.addCasting(TypeMoq.It.isAny()),
     Times.once());
     assert.equal(ability.lastCastFrame, game.currentFrame);
   });
@@ -42,32 +42,40 @@ describe('Ability', function() {
     assert.equal(ability.used, false);
   });
 
-  it('verify ability is not expired at current frame', function() {
+  it('verify ability cast time is less than a second by default', function() {
     ability.lastCastFrame = 1;
     game.currentFrame = secondsToFrames(2);
-    assert.equal(ability.isExpired(), false);
+    assert.equal(ability.hasCastTimeElapsed(), true);
+  });
+
+  it('verify ability is not expired at current frame', function() {
+    ability.lastCastFrame = 1;
+    ability.castTime = 3;
+    game.currentFrame = secondsToFrames(2);
+    assert.equal(ability.hasCastTimeElapsed(), false);
   });
 
   it('verify ability is expired at current frame', function() {
     game.currentFrame = secondsToFrames(10) + 1;
-    assert.ok(ability.isExpired());
+    assert.ok(ability.hasCastTimeElapsed());
   });
 
-  it('getCooldownLeft without cast will return cooldownLeft of 0', function() {
-    assert.equal(ability.getCooldownLeft(), 0);
+  it('toInterface without cast will return cooldownLeft of 0', function() {
+    assert.equal(ability.toInterface().cooldown, 0);
   });
 
-  it('getCooldownLeft before cooldown finishes will return nonzero cooldownLeft', function() {
+  it('toInterface before cooldown finishes will return nonzero cooldownLeft', function() {
     ability.lastCastFrame = 1
     const gameFrame = 2;
     game.currentFrame = secondsToFrames(gameFrame);
-    assert.equal(ability.getCooldownLeft(), ability.cooldown - gameFrame + ability.lastCastFrame);
+    const cooldown: number = ability.toInterface().cooldown;
+    assert.equal(cooldown, ability.cooldown - gameFrame + ability.lastCastFrame);
   });
 
-  it('getCooldownLeft after cooldown finishes will return zero cooldownLeft', function() {
+  it('toInterface after cooldown finishes will return zero cooldownLeft', function() {
     ability.lastCastFrame = 1
     const gameFrame = 21;
     game.currentFrame = secondsToFrames(gameFrame);
-    assert.equal(ability.getCooldownLeft(), 0);
+    assert.equal(ability.toInterface().cooldown, 0);
   });
 });

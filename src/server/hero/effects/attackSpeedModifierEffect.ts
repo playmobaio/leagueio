@@ -7,7 +7,7 @@ class AttackSpeedModifierEffect extends Effect {
   constructor(hero: Hero,
       seconds: number,
       multiplier: number) {
-    super(hero, seconds, "Attack speed has been increased");
+    super(hero, seconds, `attack speed increased by ${multiplier}`);
     this.multiplier = multiplier;
   }
 

@@ -1,20 +1,25 @@
 import Ability from "../ability";
-import { Condition } from '../../../models/interfaces';
-import { Circle } from '../../models/basicTypes';
+import constants from '../../../models/constants';
+import Abilities from '../../../models/data/abilities';
+import { Circle, Point } from '../../models/basicTypes';
+import { ICircle } from '../../../models/interfaces';
+import Game from '../../models/game';
 
 class HailOfArrows extends Ability {
   cooldown = 18;
+  name = constants.HAIL_OF_ARROWS;
 
-  useAbility(): void {
-    console.log("using hail of arrows");
-    this.range = null;
-    this.area = null;
-    this.hero.state.setCondition(Condition.Active);
-  }
   onCast(): void {
-    this.range = 200;
-    this.area = new Circle(50, this.hero.model.origin);
-    this.hero.state.setCondition(Condition.Casting);
+    console.log(`Casting Hail of Arrows at ${this.targetPosition.x}, ${this.targetPosition.y}`);
+    const shape = Abilities[this.name].castingShape as ICircle;
+    const point = new Point(this.targetPosition.x, this.targetPosition.y);
+    const circle = new Circle(shape.radius, point);
+    const game = Game.getInstance();
+    game.players.forEach((player) => {
+      if (player.hero?.model?.collidesWithCircle(circle)) {
+        player.receiveDamage(15);
+      }
+    });
   }
 }
 

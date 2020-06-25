@@ -5,22 +5,22 @@ export interface IPlayer {
   stocks: number;
 }
 
-export interface IHeroState {
-  condition: Condition,
-  casting: IAbility
+export interface IAbility {
+  castingShape: IShape;
+  range: number;
+  abilityName: string;
 }
 
-export interface IAbility {
-  area: IShape;
-  range: number;
+export interface IAbilityState {
+  cooldown: number;
+  abilityName: string;
 }
 
 export interface IHero {
   model: ICircle;
-  state: IHeroState;
-  qAbilityCooldown: number;
-  wAbilityCooldown: number;
-  eAbilityCooldown: number;
+  qAbility: IAbilityState;
+  wAbility: IAbilityState;
+  eAbility: IAbilityState;
 }
 
 export interface IPoint {
@@ -39,6 +39,7 @@ export interface ICircle extends IShape {
 
 export interface IUserInput {
   io: PlayerCastIO;
+  cursorPosition: IPoint;
 }
 
 export interface IUserMouseClick {

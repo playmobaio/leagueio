@@ -1,6 +1,6 @@
 import Effect from './effect';
 import Ability from './ability';
-import { Condition, IHeroState } from '../../models/interfaces';
+import { Condition } from '../../models/interfaces';
 
 class HeroState {
   effects: Effect[];
@@ -17,7 +17,11 @@ class HeroState {
   }
 
   addCasting(ability: Ability): void {
+    if (this.condition != Condition.Active) {
+      return;
+    }
     this.casting = ability;
+    this.setCondition(Condition.Casting);
   }
 
   addEffect(effect: Effect): void {
@@ -26,15 +30,10 @@ class HeroState {
     this.effects.push(effect);
   }
 
-  toInterface(): IHeroState {
-    return {
-      condition: this.condition,
-      casting: this.casting?.toInterface()
-    }
-  }
-
   update(): void {
-    if (this.casting?.isExpired()) {
+    if (this.casting?.hasCastTimeElapsed()) {
+      this.casting.onCast();
+      this.setCondition(Condition.Active);
       this.casting = null;
     }
     this.effects = this.effects.filter((effect: Effect) => {

@@ -29,7 +29,7 @@ io.sockets.on(
     socket.on("C:JOIN_GAME", (joinGame: IJoinGame) => {
       socketController.clientJoinGame(socket, joinGame)
     });
-    socket.on("C:USER_MOVE", (userInput: IUserInput) => {
+    socket.on("C:USER_CAST", (userInput: IUserInput) => {
       socketController.registerPlayerCast(socket.id, userInput);
     });
     socket.on("C:USER_MOUSE_CLICK", (userMouseClick: IUserMouseClick) => {

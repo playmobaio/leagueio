@@ -6,6 +6,7 @@ import { drawProjectile } from './draw/projectile';
 import { drawClientStocks } from './draw/stocks';
 import { drawClientHud } from './draw/hud';
 import UserInputController from './userInputController';
+import drawHeroState from './draw/heroState';
 
 // Client
 class Game {
@@ -20,9 +21,9 @@ class Game {
     this.currentFrame = -1;
   }
 
-  static async getInstance(): Promise<Game> {
+  static getInstance(): Game {
     if(Game.instance == null) {
-      const gameMap: CGameMap = await CGameMap.getInstance();
+      const gameMap: CGameMap = CGameMap.getInstance();
       const camera = new Camera(gameMap, gameMap.canvas.width, gameMap.canvas.height);
       const game = new Game(gameMap, camera);
       Game.instance = game;
@@ -43,6 +44,7 @@ class Game {
 
     UserInputController.getInstance(null).drawTargetPosition(this);
 
+    drawHeroState(this.gameMap, this.camera, gameState);
     gameState.players.forEach((iPlayer: IPlayer): void => {
       drawPlayer(this.gameMap, iPlayer, this.camera);
     });

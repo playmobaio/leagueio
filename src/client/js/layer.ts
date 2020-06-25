@@ -3,6 +3,7 @@ import { Layer, Tile } from '../../models/interfaces';
 import TileMap from '../../models/tileMap';
 
 class Layers {
+  private static instance: Layers;
   tileImage: HTMLImageElement;
   tileMap: TileMap;
   tileSize: number;
@@ -16,10 +17,18 @@ class Layers {
     this.height = this.tileMap.rows * this.tileMap.tileSize
   }
 
-  static async createAsync(): Promise<Layers> {
+  static getLayers(): Layers {
+    if (Layers.instance == null) {
+      Layers.createAsync();
+      return undefined;
+    }
+    return Layers.instance;
+  }
+
+  static async createAsync(): Promise<void> {
     const layers = new Layers();
     await layers.loadTileMap();
-    return layers;
+    Layers.instance = layers;
   }
 
   loadTileMap(): Promise<void> {

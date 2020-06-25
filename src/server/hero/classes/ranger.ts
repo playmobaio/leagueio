@@ -5,10 +5,11 @@ import Player from '../../models/player';
 import { Circle } from '../../models/basicTypes';
 import constants from '../../constants';
 import RapidFire from '../abilities/rapidFire';
+import HailOfArrows from '../abilities/hailOfArrows';
 
 class Ranger extends Hero {
   qAbility = new RapidFire(this);
-  wAbility = null;
+  wAbility = new HailOfArrows(this);
   eAbility = null;
 
   constructor(player: Player) {

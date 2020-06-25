@@ -5,15 +5,22 @@ export interface IPlayer {
   stocks: number;
 }
 
+export interface IHeroState {
+  condition: Condition,
+  casting: IAbility
+}
+
 export interface IAbility {
-  cooldownLeft: number;
+  area: IShape;
+  range: number;
 }
 
 export interface IHero {
   model: ICircle;
-  qAbility: IAbility;
-  wAbility: IAbility;
-  eAbility: IAbility;
+  state: IHeroState;
+  qAbilityCooldown: number;
+  wAbilityCooldown: number;
+  eAbilityCooldown: number;
 }
 
 export interface IPoint {
@@ -21,8 +28,12 @@ export interface IPoint {
   y: number;
 }
 
-export interface ICircle {
-  center: IPoint;
+export interface IShape {
+  origin: IPoint;
+  type: Shape;
+}
+
+export interface ICircle extends IShape {
   radius: number;
 }
 
@@ -86,4 +97,16 @@ export enum Tile {
   TreeTrunk = 3,
   TreeTop = 4,
   Bush = 5
+}
+
+export enum Condition {
+  Active,
+  Stunned,
+  Casting,
+  Dead
+}
+
+export enum Shape {
+  Circle,
+  Line
 }

@@ -54,7 +54,7 @@ class UserInputController {
     if (this.targetPosition == null) {
       return;
     }
-    const point: IPoint = game.camera.getRelativePosition(this.targetPosition);
+    const point: IPoint = game.camera.absoluteToRelativePosition(this.targetPosition);
     game.gameMap.context.beginPath();
     game.gameMap.context.strokeStyle = "red";
 

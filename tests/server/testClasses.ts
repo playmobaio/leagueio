@@ -11,10 +11,7 @@ export class TestAbility extends Ability {
   onCast(): void {
     this.used = true;
   }
-  onFailure(): void {
-    return;
-  }
-  onSuccess(): void {
+  useAbility(): void {
     return;
   }
 }

@@ -105,7 +105,7 @@ class Game {
     const iProjectiles: IProjectile[] = [];
     const states = new Array<IGameState>();
     for (const player of this.players.values()) {
-      iPlayers.push(player.toInterface(true));
+      iPlayers.push(player.toInterface());
       for (const projectile of this.projectiles.values()) {
         iProjectiles.push(projectile.toInterface());
       }

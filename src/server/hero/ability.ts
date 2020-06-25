@@ -1,8 +1,8 @@
 import Hero from './hero';
 import Game from '../models/game';
-import { secondsToFrames, framesToSeconds } from '../tools/frame';
+import { secondsToFrames } from '../tools/frame';
 import constants from '../constants';
-import { IShape, IAbilityState, IPoint } from '../../models/interfaces';
+import { IShape, IPoint, ICasting } from '../../models/interfaces';
 
 abstract class Ability {
   cooldown: number;
@@ -28,26 +28,16 @@ abstract class Ability {
       return;
     }
     this.hero.state.addCasting(this);
+    const casting: ICasting = {
+      coolDownLastFrame: currFrame + secondsToFrames(this.cooldown),
+      abilityName: this.name
+    }
+    this.hero.player.socket.emit("S:CASTING", casting);
     this.lastCastFrame = currFrame;
   }
 
   hasCastTimeElapsed(): boolean {
     return this.lastCastFrame + secondsToFrames(this.castTime) < Game.getInstance().currentFrame;
-  }
-
-  toInterface(): IAbilityState {
-    let secondsLeft = 0;
-    if (this.lastCastFrame > 0) {
-      const sinceCast = Math.floor(
-        framesToSeconds(Game.getInstance().currentFrame - this.lastCastFrame)
-      );
-      const cooldownLeft = this.cooldown - sinceCast;
-      secondsLeft = Math.max(secondsLeft, cooldownLeft);
-    }
-    return {
-      cooldown: secondsLeft,
-      abilityName: this.name
-    };
   }
 }
 export default Ability;

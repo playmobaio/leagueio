@@ -1,4 +1,4 @@
-import { IPlayer, IGameState, IProjectile, Layer } from "../../models/interfaces";
+import { IPlayer, IGameState, IProjectile, Layer, HeroID } from "../../models/interfaces";
 import CGameMap from './cgameMap';
 import Camera from './camera';
 import { drawPlayer } from './draw/player';
@@ -14,11 +14,14 @@ class Game {
   gameMap: CGameMap;
   camera: Camera;
   currentFrame: number;
+  casting: Map<string, number>;
+  heroId: HeroID;
 
   constructor(gameMap: CGameMap, camera: Camera) {
     this.gameMap = gameMap;
     this.camera = camera;
     this.currentFrame = -1;
+    this.casting = new Map<string, number>();
   }
 
   static getInstance(): Game {
@@ -29,6 +32,15 @@ class Game {
       Game.instance = game;
     }
     return Game.instance;
+  }
+
+  getCoolDownLeft(abilityName: string): number {
+    const lastFrame: number = this.casting.get(abilityName);
+    if (lastFrame == null) {
+      return 0;
+    }
+    const secondsLeft = Math.ceil((lastFrame - this.currentFrame) / 60);
+    return secondsLeft;
   }
 
   draw(gameState: IGameState): void {

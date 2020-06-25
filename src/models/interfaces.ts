@@ -11,16 +11,13 @@ export interface IAbility {
   abilityName: string;
 }
 
-export interface IAbilityState {
-  cooldown: number;
+export interface ICasting {
+  coolDownLastFrame: number;
   abilityName: string;
 }
 
 export interface IHero {
   model: ICircle;
-  qAbility: IAbilityState;
-  wAbility: IAbilityState;
-  eAbility: IAbilityState;
 }
 
 export interface IPoint {

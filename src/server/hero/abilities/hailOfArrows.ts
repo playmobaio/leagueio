@@ -1,6 +1,6 @@
 import Ability from "../ability";
 import constants from '../../../models/constants';
-import Abilities from '../../../models/data/abilities';
+import { Abilities } from '../../../models/data/heroAbilities';
 import { Circle, Point } from '../../models/basicTypes';
 import { ICircle } from '../../../models/interfaces';
 import Game from '../../models/game';

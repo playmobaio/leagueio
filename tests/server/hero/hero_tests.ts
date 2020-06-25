@@ -78,20 +78,6 @@ describe('Hero', function() {
     stateMock.verify(x => x.update(), Times.once());
   })
 
-  it("calling toInterface with private true will not return abilities", function() {
-    const ret = hero.toInterface(true);
-    assert.equal(ret.qAbility, null);
-    assert.equal(ret.wAbility, null);
-    assert.equal(ret.eAbility, null);
-  });
-
-  it("calling toInterface with private false will return abilities if they exist", function() {
-    const ret = hero.toInterface(false);
-    assert.notEqual(ret.qAbility, null);
-    assert.equal(ret.wAbility, null);
-    assert.notEqual(ret.eAbility, null);
-  });
-
   it("calling perform attack while heroState is active will autoAttack", function() {
     stateMock.setup(x => x.condition).returns(() => Condition.Active);
     mock.object.performAttack(point);

@@ -2,8 +2,6 @@ import Game from './game';
 import UserInputController from './userInputController';
 import { PlayerCastIO, IPoint, IGameState, Click } from '../../models/interfaces';
 
-const CHARS_IN_PX = 2;
-
 function registerSocket(socket: SocketIO.Socket): void {
   const _game: Game = Game.getInstance();
   const _userInputController: UserInputController = UserInputController.getInstance(socket);
@@ -13,13 +11,7 @@ function registerSocket(socket: SocketIO.Socket): void {
   });
 
   addEventListener("mousedown", function(event) {
-    const gameMap = _game.gameMap;
     const screenPoint: IPoint = { x: event.clientX, y: event.clientY };
-
-    const widthStr: string = gameMap.canvas.style.width;
-    const width: number = parseInt(widthStr.substring(0, widthStr.length - CHARS_IN_PX))
-    const heightStr: string = gameMap.canvas.style.height;
-    const height: number = parseInt(heightStr.substring(0, heightStr.length - CHARS_IN_PX))
 
     let click: Click;
     switch(event.button) {
@@ -32,10 +24,10 @@ function registerSocket(socket: SocketIO.Socket): void {
     }
     _userInputController.sendMouseClick(
       click,
-      _game.camera.getAbsolutePosition(width, height, screenPoint));
+      _game.camera.getAbsolutePosition(screenPoint));
   });
 
-  function getPlayerMovementIO(event: KeyboardEvent): PlayerCastIO {
+  function getPlayerCastIO(event: KeyboardEvent): PlayerCastIO {
     switch(event.code) {
     case "KeyQ":
       return PlayerCastIO.Q;
@@ -47,9 +39,9 @@ function registerSocket(socket: SocketIO.Socket): void {
     return PlayerCastIO.None;
   }
 
-  window.onkeydown = (event): void => {
+  window.onkeydown = (event: KeyboardEvent): void => {
     event.preventDefault();
-    const io: PlayerCastIO = getPlayerMovementIO(event);
+    const io: PlayerCastIO = getPlayerCastIO(event);
     _userInputController.registerPlayerMove(io);
   }
 }

@@ -16,14 +16,22 @@ export default class Camera {
     this.absolutePosition = { x: 0, y: 0 };
   }
 
-  getRelativePosition(absolutePosition: IPoint): IPoint {
+  absoluteToRelativePosition(absolutePosition: IPoint): IPoint {
     return {
       x: absolutePosition.x - this.absolutePosition.x,
       y: absolutePosition.y - this.absolutePosition.y
     };
   }
 
-  getAbsolutePosition(relativePosition: IPoint): IPoint {
+  getAbsolutePosition(canvasWidth: number, canvasHeight: number, screenPoint: IPoint): IPoint {
+    const relativePosition: IPoint = {
+      x: screenPoint.x/canvasWidth * this.width,
+      y: screenPoint.y/canvasHeight * this.height
+    };
+    return this.relativeToAbsolutePosition(relativePosition);
+  }
+
+  relativeToAbsolutePosition(relativePosition: IPoint): IPoint {
     return {
       x: relativePosition.x + this.absolutePosition.x,
       y: relativePosition.y + this.absolutePosition.y
@@ -31,8 +39,8 @@ export default class Camera {
   }
 
   setFrameReference(player: IPlayer): void {
-    const x: number = player.hero.model.center.x - this.width / 2;
-    const y: number = player.hero.model.center.y - this.height / 2;
+    const x: number = player.hero.model.origin.x - this.width / 2;
+    const y: number = player.hero.model.origin.y - this.height / 2;
 
     // clamp values
     this.absolutePosition = {

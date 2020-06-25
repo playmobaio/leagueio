@@ -53,24 +53,21 @@ describe('Ability', function() {
     assert.ok(ability.isExpired());
   });
 
-  it('toInterface without cast will return cooldownLeft of 0', function() {
-    const ret = ability.toInterface();
-    assert.equal(ret.cooldownLeft, 0);
+  it('getCooldownLeft without cast will return cooldownLeft of 0', function() {
+    assert.equal(ability.getCooldownLeft(), 0);
   });
 
-  it('toInterface before cooldown finishes will return nonzero cooldownLeft', function() {
+  it('getCooldownLeft before cooldown finishes will return nonzero cooldownLeft', function() {
     ability.lastCastFrame = 1
     const gameFrame = 2;
     game.currentFrame = secondsToFrames(gameFrame);
-    const ret = ability.toInterface();
-    assert.equal(ret.cooldownLeft, ability.cooldown - gameFrame + ability.lastCastFrame);
+    assert.equal(ability.getCooldownLeft(), ability.cooldown - gameFrame + ability.lastCastFrame);
   });
 
-  it('toInterface after cooldown finishes will return zero cooldownLeft', function() {
+  it('getCooldownLeft after cooldown finishes will return zero cooldownLeft', function() {
     ability.lastCastFrame = 1
     const gameFrame = 21;
     game.currentFrame = secondsToFrames(gameFrame);
-    const ret = ability.toInterface();
-    assert.equal(ret.cooldownLeft, 0);
+    assert.equal(ability.getCooldownLeft(), 0);
   });
 });

@@ -1,6 +1,6 @@
 import Effect from './effect';
-import Condition from './condition';
 import Ability from './ability';
+import { Condition, IHeroState } from '../../models/interfaces';
 
 class HeroState {
   effects: Effect[];
@@ -9,7 +9,11 @@ class HeroState {
 
   constructor() {
     this.effects = [];
-    this.condition = Condition.ACTIVE;
+    this.condition = Condition.Active;
+  }
+
+  setCondition(condition: Condition): void {
+    this.condition = condition;
   }
 
   addCasting(ability: Ability): void {
@@ -20,6 +24,13 @@ class HeroState {
     effect.start();
     console.log(`Using ${effect.description}`);
     this.effects.push(effect);
+  }
+
+  toInterface(): IHeroState {
+    return {
+      condition: this.condition,
+      casting: this.casting?.toInterface()
+    }
   }
 
   update(): void {

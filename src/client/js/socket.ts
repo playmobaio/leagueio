@@ -2,11 +2,11 @@ import Game from './game';
 import UserInputController from './userInputController';
 import { PlayerCastIO, IPoint, IGameState, Click } from '../../models/interfaces';
 
-async function registerSocket(socket: SocketIO.Socket): Promise<void> {
-  const _game: Game = await Game.getInstance();
+const CHARS_IN_PX = 2;
+
+function registerSocket(socket: SocketIO.Socket): void {
+  const _game: Game = Game.getInstance();
   const _userInputController: UserInputController = UserInputController.getInstance(socket);
-  document.getElementById("game").style.visibility = "visible";
-  document.getElementById("startpanel").style.visibility = "hidden";
 
   socket.on("S:UPDATE_GAME_STATE", (userGame: IGameState) => {
     _game.draw(userGame);
@@ -14,8 +14,13 @@ async function registerSocket(socket: SocketIO.Socket): Promise<void> {
 
   addEventListener("mousedown", function(event) {
     const gameMap = _game.gameMap;
-    const domRect = gameMap.canvas.getBoundingClientRect();
-    const point: IPoint = { x: event.clientX - domRect.left, y: event.clientY - domRect.top };
+    const screenPoint: IPoint = { x: event.clientX, y: event.clientY };
+
+    const widthStr: string = gameMap.canvas.style.width;
+    const width: number = parseInt(widthStr.substring(0, widthStr.length - CHARS_IN_PX))
+    const heightStr: string = gameMap.canvas.style.height;
+    const height: number = parseInt(heightStr.substring(0, heightStr.length - CHARS_IN_PX))
+
     let click: Click;
     switch(event.button) {
     case 0:
@@ -25,7 +30,9 @@ async function registerSocket(socket: SocketIO.Socket): Promise<void> {
       click = Click.Right;
       break;
     }
-    _userInputController.sendMouseClick(click, _game.camera.getAbsolutePosition(point));
+    _userInputController.sendMouseClick(
+      click,
+      _game.camera.getAbsolutePosition(width, height, screenPoint));
   });
 
   function getPlayerMovementIO(event: KeyboardEvent): PlayerCastIO {

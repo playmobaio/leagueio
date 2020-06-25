@@ -1,13 +1,14 @@
 import Layers from './layer';
 import constants from './constants';
 import Camera from './camera';
-import { Layer } from '../../models/interfaces';
+import { Layer, IShape } from '../../models/interfaces';
 
 class CGameMap {
   private static instance: CGameMap;
   context: CanvasRenderingContext2D;
   canvas: HTMLCanvasElement;
   layers: Layers;
+  castingShape: IShape;
 
   private constructor(canvas: HTMLCanvasElement,
       context: CanvasRenderingContext2D,
@@ -17,9 +18,9 @@ class CGameMap {
     this.layers = layers;
   }
 
-  static async getInstance(): Promise<CGameMap> {
+  static getInstance(): CGameMap {
     if(!CGameMap.instance) {
-      const layers: Layers = await Layers.createAsync();
+      const layers: Layers = Layers.getLayers();
       const canvas = document.getElementById("canvas") as HTMLCanvasElement;
       canvas.width = constants.DEFAULT_MAP_VIEW_WIDTH;
       canvas.height = constants.DEFAULT_MAP_VIEW_HEIGHT;

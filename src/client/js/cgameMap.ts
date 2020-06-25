@@ -5,8 +5,6 @@ import { Layer } from '../../models/interfaces';
 
 const CHARS_IN_PX = 2;
 
-const CHARS_IN_PX = 2;
-
 class CGameMap {
   private static instance: CGameMap;
   context: CanvasRenderingContext2D;

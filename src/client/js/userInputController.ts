@@ -5,7 +5,8 @@ import {
   IUserMouseClick,
   Click,
   IAbility,
-  IHero } from '../../models/interfaces';
+  IHero
+} from '../../models/interfaces';
 import Game from './game';
 import constants from './constants';
 import CGameMap from './cgameMap';
@@ -21,7 +22,7 @@ class UserInputController {
   private constructor(socket: SocketIO.Socket) {
     this.socket = socket
     this.userIO = PlayerCastIO.None;
-    this.cursorPosition = { x: -100, y: -100 };
+    this.cursorPosition = constants.POINT_NOT_ON_MAP;
   }
 
   static getInstance(socket: SocketIO.Socket): UserInputController {
@@ -35,8 +36,8 @@ class UserInputController {
     return UserInputController.instance;
   }
 
-  async setCastingAreaOrigin(evt: MouseEvent): Promise<void> {
-    const gameMap = await CGameMap.getInstance();
+  setCastingAreaOrigin(evt: MouseEvent): void {
+    const gameMap = CGameMap.getInstance();
     const rect = gameMap.canvas.getBoundingClientRect();
     this.cursorPosition = {
       x: evt.clientX - rect.left,
@@ -44,15 +45,15 @@ class UserInputController {
     };
   }
 
-  async registerPlayerMove(io: PlayerCastIO): Promise<void> {
+  registerPlayerMove(io: PlayerCastIO): void {
     this.userIO = io;
-    const gameMap = await CGameMap.getInstance();
+    const gameMap = CGameMap.getInstance();
     gameMap.canvas.addEventListener("mousemove", this.setCastingAreaOrigin.bind(this));
   }
 
-  async deRegisterPlayerMove(): Promise<void> {
+  deRegisterPlayerMove(): void {
     this.sendPlayerInput();
-    const gameMap = await CGameMap.getInstance();
+    const gameMap = CGameMap.getInstance();
     gameMap.canvas.removeEventListener("mousemove", this.setCastingAreaOrigin.bind(this));
     this.userIO = null;
   }
@@ -69,11 +70,11 @@ class UserInputController {
     this.socket.emit("C:USER_MOUSE_CLICK", userMouseClick);
   }
 
-  async sendPlayerInput(): Promise<void> {
+  sendPlayerInput(): void {
     if (this.socket == null) {
       return;
     }
-    const game = await Game.getInstance();
+    const game = Game.getInstance();
     const userInput: IUserInput = {
       io: this.userIO,
       cursorPosition: game.camera.relativeToAbsolutePosition(this.cursorPosition)

@@ -42,7 +42,7 @@ function drawCastShape(gameMap: CGameMap, ability: IAbility): void {
 function drawHeroState(gameMap: CGameMap, camera: Camera, state: IGameState): void {
   const ability: IAbility = UserInputController
     .getInstance(null)
-    .getCastingAbility(state?.client?.hero);
+    .getCastingAbility();
   if (ability == null) {
     return;
   }

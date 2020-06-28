@@ -1,31 +1,37 @@
 import CGameMap from "../cgameMap";
 import { IPlayer } from '../../../models/interfaces';
 import { AbilityKeys, IAbilityKey } from '../../../models/data/abilityKeys';
+import Game from '../game';
+import { HeroAbilities } from '../../../models/data/heroAbilities';
 
 const abilityButtonWidth = 40;
 const gapBetweenButtons = 10;
 const buttonAreaWidth = abilityButtonWidth * 3 + gapBetweenButtons * 2;
 
-function drawAbilityButtons(gameMap: CGameMap, clientPlayer: IPlayer): void {
+function drawAbilityButtons(gameMap: CGameMap): void {
   const canvasWidth = gameMap.canvas.width;
   const canvasHeight = gameMap.canvas.height;
   gameMap.context.fillStyle = "white";
   const buttonAreaXOffset = (canvasWidth - buttonAreaWidth) / 2;
+  const game = Game.getInstance();
   for (let i = 0; i < 3; i++) {
     const x = buttonAreaXOffset + i * (abilityButtonWidth + gapBetweenButtons);
     const y = canvasHeight - 60;
     const abilityKey: IAbilityKey = AbilityKeys[i];
-    const coolDownLeft: number = clientPlayer.hero[abilityKey.key]?.cooldown;
+    const abilityName: string = HeroAbilities[game.heroId][abilityKey.key]?.abilityName;
     let text: string;
-    if (coolDownLeft == null) {
+    if (abilityName == null) {
       gameMap.context.fillStyle = "gray";
       text = abilityKey.letter;
-    } else if (coolDownLeft == 0) {
-      gameMap.context.fillStyle = "white";
-      text = abilityKey.letter
-    } else if (coolDownLeft > 0) {
-      gameMap.context.fillStyle = "gray";
-      text = Math.floor(coolDownLeft).toString();
+    } else {
+      const coolDownLeft: number = game.getCoolDownLeft(abilityName);
+      if (coolDownLeft <= 0) {
+        gameMap.context.fillStyle = "white";
+        text = abilityKey.letter
+      } else {
+        gameMap.context.fillStyle = "gray";
+        text = Math.floor(coolDownLeft).toString();
+      }
     }
     gameMap.context.fillRect(x, y, abilityButtonWidth, abilityButtonWidth);
     gameMap.context.font = "20px Arial";
@@ -63,7 +69,7 @@ function drawPlayerHealthText(gameMap: CGameMap, clientPlayer: IPlayer): void {
 }
 
 function drawClientHud(gameMap: CGameMap, clientPlayer: IPlayer): void {
-  drawAbilityButtons(gameMap, clientPlayer);
+  drawAbilityButtons(gameMap);
   drawPlayerHealthBar(gameMap, clientPlayer);
   drawPlayerHealthText(gameMap, clientPlayer);
 }

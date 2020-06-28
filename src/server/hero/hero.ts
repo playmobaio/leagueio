@@ -80,12 +80,9 @@ abstract class Hero {
     this.model.origin = point;
   }
 
-  toInterface(_private: boolean): IHero {
+  toInterface(): IHero {
     return {
-      model: this.model,
-      qAbility: _private ? null: this.qAbility?.toInterface(),
-      wAbility: _private ? null: this.wAbility?.toInterface(),
-      eAbility: _private ? null: this.eAbility?.toInterface(),
+      model: this.model
     }
   }
 

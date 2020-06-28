@@ -1,6 +1,6 @@
 import Game from './game';
 import UserInputController from './userInputController';
-import { PlayerCastIO, IPoint, IGameState, Click } from '../../models/interfaces';
+import { PlayerCastIO, IPoint, IGameState, Click, ICasting } from '../../models/interfaces';
 
 function registerSocket(socket: SocketIO.Socket): void {
   const _game: Game = Game.getInstance();
@@ -8,6 +8,10 @@ function registerSocket(socket: SocketIO.Socket): void {
 
   socket.on("S:UPDATE_GAME_STATE", (userGame: IGameState) => {
     _game.draw(userGame);
+  });
+
+  socket.on("S:CASTING", (casting: ICasting) => {
+    _game.casting.set(casting.abilityName, casting.coolDownLastFrame);
   });
 
   addEventListener("mousedown", function(event) {

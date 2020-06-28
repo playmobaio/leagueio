@@ -5,12 +5,11 @@ import {
   IUserMouseClick,
   Click,
   IAbility,
-  IHero
 } from '../../models/interfaces';
 import Game from './game';
 import constants from './constants';
 import CGameMap from './cgameMap';
-import Abilities from '../../models/data/abilities';
+import { HeroAbilities, Abilities } from '../../models/data/heroAbilities';
 
 class UserInputController {
   private static instance: UserInputController;
@@ -82,26 +81,27 @@ class UserInputController {
     this.socket.emit("C:USER_CAST", userInput);
   }
 
-  getCastingAbility(hero: IHero): IAbility {
+  getCastingAbility(): IAbility {
     let abilityName: string;
+    const game = Game.getInstance();
+    const heroAbilities = HeroAbilities[game.heroId];
     switch(this.userIO) {
     case PlayerCastIO.Q:
-      abilityName = hero.qAbility.abilityName;
+      abilityName = heroAbilities.qAbility.abilityName;
       break;
     case PlayerCastIO.W:
-      abilityName = hero.wAbility.abilityName;
+      abilityName = heroAbilities.wAbility.abilityName;
       break;
     case PlayerCastIO.E:
-      abilityName = hero.eAbility.abilityName;
+      abilityName = heroAbilities.eAbility.abilityName;
       break;
     default:
       return null;
     }
     const ability: IAbility = Abilities[abilityName];
-    if (ability == null) {
+    if (ability == null || ability.castingShape == null) {
       return null;
     }
-    const game = Game.getInstance();
     ability.castingShape.origin = game.camera.getRelativePosition(this.cursorPosition);
     return ability;
   }

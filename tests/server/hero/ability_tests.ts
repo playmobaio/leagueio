@@ -7,6 +7,7 @@ import Hero from "../../../src/server/hero/hero";
 import { secondsToFrames } from '../../../src/server/tools/frame';
 import { TestAbility } from '../testClasses';
 import constants from '../../../src/server/constants';
+import Player from '../../../src/server/models/player';
 
 describe('Ability', function() {
   let ability: TestAbility;
@@ -26,11 +27,14 @@ describe('Ability', function() {
 
   it('can cast after cooldown', function() {
     game.currentFrame = secondsToFrames(21);
-
+    const socket = TypeMoq.Mock.ofType<SocketIO.Socket>();
+    const player = Player.create("id", socket.object, "name", 1);
+    hero.setup(x => x.player).returns(() => player);
     ability.cast();
-    heroState.verify(x =>
-      x.addCasting(TypeMoq.It.isAny()),
-    Times.once());
+    heroState.verify(x => x.addCasting(TypeMoq.It.isAny()),
+      Times.once());
+    socket.verify(x => x.emit(TypeMoq.It.isValue("S:CASTING"), TypeMoq.It.isAny()),
+      Times.once());
     assert.equal(ability.lastCastFrame, game.currentFrame);
   });
 
@@ -58,24 +62,5 @@ describe('Ability', function() {
   it('verify ability is expired at current frame', function() {
     game.currentFrame = secondsToFrames(10) + 1;
     assert.ok(ability.hasCastTimeElapsed());
-  });
-
-  it('toInterface without cast will return cooldownLeft of 0', function() {
-    assert.equal(ability.toInterface().cooldown, 0);
-  });
-
-  it('toInterface before cooldown finishes will return nonzero cooldownLeft', function() {
-    ability.lastCastFrame = 1
-    const gameFrame = 2;
-    game.currentFrame = secondsToFrames(gameFrame);
-    const cooldown: number = ability.toInterface().cooldown;
-    assert.equal(cooldown, ability.cooldown - gameFrame + ability.lastCastFrame);
-  });
-
-  it('toInterface after cooldown finishes will return zero cooldownLeft', function() {
-    ability.lastCastFrame = 1
-    const gameFrame = 21;
-    game.currentFrame = secondsToFrames(gameFrame);
-    assert.equal(ability.toInterface().cooldown, 0);
   });
 });

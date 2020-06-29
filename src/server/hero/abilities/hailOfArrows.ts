@@ -16,7 +16,8 @@ class HailOfArrows extends Ability {
     const circle = new Circle(shape.radius, point);
     const game = Game.getInstance();
     game.players.forEach((player) => {
-      if (player.hero?.model?.collidesWithCircle(circle)) {
+      if (player.id != this.hero.player.id &&
+        player.hero?.model?.collidesWithCircle(circle)) {
         player.receiveDamage(15);
       }
     });

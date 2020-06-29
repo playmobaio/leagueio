@@ -32,10 +32,15 @@ abstract class Hero {
     this.state = new HeroState();
   }
 
+  stopHero(): void {
+    this.updateVelocity(this.model.origin);
+  }
+
   updateVelocity(point: IPoint): void {
     this.velocitySource = this.model.origin;
     this.range = Vector.createFromPoints(this.velocitySource, point).getMagnitude();
     this.velocity = new Velocity(point, this.velocityMagnitude, this.model.origin);
+    this.state.clearQueueCast();
   }
 
   rangeExpired(): boolean {

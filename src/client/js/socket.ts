@@ -46,12 +46,12 @@ function registerSocket(socket: SocketIO.Socket): void {
   window.onkeydown = (event: KeyboardEvent): void => {
     event.preventDefault();
     const io: PlayerCastIO = getPlayerCastIO(event);
-    _userInputController.registerPlayerMove(io);
+    _userInputController.preCast(io);
   }
 
   window.onkeyup = (event: KeyboardEvent): void => {
     event.preventDefault();
-    _userInputController.deRegisterPlayerMove();
+    _userInputController.cast();
   }
 }
 

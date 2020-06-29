@@ -2,7 +2,9 @@ import Hero from './hero';
 import Game from '../models/game';
 import { secondsToFrames } from '../tools/frame';
 import constants from '../constants';
-import { IShape, IPoint, ICasting } from '../../models/interfaces';
+import { IShape, IPoint, ICasting, IAbility } from '../../models/interfaces';
+import { Abilities } from '../../models/data/heroAbilities';
+import { Vector } from '../models/basicTypes';
 
 abstract class Ability {
   cooldown: number;
@@ -27,6 +29,14 @@ abstract class Ability {
     if (this.lastCastFrame + secondsToFrames(this.cooldown) > currFrame) {
       return;
     }
+    if (!this.isInRange()) {
+      this.hero.updateVelocity(this.targetPosition);
+      this.hero.state.queueCast(this);
+      return;
+    }
+    if (this.hero.state.hasQueuedCast()) {
+      this.hero.stopHero();
+    }
     this.hero.state.addCasting(this);
     const casting: ICasting = {
       coolDownLastFrame: currFrame + secondsToFrames(this.cooldown),
@@ -34,6 +44,18 @@ abstract class Ability {
     }
     this.hero.player.socket.emit("S:CASTING", casting);
     this.lastCastFrame = currFrame;
+  }
+
+  isInRange(): boolean {
+    const ability: IAbility = Abilities[this.name];
+    if (ability.range == 0) {
+      return true;
+    }
+    const distance: number = Vector.createFromPoints(
+      this.hero.model.origin,
+      this.targetPosition)
+      .getMagnitude();
+    return distance <= ability.range;
   }
 
   hasCastTimeElapsed(): boolean {

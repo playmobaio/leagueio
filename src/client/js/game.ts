@@ -6,7 +6,7 @@ import { drawProjectile } from './draw/projectile';
 import { drawClientStocks } from './draw/stocks';
 import { drawClientHud } from './draw/hud';
 import UserInputController from './userInputController';
-import drawHeroState from './draw/heroState';
+import drawCastInfo from './draw/castInfo';
 
 // Client
 class Game {
@@ -62,7 +62,7 @@ class Game {
     gameState.projectiles.forEach((iProjectile: IProjectile): void => {
       drawProjectile(this.gameMap, iProjectile, this.camera);
     });
-    drawHeroState(this.gameMap, this.camera, gameState);
+    drawCastInfo(this.gameMap, this.camera, gameState);
 
     this.gameMap.drawLayer(this.camera, Layer.Foreground);
     drawClientHud(this.gameMap, gameState.client);

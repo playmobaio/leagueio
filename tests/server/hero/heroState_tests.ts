@@ -55,4 +55,15 @@ describe('HeroState', function() {
     assert.equal(heroState.effects.length, 1);
     assert.equal(heroState.effects[0].description, description);
   });
+
+  it("If there is a queuedCast update will try to cast it", function() {
+    heroState.queueCast(ability.object);
+    heroState.update();
+    ability.verify(x => x.cast(), TypeMoq.Times.once());
+  });
+
+  it("If there is a queuedCast hasQueuedCast will be true", function() {
+    heroState.queueCast(ability.object);
+    assert.ok(heroState.hasQueuedCast());
+  });
 });

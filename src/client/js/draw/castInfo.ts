@@ -12,6 +12,7 @@ import Camera from '../camera';
 import { drawCircle } from './shape';
 import constants from '../constants';
 import UserInputController from '../userInputController';
+import Game from '../game';
 
 function drawRange(gameMap: CGameMap, camera: Camera, hero: IHero, ability: IAbility): void {
   const range: number = ability.range;
@@ -39,11 +40,12 @@ function drawCastShape(gameMap: CGameMap, ability: IAbility): void {
   }
 }
 
-function drawHeroState(gameMap: CGameMap, camera: Camera, state: IGameState): void {
+function drawCastInfo(gameMap: CGameMap, camera: Camera, state: IGameState): void {
   const ability: IAbility = UserInputController
     .getInstance(null)
     .getCastingAbility();
-  if (ability == null) {
+  // Don't draw if we are on cooldown
+  if (ability == null || Game.getInstance().onCoolDown(ability.abilityName)) {
     return;
   }
 
@@ -51,4 +53,4 @@ function drawHeroState(gameMap: CGameMap, camera: Camera, state: IGameState): vo
   drawCastShape(gameMap, ability);
 }
 
-export default drawHeroState
+export default drawCastInfo

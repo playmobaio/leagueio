@@ -44,13 +44,13 @@ class UserInputController {
     };
   }
 
-  registerPlayerMove(io: PlayerCastIO): void {
+  preCast(io: PlayerCastIO): void {
     this.userIO = io;
     const gameMap = CGameMap.getInstance();
     gameMap.canvas.addEventListener("mousemove", this.setCastingAreaOrigin.bind(this));
   }
 
-  deRegisterPlayerMove(): void {
+  cast(): void {
     this.sendPlayerInput();
     const gameMap = CGameMap.getInstance();
     gameMap.canvas.removeEventListener("mousemove", this.setCastingAreaOrigin.bind(this));
@@ -76,7 +76,7 @@ class UserInputController {
     const game = Game.getInstance();
     const userInput: IUserInput = {
       io: this.userIO,
-      cursorPosition: game.camera.relativeToAbsolutePosition(this.cursorPosition)
+      cursorPosition: game.camera.getAbsolutePosition(this.cursorPosition)
     };
     this.socket.emit("C:USER_CAST", userInput);
   }
@@ -87,21 +87,21 @@ class UserInputController {
     const heroAbilities = HeroAbilities[game.heroId];
     switch(this.userIO) {
     case PlayerCastIO.Q:
-      abilityName = heroAbilities.qAbility.abilityName;
+      abilityName = heroAbilities.qAbility?.abilityName;
       break;
     case PlayerCastIO.W:
-      abilityName = heroAbilities.wAbility.abilityName;
+      abilityName = heroAbilities.wAbility?.abilityName;
       break;
     case PlayerCastIO.E:
-      abilityName = heroAbilities.eAbility.abilityName;
+      abilityName = heroAbilities.eAbility?.abilityName;
       break;
     default:
       return null;
     }
-    const ability: IAbility = Abilities[abilityName];
-    if (ability == null || ability.castingShape == null) {
+    if (abilityName == null || Abilities[abilityName].castingShape == null) {
       return null;
     }
+    const ability: IAbility = Abilities[abilityName];
     ability.castingShape.origin = game.camera.getRelativePosition(this.cursorPosition);
     return ability;
   }

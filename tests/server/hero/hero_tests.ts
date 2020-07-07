@@ -83,4 +83,9 @@ describe('Hero', function() {
     mock.object.performAttack(point);
     mock.verify(x => x.performAutoAttack(TypeMoq.It.isAny()), TypeMoq.Times.once());
   });
+
+  it("on update velocity queued casts are cleared", function() {
+    mock.object.updateVelocity(point);
+    stateMock.verify(x => x.clearQueueCast(), Times.once());
+  });
 });

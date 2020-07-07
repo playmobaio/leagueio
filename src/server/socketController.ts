@@ -14,7 +14,6 @@ export function clientJoinGame(socket: SocketIO.Socket, joinGame: IJoinGame): vo
 }
 
 export function registerPlayerCast(clientId: string, userInput: IUserInput): void {
-  console.log("Player casting");
   const player: Player = Game.getInstance().players.get(clientId);
   let ability: Ability;
   switch(userInput.io) {
@@ -30,6 +29,7 @@ export function registerPlayerCast(clientId: string, userInput: IUserInput): voi
   }
   if (ability != null) {
     ability.targetPosition = userInput.cursorPosition;
+    console.log(`Player casting ${ability.name}`);
     ability.cast();
   }
 }

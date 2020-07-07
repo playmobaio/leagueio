@@ -35,8 +35,8 @@ class HeroState {
     this.queuedCast = ability;
   }
 
-  hasQueuedCast(): boolean {
-    return this.queuedCast != null;
+  isQueuedCast(ability: Ability): boolean {
+    return this.queuedCast.name === ability.name;
   }
 
   clearQueueCast(): void {

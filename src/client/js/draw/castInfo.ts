@@ -44,8 +44,8 @@ function drawCastInfo(gameMap: CGameMap, camera: Camera, state: IGameState): voi
   const ability: IAbility = UserInputController
     .getInstance(null)
     .getCastingAbility();
-  // Don't draw if we are cooling down
-  if (ability == null || Game.getInstance().getCoolDownLeft(ability.abilityName) > 0) {
+  // Don't draw if we are on cooldown
+  if (ability == null || Game.getInstance().onCoolDown(ability.abilityName)) {
     return;
   }
 

@@ -43,6 +43,10 @@ class Game {
     return secondsLeft;
   }
 
+  onCoolDown(abilityName: string): boolean {
+    return this.getCoolDownLeft(abilityName) > 0;
+  }
+
   draw(gameState: IGameState): void {
     if(this.currentFrame >= gameState.currentFrame) {
       return;

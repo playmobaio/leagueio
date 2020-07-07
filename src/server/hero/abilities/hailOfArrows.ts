@@ -2,12 +2,13 @@ import Ability from "../ability";
 import constants from '../../../models/constants';
 import { Abilities } from '../../../models/data/heroAbilities';
 import { Circle, Point } from '../../models/basicTypes';
-import { ICircle } from '../../../models/interfaces';
+import { ICircle, CastRestrictions } from '../../../models/interfaces';
 import Game from '../../models/game';
 
 class HailOfArrows extends Ability {
   cooldown = 18;
   name = constants.HAIL_OF_ARROWS;
+  castRestriction = CastRestrictions.InRange;
 
   onCast(): void {
     console.log(`Casting Hail of Arrows at ${this.targetPosition.x}, ${this.targetPosition.y}`);

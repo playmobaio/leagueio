@@ -108,3 +108,8 @@ export enum Shape {
   Circle,
   Line
 }
+
+export enum CastRestrictions {
+  AllRanges,
+  InRange
+}

@@ -93,7 +93,7 @@ describe('Ability', function() {
     heroState.verify(x => x.clearQueueCast(), Times.once());
   });
 
-  it('if ability has cast restriction AllRanges we will cast', function() {
+  it('if ability has cast restriction None we will cast', function() {
     abilityB.cast();
     heroState.verify(x => x.queueCast(TypeMoq.It.isAny()), Times.never());
     heroState.verify(x => x.addCasting(TypeMoq.It.isAny()), Times.once());

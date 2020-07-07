@@ -109,7 +109,7 @@ export enum Shape {
   Line
 }
 
-export enum CastRestrictions {
-  AllRanges,
+export enum CastRestriction {
+  None,
   InRange
 }

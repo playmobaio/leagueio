@@ -2,7 +2,7 @@ import Hero from './hero';
 import Game from '../models/game';
 import { secondsToFrames } from '../tools/frame';
 import constants from '../constants';
-import { IShape, IPoint, ICasting, IAbility, CastRestrictions } from '../../models/interfaces';
+import { IShape, IPoint, ICasting, IAbility, CastRestriction } from '../../models/interfaces';
 import { Abilities } from '../../models/data/heroAbilities';
 import { Vector } from '../models/basicTypes';
 
@@ -14,7 +14,7 @@ abstract class Ability {
   hero: Hero;
   area: IShape;
   targetPosition: IPoint;
-  abstract castRestriction: CastRestrictions;
+  abstract castRestriction: CastRestriction;
   abstract name: string;
 
   constructor(hero: Hero) {
@@ -50,7 +50,7 @@ abstract class Ability {
 
   // Checks abilities that require hero to be within range of target are actually within range
   isInRange(): boolean {
-    if (this.castRestriction != CastRestrictions.InRange) {
+    if (this.castRestriction != CastRestriction.InRange) {
       return true;
     }
     const ability: IAbility = Abilities[this.name];

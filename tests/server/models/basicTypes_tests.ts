@@ -88,4 +88,22 @@ describe('Vector', function() {
     assert.equal(0, unitVector.x);
     assert.equal(0, unitVector.y);
   });
+
+  it('rotateCounterClockwise does not run on non-unit vector', function() {
+    const vector = new Vector(3, 4);
+    vector.rotateCounterClockWise(90);
+    assert.equal(vector.x, 3);
+    assert.equal(vector.y, 4);
+  });
+
+  it('rotateCounterClockwise works as expected', function() {
+    const vector = new Vector(1, 0);
+    vector.rotateCounterClockWise(90);
+    assert.equal(parseInt(vector.x.toFixed(2)), 0);
+    assert.equal(parseInt(vector.y.toFixed(2)), 1);
+
+    vector.rotateCounterClockWise(90);
+    assert.equal(parseInt(vector.x.toFixed(2)), -1);
+    assert.equal(parseInt(vector.y.toFixed(2)), 0);
+  });
 });

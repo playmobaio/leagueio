@@ -45,6 +45,20 @@ export class Vector {
     return new Vector(this.x/magnitude, this.y/magnitude);
   }
 
+  rotateCounterClockWise(degrees: number): void {
+    // Check if unit vector
+    if (this.getMagnitude() != 1) {
+      return;
+    }
+    // Need this hack since javascript is not very precise with radians
+    const cosine = Math.cos(degrees * Math.PI / 180);
+    const sine = Math.sin(degrees * Math.PI / 180);
+    const translatedX = this.x * cosine - this.y * sine;
+    const translatedY = this.x * sine + this.y * cosine;
+    this.x = translatedX;
+    this.y = translatedY;
+  }
+
   isNullVector(): boolean {
     return this.x == 0 && this.y == 0;
   }

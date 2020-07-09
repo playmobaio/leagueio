@@ -2,7 +2,8 @@ import Hero from "../../src/server/hero/hero";
 import { Circle } from "../../src/server/models/basicTypes";
 import Ability from "../../src/server/hero/ability";
 import Effect from "../../src/server/hero/effect";
-import { CastRestriction } from "../../src/models/interfaces";
+import { CastRestriction, IPoint } from "../../src/models/interfaces";
+import Attack from "../../src/server/hero/attacks/attack";
 
 export class TestAbility extends Ability {
   used = false;
@@ -53,5 +54,18 @@ export class TestEffect extends Effect {
 
   finish(): void {
     return;
+  }
+}
+
+export class TestAttack extends Attack {
+  executed = false;
+  updated = false;
+  onExecute(dest: IPoint): void {
+    console.log(dest);
+    this.executed = !this.executed;
+  }
+
+  onUpdate(): void {
+    this.updated = !this.updated;
   }
 }

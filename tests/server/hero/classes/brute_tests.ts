@@ -21,6 +21,6 @@ describe('Brute', function() {
     const attack = TypeMoq.Mock.ofType<Swipe180>();
     brute.autoAttack = attack.object;
     brute.onAutoAttack({ x: 0, y: 0 });
-    attack.verify(x => x.execute(TypeMoq.It.isAny()), TypeMoq.Times.once());
+    attack.verify(x => x.attack(TypeMoq.It.isAny()), TypeMoq.Times.once());
   });
 });

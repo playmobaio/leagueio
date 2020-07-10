@@ -17,11 +17,11 @@ describe("Attack", function() {
 
   it("cannot call execute while already executing", function() {
     const flag = testAttack.executed;
-    testAttack.execute(new Point(1, 1));
+    testAttack.attack(new Point(1, 1));
     assert.equal(!flag, testAttack.executed);
 
     Game.getInstance().currentFrame += 1
-    testAttack.execute(new Point(1, 1));
+    testAttack.attack(new Point(1, 1));
     assert.notEqual(!!flag, testAttack.executed);
   });
 
@@ -38,7 +38,7 @@ describe("Attack", function() {
   it("update while executing", function() {
     const flag = testAttack.updated;
     Game.getInstance().currentFrame = 10
-    testAttack.execute(new Point(1, 1));
+    testAttack.attack(new Point(1, 1));
 
     testAttack.update();
     assert.equal(!flag, testAttack.updated);
@@ -51,7 +51,7 @@ describe("Attack", function() {
   it("update stops after executing", function() {
     const flag = testAttack.updated;
     Game.getInstance().currentFrame = 10
-    testAttack.execute(new Point(1, 1));
+    testAttack.attack(new Point(1, 1));
 
     testAttack.update();
     assert.equal(!flag, testAttack.updated);

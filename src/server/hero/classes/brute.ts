@@ -19,7 +19,7 @@ class Brute extends Hero {
   }
 
   onAutoAttack(dest: IPoint): void {
-    this.autoAttack.execute(dest);
+    this.autoAttack.attack(dest);
   }
 }
 

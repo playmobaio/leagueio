@@ -46,10 +46,6 @@ export class Vector {
   }
 
   rotateCounterClockWise(degrees: number): void {
-    // Check if unit vector
-    if (this.getMagnitude() != 1) {
-      return;
-    }
     // Need this hack since javascript is not very precise with radians
     const cosine = Math.cos(degrees * Math.PI / 180);
     const sine = Math.sin(degrees * Math.PI / 180);

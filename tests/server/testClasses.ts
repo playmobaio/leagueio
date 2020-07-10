@@ -60,7 +60,7 @@ export class TestEffect extends Effect {
 export class TestAttack extends Attack {
   executed = false;
   updated = false;
-  onExecute(dest: IPoint): void {
+  onAttack(dest: IPoint): void {
     console.log(dest);
     this.executed = !this.executed;
   }

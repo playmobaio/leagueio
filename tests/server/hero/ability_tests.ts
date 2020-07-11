@@ -6,7 +6,6 @@ import HeroState from "../../../src/server/hero/heroState";
 import Hero from "../../../src/server/hero/hero";
 import { secondsToFrames } from '../../../src/server/tools/frame';
 import { TestAbility, TestAbility2 } from '../testClasses';
-import constants from '../../../src/server/constants';
 import Player from '../../../src/server/models/player';
 import { Abilities } from '../../../src/models/data/heroAbilities';
 import { Point, Circle } from '../../../src/server/models/basicTypes';
@@ -28,12 +27,12 @@ describe('Ability', function() {
     socket = TypeMoq.Mock.ofType<SocketIO.Socket>();
     player = Player.create("id", socket.object, "name", 1);
     hero.setup(x => x.player).returns(() => player);
-    abilityA.lastCastFrame = constants.DEFAULT_LAST_CAST_FRAME;
+    abilityA.nextAvailableCastFrame = 0;
     game = Game.getInstance();
     game.reset();
     Abilities[abilityA.name] = { castingShape: null, range: 0, abilityName: abilityA.name };
     abilityB = new TestAbility2(hero.object);
-    abilityB.lastCastFrame = constants.DEFAULT_LAST_CAST_FRAME;
+    abilityB.nextAvailableCastFrame = 0;
     Abilities[abilityB.name] = { castingShape: null, range: 0, abilityName: abilityB.name };
   });
 
@@ -44,26 +43,26 @@ describe('Ability', function() {
       Times.once());
     socket.verify(x => x.emit(TypeMoq.It.isValue("S:CASTING"), TypeMoq.It.isAny()),
       Times.once());
-    assert.equal(abilityA.lastCastFrame, game.currentFrame);
+    assert.notEqual(abilityA.nextAvailableCastFrame, 0);
   });
 
   it('cannot cast during cooldown', function() {
-    abilityA.lastCastFrame = 1;
+    const frames = secondsToFrames(13)
+    abilityA.nextAvailableCastFrame = frames;
     game.currentFrame = secondsToFrames(12);
     abilityA.cast();
-    assert.equal(abilityA.lastCastFrame, 1);
+    assert.equal(abilityA.nextAvailableCastFrame, frames);
     assert.equal(abilityA.used, false);
   });
 
   it('verify ability cast time is less than a second by default', function() {
-    abilityA.lastCastFrame = 1;
+    abilityA.nextAvailableCastFrame = 11;
     game.currentFrame = secondsToFrames(2);
     assert.equal(abilityA.hasCastTimeElapsed(), true);
   });
 
   it('verify ability is not expired at current frame', function() {
-    abilityA.lastCastFrame = 1;
-    abilityA.castTime = 3;
+    abilityA.nextAvailableCastFrame = secondsToFrames(3);
     game.currentFrame = secondsToFrames(2);
     assert.equal(abilityA.hasCastTimeElapsed(), false);
   });
@@ -108,5 +107,41 @@ describe('Ability', function() {
     heroState.verify(x => x.clearQueueCast(), Times.once());
     heroState.verify(x => x.addCasting(TypeMoq.It.isAny()), Times.once());
     socket.verify(x => x.emit(TypeMoq.It.isValue("S:CASTING"), TypeMoq.It.isAny()), Times.once());
+  });
+
+  it("update stops after casting", function() {
+    const flag = abilityA.updated;
+    Game.getInstance().currentFrame = 10
+    abilityA.cast();
+
+    abilityA.update();
+    assert.equal(!flag, abilityA.updated);
+
+    Game.getInstance().currentFrame += secondsToFrames(abilityA.cooldown);
+    abilityA.update();
+    assert.notEqual(!!flag, abilityA.updated);
+  });
+
+  it("update while casting", function() {
+    const flag = abilityA.updated;
+    Game.getInstance().currentFrame = 10
+    abilityA.cast();
+
+    abilityA.update();
+    assert.equal(!flag, abilityA.updated);
+
+    Game.getInstance().currentFrame += 1
+    abilityA.update();
+    assert.equal(!!flag, abilityA.updated);
+  });
+
+  it("do not update when not casting", function() {
+    const flag = abilityA.updated;
+    abilityA.update();
+    assert.notEqual(!flag, abilityA.updated);
+
+    Game.getInstance().currentFrame += 1
+    abilityA.update();
+    assert.notEqual(!flag, abilityA.updated);
   });
 });

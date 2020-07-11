@@ -45,6 +45,15 @@ export class Vector {
     return new Vector(this.x/magnitude, this.y/magnitude);
   }
 
+  rotateCounterClockWise(radians: number): void {
+    const cosine = Math.cos(radians);
+    const sine = Math.sin(radians);
+    const translatedX = this.x * cosine - this.y * sine;
+    const translatedY = this.x * sine + this.y * cosine;
+    this.x = translatedX;
+    this.y = translatedY;
+  }
+
   isNullVector(): boolean {
     return this.x == 0 && this.y == 0;
   }

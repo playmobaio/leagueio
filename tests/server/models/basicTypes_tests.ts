@@ -88,4 +88,15 @@ describe('Vector', function() {
     assert.equal(0, unitVector.x);
     assert.equal(0, unitVector.y);
   });
+
+  it('rotateCounterClockwise works as expected', function() {
+    const vector = new Vector(1, 0);
+    vector.rotateCounterClockWise(Math.PI / 2);
+    assert.equal(parseInt(vector.x.toFixed(2)), 0);
+    assert.equal(parseInt(vector.y.toFixed(2)), 1);
+
+    vector.rotateCounterClockWise(Math.PI / 2);
+    assert.equal(parseInt(vector.x.toFixed(2)), -1);
+    assert.equal(parseInt(vector.y.toFixed(2)), 0);
+  });
 });

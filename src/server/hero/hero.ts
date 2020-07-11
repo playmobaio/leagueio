@@ -5,6 +5,7 @@ import Ability from './ability';
 import Player from '../models/player';
 import Game from '../models/game';
 import constants from '../constants';
+import { getFramesBetweenAutoAttack } from '../tools/frame';
 
 abstract class Hero {
   movementSpeed: Velocity;
@@ -23,6 +24,7 @@ abstract class Hero {
   velocitySource: Point;
   range: number;
   player: Player;
+  autoAttack: Ability;
 
   constructor(player: Player) {
     this.velocityMagnitude = constants.DEFAULT_PLAYER_VELOCITY
@@ -73,7 +75,7 @@ abstract class Hero {
     if (this.lastAutoAttackFrame == -1) {
       return true;
     }
-    const framesBetweenAutoAttacks = constants.FRAMES_PER_SECOND / this.attackSpeed;
+    const framesBetweenAutoAttacks = getFramesBetweenAutoAttack(this.attackSpeed);
     return this.lastAutoAttackFrame + framesBetweenAutoAttacks <= Game.getInstance().currentFrame;
   }
 
@@ -96,6 +98,7 @@ abstract class Hero {
       this.updatePosition(this.model.origin.transform(this.velocity));
     }
     this.state.update();
+    this.autoAttack?.update();
   }
 }
 export default Hero;

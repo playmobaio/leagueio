@@ -9,7 +9,7 @@ import { Vector } from '../models/basicTypes';
 abstract class Ability {
   cooldown: number;
   castTime: number;
-  lastCastFrame: number;
+  nextAvailableCastFrame: number;
   range: number;
   hero: Hero;
   area: IShape;
@@ -19,7 +19,7 @@ abstract class Ability {
 
   constructor(hero: Hero) {
     this.hero = hero;
-    this.lastCastFrame = constants.DEFAULT_LAST_CAST_FRAME;
+    this.nextAvailableCastFrame = 0;
     this.castTime = constants.DEFAULT_CAST_LENGTH;
   }
 
@@ -27,7 +27,7 @@ abstract class Ability {
 
   cast(): void {
     const currFrame = Game.getInstance().currentFrame;
-    if (this.lastCastFrame + secondsToFrames(this.cooldown) > currFrame) {
+    if (this.nextAvailableCastFrame > currFrame) {
       return;
     }
     if (!this.isInRange()) {
@@ -40,12 +40,12 @@ abstract class Ability {
     }
     this.hero.state.addCasting(this);
     this.hero.state.clearQueueCast();
+    this.nextAvailableCastFrame = currFrame + secondsToFrames(this.cooldown);
     const casting: ICasting = {
-      coolDownLastFrame: currFrame + secondsToFrames(this.cooldown),
+      coolDownLastFrame: this.nextAvailableCastFrame,
       abilityName: this.name
     }
     this.hero.player.socket.emit("S:CASTING", casting);
-    this.lastCastFrame = currFrame;
   }
 
   // Checks abilities that require hero to be within range of target are actually within range
@@ -64,8 +64,22 @@ abstract class Ability {
     return distance <= ability.range;
   }
 
+  onUpdate(): void {
+    return;
+  }
+
+  // Called by parent class on game loop update
+  update(): void {
+    // Only update while executing
+    if (this.nextAvailableCastFrame <= Game.getInstance().currentFrame) {
+      return;
+    }
+
+    this.onUpdate();
+  }
+
   hasCastTimeElapsed(): boolean {
-    return this.lastCastFrame + secondsToFrames(this.castTime) < Game.getInstance().currentFrame;
+    return this.nextAvailableCastFrame < Game.getInstance().currentFrame;
   }
 }
 export default Ability;

@@ -8,4 +8,8 @@ function framesToSeconds(frames: number): number {
   return frames / constants.FRAMES_PER_SECOND;
 }
 
-export { secondsToFrames, framesToSeconds }
+function getFramesBetweenAutoAttack(speed: number): number {
+  return constants.FRAMES_PER_SECOND / speed;
+}
+
+export { secondsToFrames, framesToSeconds, getFramesBetweenAutoAttack }

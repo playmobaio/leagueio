@@ -12,12 +12,16 @@ export class TestAbility extends Ability {
   cooldown = 20;
   name = "TestAbility";
   castRestriction = CastRestriction.InRange;
+  updated = false;
 
   onCast(): void {
-    this.used = true;
+    this.used = !this.used;
   }
   useAbility(): void {
     return;
+  }
+  onUpdate(): void {
+    this.updated = !this.updated;
   }
 }
 

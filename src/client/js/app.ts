@@ -5,8 +5,9 @@ import Layers from './layer';
 import Game from './game';
 
 import 'phaser';
-import SceneA from '../phaser/scenes/SceneA';
-import SceneB from '../phaser/scenes/SceneB';
+import GameScene from '../phaser/scenes/gameScene';
+import UIScene from '../phaser/scenes/uiScene';
+
 function resizeCanvas(): void {
   const canvas: HTMLElement = document.getElementById("canvas");
   const width: number = window.innerWidth;
@@ -25,25 +26,28 @@ function InitializeGameUI(): void {
   resizeCanvas();
 }
 
+function InitializePhaserUI(): void {
+  document.getElementById('startpanel').setAttribute("style", "display:none;");
+  document.getElementById('game').setAttribute("style", "display:none;");
+  const config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    scale: {
+      mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_BOTH },
+    backgroundColor: '#ffffff',
+    parent: 'game-container',
+    scene: [ GameScene, UIScene ]
+  };
+  new Phaser.Game(config);
+}
+
 document.getElementById("joinGame").onclick = (): void => {
   const usePhaser: boolean = (document.getElementById("usePhaser") as HTMLInputElement).checked;
-
-
+  const socket: SocketIO.Socket = io();
   if(usePhaser) {
-    document.getElementById('startpanel').setAttribute("style", "display:none;");
-    document.getElementById('game').setAttribute("style", "display:none;");
-    const config = {
-      type: Phaser.AUTO,
-      width: 800,
-      height: 600,
-      scale: {
-        mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH },
-      backgroundColor: '#ffffff',
-      parent: 'phaser-example',
-      scene: [ SceneA, SceneB ]
-    };
-    new Phaser.Game(config);
+    InitializePhaserUI();
   }
   else {
     if (Layers.getLayers() == undefined) {
@@ -56,7 +60,6 @@ document.getElementById("joinGame").onclick = (): void => {
     const joinGame: IJoinGame = { name, heroId };
     Game.getInstance().heroId = heroId;
 
-    const socket: SocketIO.Socket = io();
     registerSocket(socket);
     InitializeGameUI();
     window.addEventListener('resize', resizeCanvas);

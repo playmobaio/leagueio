@@ -1,6 +1,6 @@
 import 'phaser';
 
-class SceneB extends Phaser.Scene {
+class UIScene extends Phaser.Scene {
   score: number;
 
   constructor()
@@ -24,4 +24,4 @@ class SceneB extends Phaser.Scene {
     }, this);
   }
 }
-export default SceneB;
+export default UIScene;

@@ -1,6 +1,6 @@
 import 'phaser';
 
-class SceneA extends Phaser.Scene {
+class GameScene extends Phaser.Scene {
 
   constructor()
   {
@@ -9,21 +9,22 @@ class SceneA extends Phaser.Scene {
 
   preload(): void
   {
-    this.load.image('bg', '../assets/background.png');
-    this.load.image('crate', '../assets/crate.png');
+    this.load.spritesheet('tiles', '../../assets/tiles.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
   }
 
   create(): void
   {
     const width: number = window.innerWidth;
     const height: number = window.innerHeight;
-    this.add.image(width, height, 'bg');
     for (let i = 0; i < 64; i++)
     {
       const x = Phaser.Math.Between(0, width);
       const y = Phaser.Math.Between(0, height);
 
-      this.add.image(x, y, 'crate').setInteractive();
+      this.add.image(x, y, 'tiles').setInteractive();
     }
     this.input.on('gameobjectup', this.clickHandler, this);
   }
@@ -38,4 +39,4 @@ class SceneA extends Phaser.Scene {
     this.events.emit('addScore');
   }
 }
-export default SceneA;
+export default GameScene;

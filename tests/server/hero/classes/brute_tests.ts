@@ -2,7 +2,7 @@ import * as TypeMoq from "typemoq";
 import Player from "../../../../src/server/models/player";
 import Game from "../../../../src/server/models/game";
 import Brute from '../../../../src/server/hero/classes/brute';
-import Swipe180 from '../../../../src/server/hero/attacks/swipe180';
+import BruteAuto from "../../../../src/server/hero/abilities/bruteAuto";
 
 describe('Brute', function() {
   let player: TypeMoq.IMock<Player>;
@@ -18,9 +18,11 @@ describe('Brute', function() {
   });
 
   it('Brute autoattack will execute', function() {
-    const attack = TypeMoq.Mock.ofType<Swipe180>();
-    brute.autoAttack = attack.object;
+    const auto = TypeMoq.Mock.ofType<BruteAuto>();
+    brute.autoAttack = auto.object;
     brute.onAutoAttack({ x: 0, y: 0 });
-    attack.verify(x => x.attack(TypeMoq.It.isAny()), TypeMoq.Times.once());
+    auto.verify(x => x.targetPosition = TypeMoq.It.isObjectWith({ x: 0, y: 0 }),
+      TypeMoq.Times.once());
+    auto.verify(x => x.cast(), TypeMoq.Times.once());
   });
 });

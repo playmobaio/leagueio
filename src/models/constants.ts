@@ -7,4 +7,5 @@ export default {
   DEFAULT_MAP_HEIGHT: 16 * 64,
   HAIL_OF_ARROWS: "HailOfArrows",
   RAPID_FIRE: "RapidFire",
+  BRUTE_AUTO: "BruteAuto",
 }

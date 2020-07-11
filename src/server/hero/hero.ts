@@ -6,7 +6,6 @@ import Player from '../models/player';
 import Game from '../models/game';
 import constants from '../constants';
 import { getFramesBetweenAutoAttack } from '../tools/frame';
-import Attack from './attacks/attack';
 
 abstract class Hero {
   movementSpeed: Velocity;
@@ -25,7 +24,7 @@ abstract class Hero {
   velocitySource: Point;
   range: number;
   player: Player;
-  autoAttack: Attack;
+  autoAttack: Ability;
 
   constructor(player: Player) {
     this.velocityMagnitude = constants.DEFAULT_PLAYER_VELOCITY

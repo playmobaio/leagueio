@@ -45,10 +45,10 @@ export class Vector {
     return new Vector(this.x/magnitude, this.y/magnitude);
   }
 
-  rotateCounterClockWise(degrees: number): void {
+  rotateCounterClockWise(radians: number): void {
     // Need this hack since javascript is not very precise with radians
-    const cosine = Math.cos(degrees * Math.PI / 180);
-    const sine = Math.sin(degrees * Math.PI / 180);
+    const cosine = Math.cos(radians);
+    const sine = Math.sin(radians);
     const translatedX = this.x * cosine - this.y * sine;
     const translatedY = this.x * sine + this.y * cosine;
     this.x = translatedX;

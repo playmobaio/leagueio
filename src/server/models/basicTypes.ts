@@ -46,7 +46,6 @@ export class Vector {
   }
 
   rotateCounterClockWise(radians: number): void {
-    // Need this hack since javascript is not very precise with radians
     const cosine = Math.cos(radians);
     const sine = Math.sin(radians);
     const translatedX = this.x * cosine - this.y * sine;

@@ -28,8 +28,9 @@ describe('bruteAuto', function() {
 
   it('onUpdate will rotate by degreePerUpdate', function() {
     bruteAuto.attackVector = new Vector(1, 0);
-    bruteAuto.cooldown = 30;
-    bruteAuto.onUpdate();
+    for (let i = 0; i < 15; i++){
+      bruteAuto.onUpdate();
+    }
     assert.equal(parseInt(bruteAuto.attackVector.x.toFixed(2)), 0);
     assert.equal(parseInt(bruteAuto.attackVector.y.toFixed(2)), 1);
   });

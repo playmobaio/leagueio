@@ -3,14 +3,13 @@ import { Vector } from '../../models/basicTypes';
 import modelConstants from '../../../models/constants';
 import serverConstants from '../../constants';
 import { CastRestriction } from '../../../models/interfaces';
-import { getFramesBetweenAutoAttack } from '../../tools/frame';
+import { secondsToFrames } from '../../tools/frame';
 
 class BruteAuto extends Ability {
-  cooldown = 0.5;
+  cooldown = 1;
   name = modelConstants.BRUTE_AUTO;
   attackVector: Vector;
   castRestriction = CastRestriction.None;
-  castTime = 0;
 
   onCast(): void {
     this.attackVector = Vector.createFromPoints(this.hero.model.origin, this.targetPosition)
@@ -26,7 +25,7 @@ class BruteAuto extends Ability {
 
   radiansPerFrame(): number {
     // we want to rotate 180 degrees; set the degree / update rate
-    return Math.PI / getFramesBetweenAutoAttack(this.cooldown);
+    return Math.PI / secondsToFrames(0.5);
   }
 }
 

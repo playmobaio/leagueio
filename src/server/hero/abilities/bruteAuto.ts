@@ -6,7 +6,7 @@ import { CastRestriction } from '../../../models/interfaces';
 import { secondsToFrames } from '../../tools/frame';
 
 class BruteAuto extends Ability {
-  cooldown = 1;
+  cooldown = serverConstants.BRUTE_COOL_DOWN;
   name = modelConstants.BRUTE_AUTO;
   attackVector: Vector;
   castRestriction = CastRestriction.None;
@@ -25,7 +25,7 @@ class BruteAuto extends Ability {
 
   radiansPerFrame(): number {
     // we want to rotate 180 degrees; set the degree / update rate
-    return Math.PI / secondsToFrames(0.5);
+    return Math.PI / secondsToFrames(serverConstants.BRUTE_ATTACK_LENGTH);
   }
 }
 

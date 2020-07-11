@@ -18,7 +18,7 @@ export default class CircleModel extends Model {
     return this.radius;
   }
 
-  updateRadius(radius: number) {
+  updateRadius(radius: number): void {
     this.radius = radius;
     this.body.scale = radius;
   }

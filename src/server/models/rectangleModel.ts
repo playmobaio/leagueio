@@ -51,10 +51,11 @@ export default class RectangleModel extends Model {
 
   // Updates the collision body points for the model. Should be called every time
   // there is a change to the height and width of the RectangleModel is updated.
-  // Using scale_x and scale_y to update points is the simplest method that most aligns with 
+  // Using scale_x and scale_y to update points is the simplest method that most aligns with
+  // detect-collisions API.
   private updatePoints(): void {
-    this.body.scale_x = this.width;
-    this.body.scale_y = this.height;
+    this.body['scale_x'] = this.width;
+    this.body['scale_y'] = this.height;
   }
 
   updateAngle(angle: number): void {

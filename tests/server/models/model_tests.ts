@@ -1,7 +1,5 @@
 import * as assert from 'assert';
-import * as TypeMoq from "typemoq";
 import { Body, Polygon } from 'detect-collisions';
-import { IPoint } from '../../models/interfaces';
 import { EmitEvent } from '../../../src/server/tools/emitEvent'
 import Game from "../../../src/server/models/game";
 import { TestModel } from "../testClasses";

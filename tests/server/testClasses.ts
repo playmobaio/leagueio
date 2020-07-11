@@ -1,8 +1,10 @@
 import Hero from "../../src/server/hero/hero";
-import { Circle } from "../../src/server/models/basicTypes";
+import { Point, Circle } from "../../src/server/models/basicTypes";
 import Ability from "../../src/server/hero/ability";
 import Effect from "../../src/server/hero/effect";
 import { CastRestriction } from "../../src/models/interfaces";
+import Model from "../../src/server/models/model";
+import { Point as dcPoint, Body } from 'detect-collisions';
 
 export class TestAbility extends Ability {
   used = false;
@@ -57,5 +59,20 @@ export class TestEffect extends Effect {
 
   finish(): void {
     return;
+  }
+}
+
+export class TestModel extends Model {
+  body = null;
+
+  constructor(position: IPoint) {
+    super();
+    this.position = new Point(position.x, position.y);
+    this.body = new dcPoint(position.x, position.y);
+    this.addBody();
+  }
+
+  getBody(): Body {
+    return this.body;
   }
 }

@@ -5,6 +5,7 @@ import { IGameState,
   IProjectile } from '../../models/interfaces';
 import Projectile from './projectile';
 import constants from '../constants';
+import { Collisions, Body } from 'detect-collisions';
 import { EmitEvent } from '../tools/emitEvent'
 import { IEmitEventMapping } from '../tools/iEmitEventMapping'
 import { StrictEventEmitter } from 'strict-event-emitter-types';
@@ -19,6 +20,7 @@ class Game {
   currentFrame: number;
   gameStates: Map<string, IGameState>;
   emitter: StrictEventEmitter<EventEmitter, IEmitEventMapping>;
+  system: Collisions;
 
   private constructor() {
     this.players = new Map<string, Player>();
@@ -27,6 +29,7 @@ class Game {
     this.currentFrame = 0;
     this.emitter = new EventEmitter;
     this.registerEvents();
+    this.system = new Collisions();
   }
 
   static getInstance(): Game {
@@ -50,15 +53,26 @@ class Game {
       this.projectiles.delete(projectileId);
     }
 
+    const newBody = (body: Body): void => {
+      this.system.insert(body);
+    }
+
+    const removeBody = (body: Body): void => {
+      body.remove();
+    }
+
     this.emitter.addListener(EmitEvent.NewPlayer, addPlayer);
     this.emitter.addListener(EmitEvent.NewProjectile, addProjectile);
     this.emitter.addListener(EmitEvent.DeleteProjectile, deleteProjectile);
+    this.emitter.addListener(EmitEvent.NewBody, newBody);
+    this.emitter.addListener(EmitEvent.RemoveBody, removeBody);
   }
 
   reset(): void {
     this.players.clear();
     this.projectiles.clear();
     this.gameMap = new GameMap();
+    this.system = new Collisions();
     this.currentFrame = 0;
   }
 

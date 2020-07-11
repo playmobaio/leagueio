@@ -16,8 +16,13 @@ describe('RectangleModel', function() {
     game.emitter.emit(EmitEvent.NewBody, point);
   });
 
-  it('correctly initializes Body', function() {
+  it('correctly initializes Body without angle', function() {
     const model = new RectangleModel({ x: 0, y: 0 }, 20, 20);
+    assert(model.collidesWithBody(point));
+  });
+
+  it('correctly initializes Body with angle', function() {
+    const model = new RectangleModel({ x: 20, y: 0 }, 20, 20, Math.PI/2);
     assert(model.collidesWithBody(point));
   });
 

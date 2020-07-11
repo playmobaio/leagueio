@@ -3,6 +3,8 @@ import { Point } from './basicTypes';
 import { IPoint } from '../../models/interfaces';
 import Model from './model';
 
+const BASE_RECTANGLE_COORDINATES: number[] = [[0, 0], [1, 0], [1, 1], [0, 1]];
+
 export default class RectangleModel extends Model {
   body = null;
   // point marks the top left corner of the rectangle when angle = 0
@@ -21,8 +23,8 @@ export default class RectangleModel extends Model {
     this.position = new Point(position.x, position.y);
     this.width = width;
     this.height = height;
-    this.angle = angle;
-    this.body = new Polygon(position.x, position.y, [[0, 0], [1, 0], [1, 1], [0, 1]]);
+    this.body = new Polygon(position.x, position.y, BASE_RECTANGLE_COORDINATES);
+    this.updateAngle(angle);
     this.updatePoints();
     this.addBody();
   }

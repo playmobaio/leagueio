@@ -3,7 +3,7 @@ import Model from './model';
 import { Point } from './basicTypes';
 import { IPoint } from '../../models/interfaces';
 
-const BASE_RADIUS: number = 1;
+const BASE_RADIUS = 1;
 
 export default class CircleModel extends Model {
   body = null;

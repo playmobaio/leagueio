@@ -3,7 +3,7 @@ import { Point } from './basicTypes';
 import { IPoint } from '../../models/interfaces';
 import Model from './model';
 
-const BASE_RECTANGLE_COORDINATES: number[] = [[0, 0], [1, 0], [1, 1], [0, 1]];
+const BASE_RECTANGLE_COORDINATES: number[][] = [[0, 0], [1, 0], [1, 1], [0, 1]];
 
 export default class RectangleModel extends Model {
   body = null;

@@ -48,28 +48,31 @@ function InitializePhaserUI(fullScreen: boolean): void {
   }
 }
 
+function InitializeSocket(): void {
+  console.log("Initializing Socket");
+  const socket: SocketIO.Socket = io();
+  const name: string = (document.getElementById("playerName") as HTMLInputElement).value;
+  const heroId: HeroID = parseInt((document.getElementById("hero") as HTMLInputElement).value);
+  const joinGame: IJoinGame = { name, heroId };
+  registerSocket(socket);
+  socket.emit("C:JOIN_GAME", joinGame);
+  Game.getInstance().heroId = heroId;
+}
+
 document.getElementById("joinGame").onclick = (): void => {
   const usePhaser: boolean = (document.getElementById("usePhaser") as HTMLInputElement).checked;
   const fullScreen: boolean = (document.getElementById("fullScreen") as HTMLInputElement).checked;
-  const socket: SocketIO.Socket = io();
+  if (!usePhaser && Layers.getLayers() == undefined) {
+    alert("Loading assets. Please try again");
+    return;
+  }
+  InitializeSocket();
   if(usePhaser) {
     InitializePhaserUI(fullScreen);
   }
   else {
-    if (Layers.getLayers() == undefined) {
-      alert("Loading assets. Please try again");
-      return;
-    }
-    console.log("Initializing Socket");
-    const name: string = (document.getElementById("playerName") as HTMLInputElement).value;
-    const heroId: HeroID = parseInt((document.getElementById("hero") as HTMLInputElement).value);
-    const joinGame: IJoinGame = { name, heroId };
-    Game.getInstance().heroId = heroId;
-
-    registerSocket(socket);
     InitializeGameUI(fullScreen);
     window.addEventListener('resize', resizeCanvas);
-    socket.emit("C:JOIN_GAME", joinGame);
   }
 };
 

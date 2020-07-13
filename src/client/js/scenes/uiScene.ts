@@ -12,7 +12,7 @@ class UIScene extends Phaser.Scene {
   create(): void
   {
     //  Our Text object to display the Score
-    const info = this.add.text(10, 10, 'Score: 0', { font: '48px Arial', fill: '#000000' });
+    const info = this.add.text(10, 10, 'Score: 0', { font: '24px Arial', fill: '#000000' });
 
     //  Grab a reference to the Game Scene
     const ourGame = this.scene.get('GameScene');

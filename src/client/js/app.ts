@@ -5,8 +5,8 @@ import Layers from './layer';
 import Game from './game';
 
 import 'phaser';
-import GameScene from '../phaser/scenes/gameScene';
-import UIScene from '../phaser/scenes/uiScene';
+import GameScene from './scenes/gameScene';
+import UIScene from './scenes/uiScene';
 
 function resizeCanvas(): void {
   const canvas: HTMLElement = document.getElementById("canvas");
@@ -17,37 +17,43 @@ function resizeCanvas(): void {
   canvas.style.height = height + "px";
 }
 
-function InitializeGameUI(): void {
+function InitializeGameUI(fullScreen: boolean): void {
   document.getElementsByTagName("body")[0].style.margin = "0px 0px 0px 0px";
   document.getElementById("startpanel").style.visibility = "hidden";
   document.getElementById("startpanel").style.height = "0px";
   document.getElementById("game").style.visibility = "visible";
-  document.getElementById("game").requestFullscreen();
+  if (fullScreen) {
+    document.getElementById("game").requestFullscreen();
+  }
   resizeCanvas();
 }
 
-function InitializePhaserUI(): void {
+function InitializePhaserUI(fullScreen: boolean): void {
   document.getElementById('startpanel').setAttribute("style", "display:none;");
   document.getElementById('game').setAttribute("style", "display:none;");
   const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 1024,
+    height: 576,
     scale: {
       mode: Phaser.Scale.FIT,
-      autoCenter: Phaser.Scale.CENTER_BOTH },
-    backgroundColor: '#ffffff',
-    parent: 'game-container',
+      autoCenter: Phaser.Scale.CENTER_BOTH,
+    },
+    backgroundColor: '#89CFF0',
     scene: [ GameScene, UIScene ]
   };
-  new Phaser.Game(config);
+  const game = new Phaser.Game(config);
+  if (fullScreen) {
+    game.scale.startFullscreen();
+  }
 }
 
 document.getElementById("joinGame").onclick = (): void => {
   const usePhaser: boolean = (document.getElementById("usePhaser") as HTMLInputElement).checked;
+  const fullScreen: boolean = (document.getElementById("fullScreen") as HTMLInputElement).checked;
   const socket: SocketIO.Socket = io();
   if(usePhaser) {
-    InitializePhaserUI();
+    InitializePhaserUI(fullScreen);
   }
   else {
     if (Layers.getLayers() == undefined) {
@@ -61,7 +67,7 @@ document.getElementById("joinGame").onclick = (): void => {
     Game.getInstance().heroId = heroId;
 
     registerSocket(socket);
-    InitializeGameUI();
+    InitializeGameUI(fullScreen);
     window.addEventListener('resize', resizeCanvas);
     socket.emit("C:JOIN_GAME", joinGame);
   }

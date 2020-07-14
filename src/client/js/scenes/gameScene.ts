@@ -1,41 +1,56 @@
 import 'phaser';
+import TileMap from '../../../models/tileMap';
+import { IGameState } from '../../../models/interfaces';
+import PhaserInputController from '../phaserInputController';
+import { drawPlayer } from './draw/player';
+import { drawTiles } from './draw/tiles';
 
 class GameScene extends Phaser.Scene {
+  tileMap: TileMap;
+  dest: Phaser.GameObjects.GameObject;
+  socket: SocketIO.Socket;
+  players: Map<string, Phaser.GameObjects.Arc>;
+
   constructor()
   {
-    super('GameScene');
+    super({
+      key: "GameScene"
+    });
+    this.players = new Map<string, Phaser.GameObjects.Arc>();
   }
 
   preload(): void
   {
-    this.load.spritesheet('tiles', '../../assets/tiles.png', {
-      frameWidth: 64,
-      frameHeight: 64
-    });
+    this.tileMap =  new TileMap();
+    this.load.image('tileMap', '../../assets/tiles-extruded.png');
   }
 
   create(): void
   {
-    const width: number = window.innerWidth;
-    const height: number = window.innerHeight;
-    for (let i = 0; i < 64; i++)
-    {
-      const x = Phaser.Math.Between(0, width);
-      const y = Phaser.Math.Between(0, height);
+    this.input.mouse.disableContextMenu();
+    this.cameras.main.setBounds(
+      0,
+      0,
+      TileMap.tileSize * TileMap.cols,
+      TileMap.tileSize * TileMap.rows).setZoom(1.5);
+    // Draw Tiles
+    drawTiles(this, this.tileMap.background);
+    drawTiles(this, this.tileMap.foreground);
 
-      this.add.image(x, y, 'tiles').setInteractive();
-    }
-    this.input.on('gameobjectup', this.clickHandler, this);
+    const inputController = PhaserInputController.getInstance();
+    this.socket = inputController.socket;
+    // Register socket event to bind to render function
+    this.socket.on("S:UPDATE_GAME_STATE", this.render.bind(this));
   }
 
-  clickHandler(_, box): void
-  {
-    //  Disable our box
-    box.input.enabled = false;
-    box.setVisible(false);
+  render(userGame: IGameState): void {
+    userGame.players.forEach(x => drawPlayer(this, x));
+  }
 
-    //  Dispatch a Scene event
-    this.events.emit('addScore');
+  update(): void {
+    if (this.input.mousePointer.isDown) {
+      PhaserInputController.getInstance().sendMouseClick(this);
+    }
   }
 }
 export default GameScene;

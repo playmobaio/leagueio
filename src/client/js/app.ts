@@ -6,7 +6,7 @@ import Game from './game';
 
 import 'phaser';
 import GameScene from './scenes/gameScene';
-import UIScene from './scenes/uiScene';
+import PhaserInputController from './phaserInputController';
 
 function resizeCanvas(): void {
   const canvas: HTMLElement = document.getElementById("canvas");
@@ -31,7 +31,7 @@ function InitializeGameUI(fullScreen: boolean): void {
 function InitializePhaserUI(fullScreen: boolean): void {
   document.getElementById('startpanel').setAttribute("style", "display:none;");
   document.getElementById('game').setAttribute("style", "display:none;");
-  const config = {
+  const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
     width: 1024,
     height: 576,
@@ -39,8 +39,13 @@ function InitializePhaserUI(fullScreen: boolean): void {
       mode: Phaser.Scale.FIT,
       autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-    backgroundColor: '#89CFF0',
-    scene: [ GameScene, UIScene ]
+    physics: {
+      default: 'arcade',
+      arcade: {
+        debug: true
+      }
+    },
+    scene: [ GameScene ]
   };
   const game = new Phaser.Game(config);
   if (fullScreen) {
@@ -48,15 +53,19 @@ function InitializePhaserUI(fullScreen: boolean): void {
   }
 }
 
-function InitializeSocket(): void {
+function InitializeSocket(usePhaser: boolean): void {
   console.log("Initializing Socket");
   const socket: SocketIO.Socket = io();
   const name: string = (document.getElementById("playerName") as HTMLInputElement).value;
   const heroId: HeroID = parseInt((document.getElementById("hero") as HTMLInputElement).value);
   const joinGame: IJoinGame = { name, heroId };
-  registerSocket(socket);
+  if (usePhaser) {
+    PhaserInputController.createInstance(socket);
+  } else {
+    registerSocket(socket);
+    Game.getInstance().heroId = heroId;
+  }
   socket.emit("C:JOIN_GAME", joinGame);
-  Game.getInstance().heroId = heroId;
 }
 
 document.getElementById("joinGame").onclick = (): void => {
@@ -66,7 +75,7 @@ document.getElementById("joinGame").onclick = (): void => {
     alert("Loading assets. Please try again");
     return;
   }
-  InitializeSocket();
+  InitializeSocket(usePhaser);
   if(usePhaser) {
     InitializePhaserUI(fullScreen);
   }

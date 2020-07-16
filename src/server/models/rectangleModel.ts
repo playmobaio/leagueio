@@ -64,4 +64,14 @@ export default class RectangleModel extends Model {
     this.angle = angle;
     this.body.angle = angle;
   }
+
+  getMapCollisionPositions(point = this.position): Point[] {
+    // TODO: Doesn't work with angle
+    const points: Point[] = [];
+    points.push(new Point(point.x, point.y));
+    points.push(new Point(point.x + this.width, point.y));
+    points.push(new Point(point.x, point.y + this.height));
+    points.push(new Point(point.x + this.width, point.y + this.height));
+    return points;
+  }
 }

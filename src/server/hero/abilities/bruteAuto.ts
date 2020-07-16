@@ -12,7 +12,7 @@ class BruteAuto extends Ability {
   castRestriction = CastRestriction.None;
 
   onCast(): void {
-    this.attackVector = VectorBuilder.createFromPoints(this.hero.model.origin, this.targetPosition)
+    this.attackVector = VectorBuilder.createFromPoints(this.hero.model.getPosition(), this.targetPosition)
       .setMagnitude(serverConstants.BRUTE_MELEE_RANGE)
       // Start from 90 degrees clockwise
       .rotateCounterClockWise(Math.PI * 3 / 2)

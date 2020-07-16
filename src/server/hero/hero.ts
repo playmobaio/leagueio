@@ -1,5 +1,6 @@
-import { Velocity, Circle, Vector, Point } from "../models/basicTypes";
+import { Velocity, Vector, Point } from "../models/basicTypes";
 import { IHealth, IPoint, IHero, Condition } from '../../models/interfaces';
+import CircleModel from '../models/circleModel';
 import HeroState from './heroState';
 import Ability from './ability';
 import Player from '../models/player';
@@ -8,10 +9,9 @@ import constants from '../constants';
 import { getFramesBetweenAutoAttack } from '../tools/frame';
 
 abstract class Hero {
-  movementSpeed: Velocity;
   attackSpeed: number;
   health: IHealth;
-  model: Circle;
+  model: CircleModel;
   abstract qAbility: Ability;
   abstract wAbility: Ability;
   abstract eAbility: Ability;
@@ -19,15 +19,13 @@ abstract class Hero {
   level: number;
   lastAutoAttackFrame: number;
   experience: number;
-  velocity: Velocity;
-  velocityMagnitude: number;
-  velocitySource: Point;
-  range: number;
+  movementSpeed: number;
+  movementDestination?: Point;
   player: Player;
   autoAttack: Ability;
 
   constructor(player: Player) {
-    this.velocityMagnitude = constants.DEFAULT_PLAYER_VELOCITY
+    this.movementSpeed = constants.DEFAULT_PLAYER_MOVEMENT_SPEED;
     this.attackSpeed = constants.DEFAULT_PLAYER_ATTACK_SPEED;
     this.lastAutoAttackFrame = -1;
     this.player = player;
@@ -35,25 +33,26 @@ abstract class Hero {
   }
 
   stopHero(): void {
-    this.updateVelocity(this.model.origin);
+    this.model.setVelocity(Velocity.createNull());
+    console.log("Hero stopped");
   }
 
-  updateVelocity(point: IPoint): void {
-    this.velocitySource = this.model.origin;
-    this.range = Vector.createFromPoints(this.velocitySource, point).getMagnitude();
-    this.velocity = new Velocity(point, this.velocityMagnitude, this.model.origin);
+  updateVelocity(point: Point): void {
+    this.movementDestination = point;
+    this.model.setVelocity(new Velocity(point, this.movementSpeed, this.model.getPosition()));
+    console.log(this.model.getVelocity());
     this.state.clearQueueCast();
   }
 
-  rangeExpired(): boolean {
-    if (!this.velocitySource || !this.model?.origin) {
-      return true;
-    }
-    const vector = Vector.createFromPoints(this.velocitySource, this.model.origin);
-    return vector.getMagnitude() > this.range;
+  // Since positions are not exact, the hero has reached their destination if
+  // they will overshoot the destination in the next frame. Default to true if
+  // hero is not moving.
+  reachedDestination(): boolean {
+    const vector = Vector.createFromPoints(this.model.getPosition(), this.movementDestination);
+    return this.movementSpeed > vector.getMagnitude();
   }
 
-  performAttack(dest: IPoint): void {
+  performAttack(dest: Point): void {
     switch (this.state.condition) {
     case Condition.Active:
       this.performAutoAttack(dest);
@@ -62,7 +61,7 @@ abstract class Hero {
   }
 
   performAutoAttack(dest: IPoint): void {
-    if (dest == undefined || this.model.origin.equals(dest) || !this.canAutoAttack()) {
+    if (dest == undefined || this.model.getPosition().equals(dest) || !this.canAutoAttack()) {
       return;
     }
     this.onAutoAttack(dest);
@@ -70,6 +69,7 @@ abstract class Hero {
   }
 
   abstract onAutoAttack(dest: IPoint): void;
+  abstract respawn(): void;
 
   canAutoAttack(): boolean {
     if (this.lastAutoAttackFrame == -1) {
@@ -79,24 +79,44 @@ abstract class Hero {
     return this.lastAutoAttackFrame + framesBetweenAutoAttacks <= Game.getInstance().currentFrame;
   }
 
-  updatePosition(point: Point): void {
-    if (!Game.getInstance().gameMap.isOnMap(point) ||
-      this.model.isInvalidPosition(Game.getInstance().gameMap, point)) {
-      return;
+  shouldStopHero(): boolean {
+    // stop hero if the hero has reached its destination
+    if (this.reachedDestination()) {
+      console.log("Hero reached destination.");
+      return true;
     }
-    this.model.origin = point;
+
+    const transformPoint = this.model.getTransformPosition();
+    // stop hero if the hero is attempting to move off the map
+    if (!this.model.isOnMap(transformPoint)) {
+      console.log("Hero is attempting to move off map.");
+      return true;
+    }
+
+    // stop hero if the hero is attempting to move into a solid tile
+    if (this.model.collidesWithSolidTile(transformPoint)) {
+      console.log("Hero is attempting to move into a solid tile.");
+      return true;
+    }
+
+    return false;
+  }
+
+  transform(): void {
+    if (this.model.getVelocity().getSpeed() !== 0 && this.shouldStopHero()) {
+      this.stopHero();
+    }
+    this.model.transform();
   }
 
   toInterface(): IHero {
     return {
-      model: this.model
+      model: this.model.toICircle(),
     }
   }
 
   update(): void {
-    if (!this.rangeExpired()) {
-      this.updatePosition(this.model.origin.transform(this.velocity));
-    }
+    this.transform();
     this.state.update();
     this.autoAttack?.update();
   }

@@ -4,7 +4,7 @@ import { secondsToFrames } from '../tools/frame';
 import constants from '../constants';
 import { IShape, IPoint, ICasting, IAbility, CastRestriction } from '../../models/interfaces';
 import { Abilities } from '../../models/data/heroAbilities';
-import { Vector } from '../models/basicTypes';
+import { Vector, Point } from '../models/basicTypes';
 
 abstract class Ability {
   cooldown: number;
@@ -31,7 +31,7 @@ abstract class Ability {
       return;
     }
     if (!this.isInRange()) {
-      this.hero.updateVelocity(this.targetPosition);
+      this.hero.updateVelocity(new Point(this.targetPosition.x, this.targetPosition.y));
       this.hero.state.queueCast(this);
       return;
     }
@@ -58,7 +58,7 @@ abstract class Ability {
       return true;
     }
     const distance: number = Vector.createFromPoints(
-      this.hero.model.origin,
+      this.hero.model.getPosition(),
       this.targetPosition)
       .getMagnitude();
     return distance <= ability.range;

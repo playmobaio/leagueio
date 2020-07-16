@@ -97,7 +97,7 @@ class Game {
     });
 
     this.projectiles.forEach((projectile): void => {
-      if (projectile.shouldDelete(this.gameMap)) {
+      if (projectile.shouldDelete()) {
         projectile.delete();
         return;
       }
@@ -105,7 +105,7 @@ class Game {
       // check each player to see if collides
       this.players.forEach((player): void => {
         if(projectile.creatorId != player.id &&
-            player?.hero?.model?.collidesWithCircle(projectile.model)) {
+            player.hero.model.collides(projectile.model)) {
           player.receiveDamage(constants.DEFAULT_DAMAGE_FROM_PROJECTILE);
           projectile.delete();
         }

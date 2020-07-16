@@ -5,6 +5,7 @@ import {
   IUserMouseClick,
   Click
 } from '../models/interfaces';
+import { Point } from "./models/basicTypes";
 import Player from "./models/player";
 import Game from "./models/game";
 import Ability from './hero/ability';
@@ -37,12 +38,13 @@ export function registerPlayerCast(clientId: string, userInput: IUserInput): voi
 export function registerPlayerClick(clientId: string, clickEvent: IUserMouseClick): void {
   console.log("Player clicking");
   const player: Player = Game.getInstance().players.get(clientId);
+  const cursorPoint = new Point(clickEvent.cursorPosition.x, clickEvent.cursorPosition.y)
   switch(clickEvent.click) {
   case Click.Left:
-    player?.hero?.performAttack(clickEvent.cursorPosition);
+    player.hero.performAttack(cursorPoint);
     break;
   case Click.Right:
-    player?.hero?.updateVelocity(clickEvent.cursorPosition);
+    player.hero.updateVelocity(cursorPoint);
     break;
   }
 }

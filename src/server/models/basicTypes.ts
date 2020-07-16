@@ -1,6 +1,4 @@
-import { IPoint, ICircle, Shape } from '../../models/interfaces';
-import GameMap from './gameMap';
-import Game from './game';
+import { IPoint } from '../../models/interfaces';
 
 export class Vector {
   readonly x: number;
@@ -123,47 +121,6 @@ export class Point implements IPoint {
   }
 }
 
-export class Circle implements ICircle {
-  origin: Point;
-  radius: number;
-  type = Shape.Circle;
-
-  constructor(radius: number, position?: Point) {
-    this.origin = position == null ? this.getRandomValidPosition(radius) : position;
-    this.radius = radius;
-  }
-
-  getRandomValidPosition(radius: number): Point {
-    const game: Game = Game.getInstance();
-    const position: Point = game.gameMap.randomMapPosition();
-    if (this.isInvalidPosition(game.gameMap, position, radius * 2)) {
-      return this.getRandomValidPosition(radius);
-    }
-    return position;
-  }
-
-  isInvalidPosition(map: GameMap, point = this.origin, radius = this.radius): boolean {
-    const left = point.x - radius;
-    const right = point.x + radius;
-    const top = point.y - radius;
-    const bottom = point.y + radius;
-
-    return map.isSolidTile(left, top) ||
-      map.isSolidTile(right, top) ||
-      map.isSolidTile(right, bottom) ||
-      map.isSolidTile(left, bottom) ||
-      map.isSolidTile(point.x, point.y);
-  }
-
-  collidesWithCircle(otherCircle: Circle): boolean {
-    const otherCircleCenter = otherCircle.origin;
-    const otherCircleRadius = otherCircle.radius;
-    const distanceFromCenter = this.origin.distanceFrom(otherCircleCenter);
-
-    return distanceFromCenter < this.radius + otherCircleRadius;
-  }
-}
-
 export class Velocity {
   readonly unitVector: Vector;
   readonly speed: number;
@@ -177,54 +134,13 @@ export class Velocity {
     this.speed = this.unitVector.getMagnitude() == 0 ? 0 : speed;
   }
 
+  static createNull(): Velocity {
+    return new Velocity({ x: 0, y: 0 }, 0);
+  }
+
   getVector(): Vector {
     const x: number = this.speed * this.unitVector.x;
     const y: number = this.speed * this.unitVector.y;
     return new Vector(x, y);
   }
 }
-
-export class Rectangle {
-  // point marks the top left corner of the rectangle when angle = 0
-  point: Point;
-  width: number;
-  height: number;
-  // Angle is measured in 0 - 360 degrees, with 0 being the neutral state where
-  // the 4 vertices of the rectangle are:
-  // [(x, y), (x + width, y), (x + width, y - height), (x, y - height)]
-  // in clockwise order. An angle of 90 would rotate the rectangle 90 degrees
-  // clockwise, so that new verticies would be:
-  // [(x, y), (x, y - width), (x - height, y - width), (x - height, y)]
-  angle: number;
-
-  constructor(point: Point, width: number, height: number, angle = 0) {
-    this.point = point;
-    this.width = width;
-    this.height = height;
-    this.angle = angle;
-  }
-
-  isCollision(rectangle: Rectangle): boolean {
-    if (this.angle != 0 || rectangle.angle != 0) {
-      throw 'Unimplemented';
-    }
-
-    return this.point.x <= rectangle.point.x + rectangle.width
-      && rectangle.point.x <= this.point.x + this.width
-      && this.point.y <= rectangle.point.y + rectangle.height
-      && rectangle.point.y <= this.point.y + this.height;
-  }
-
-  transform(velocity: Velocity): Rectangle {
-    return new Rectangle(
-      this.point.transform(velocity),
-      this.width,
-      this.height,
-      this.angle
-    );
-  }
-}
-
-// TODO Circle
-// integrate circle collisions with rectangles
-

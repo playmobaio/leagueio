@@ -3,7 +3,8 @@ import * as TypeMoq from "typemoq";
 import { Times } from 'typemoq';
 import Player from '../../../src/server/models/player';
 import Game from '../../../src/server/models/game';
-import { Point, Circle, Velocity } from '../../../src/server/models/basicTypes';
+import GameMap from '../../../src/server/models/gameMap';
+import { Point, Velocity } from '../../../src/server/models/basicTypes';
 import HeroState from '../../../src/server/hero/heroState';
 import { TestHero } from '../testClasses';
 import { Condition } from '../../../src/models/interfaces';
@@ -26,21 +27,10 @@ describe('Hero', function() {
     mock.callBase = true;
     stateMock = TypeMoq.Mock.ofType<HeroState>();
     mock.setup(x => x.state).returns(() => stateMock.object);
+    hero.movementSpeed = 3;
   });
 
-  it("verify player updates position", function() {
-    const position = new Point(1, 1);
-    const circle = TypeMoq.Mock.ofType<Circle>();
-    circle.setup(x => x.isInvalidPosition(
-      TypeMoq.It.isAny(), TypeMoq.It.isAny(), TypeMoq.It.isAny())
-    ).returns(() => false);
-    hero.model = circle.object;
-    hero.updatePosition(position);
-
-    circle.verify(x => x.origin = TypeMoq.It.isValue(position), Times.once());
-  });
-
-  it("will autoattack immediately on spawn", function() {
+  it("can autoattack immediately on spawn", function() {
     hero.performAutoAttack(point);
     assert.equal(hero.lastAutoAttackFrame, game.currentFrame);
   });
@@ -63,16 +53,15 @@ describe('Hero', function() {
     assert.equal(hero.lastAutoAttackFrame, game.currentFrame);
   });
 
-  it("hero updates position when not expired", function() {
+  it("hero updates position when destination not reached", function() {
     mock.object.velocity = new Velocity({ x: 1, y: 1 }, 10);
-    mock.setup(x => x.rangeExpired()).returns(() => false);
+    mock.setup(x => x.reachedDestination()).returns(() => false);
     mock.object.update();
-    mock.verify(x => x.updatePosition(TypeMoq.It.isAny()), Times.once());
-    stateMock.verify(x => x.update(), Times.once());
+    mock.verify(x => x.stopHero(), Times.never());
   });
 
   it("state still updates even when rangeExpired", function() {
-    mock.setup(x => x.rangeExpired()).returns(() => true);
+    mock.setup(x => x.reachedDestination()).returns(() => true);
 
     mock.object.update();
     stateMock.verify(x => x.update(), Times.once());
@@ -87,5 +76,28 @@ describe('Hero', function() {
   it("on update velocity queued casts are cleared", function() {
     mock.object.updateVelocity(point);
     stateMock.verify(x => x.clearQueueCast(), Times.once());
+  });
+
+  it("shouldStopHero return true if hero has reached destination", function() {
+    mock.setup(x => x.reachedDestination()).returns(() => true);
+    assert(mock.object.shouldStopHero());
+  });
+
+  it("shouldStopHero return true if hero is moving off map", function() {
+    const gameMap = TypeMoq.Mock.ofType<GameMap>();
+    gameMap.setup(x => x.isOnMap(TypeMoq.It.isAny())).returns(() => false);
+    game.gameMap = gameMap.object;
+
+    hero.updateVelocity(new Point(10, 10));
+    assert(hero.shouldStopHero());
+  });
+
+  it("shouldStopHero return true if hero moving into a solid tile", function() {
+    const gameMap = TypeMoq.Mock.ofType<GameMap>();
+    gameMap.setup(x => x.isSolidTile(TypeMoq.It.isAny())).returns(() => true);
+    game.gameMap = gameMap.object;
+
+    hero.updateVelocity(new Point(10, 10));
+    assert(hero.shouldStopHero());
   });
 });

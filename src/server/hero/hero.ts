@@ -20,9 +20,10 @@ abstract class Hero {
   lastAutoAttackFrame: number;
   experience: number;
   movementSpeed: number;
-  movementDestination?: Point;
+  movementDestination: Point;
   player: Player;
   autoAttack: Ability;
+  spawnLocation = new Point(constants.DEFAULT_SPAWN_LOCATION_X, constants.DEFAULT_SPAWN_LOCATION_Y);
 
   constructor(player: Player) {
     this.movementSpeed = constants.DEFAULT_PLAYER_MOVEMENT_SPEED;
@@ -30,6 +31,7 @@ abstract class Hero {
     this.lastAutoAttackFrame = -1;
     this.player = player;
     this.state = new HeroState();
+    this.model = new CircleModel(this.spawnLocation, constants.DEFAULT_CIRCLE_RADIUS);
   }
 
   stopHero(): void {
@@ -40,7 +42,6 @@ abstract class Hero {
   updateVelocity(point: Point): void {
     this.movementDestination = point;
     this.model.setVelocity(new Velocity(point, this.movementSpeed, this.model.getPosition()));
-    console.log(this.model.getVelocity());
     this.state.clearQueueCast();
   }
 
@@ -69,7 +70,10 @@ abstract class Hero {
   }
 
   abstract onAutoAttack(dest: IPoint): void;
-  abstract respawn(): void;
+
+  respawn(): void {
+    this.model = new CircleModel(this.spawnLocation, constants.DEFAULT_CIRCLE_RADIUS);
+  }
 
   canAutoAttack(): boolean {
     if (this.lastAutoAttackFrame == -1) {

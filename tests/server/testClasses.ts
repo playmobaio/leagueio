@@ -1,9 +1,10 @@
 import Hero from "../../src/server/hero/hero";
-import { Point, Circle } from "../../src/server/models/basicTypes";
+import { Point } from "../../src/server/models/basicTypes";
 import Ability from "../../src/server/hero/ability";
 import Effect from "../../src/server/hero/effect";
 import { CastRestriction } from "../../src/models/interfaces";
 import Model from "../../src/server/models/model";
+import CircleModel from "../../src/server/models/circleModel";
 import { Point as dcPoint, Body } from 'detect-collisions';
 
 export class TestAbility extends Ability {
@@ -45,7 +46,6 @@ export class TestHero extends Hero {
   wAbility = null;
   eAbility = new TestAbility(this);
   autoAttacked = false;
-  model = new Circle(10);
 
   onAutoAttack(): void {
     this.autoAttacked = true;

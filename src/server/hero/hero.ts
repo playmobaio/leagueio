@@ -107,7 +107,7 @@ abstract class Hero {
   }
 
   transform(): void {
-    if (this.model.getVelocity().getSpeed() !== 0 && this.shouldStopHero()) {
+    if (this.model.getVelocity().speed !== 0 && this.shouldStopHero()) {
       this.stopHero();
     }
     this.model.transform();

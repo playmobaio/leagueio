@@ -25,9 +25,9 @@ class GameMap {
       && point.y > 0 && point.y <= this.height;
   }
 
-  isSolidTile(x: number, y: number): boolean {
-    const col: number = Math.floor(x / this.tileMap.tileSize);
-    const row: number = Math.floor(y / this.tileMap.tileSize);
+  isSolidTile(point: Point): boolean {
+    const col: number = Math.floor(point.x / this.tileMap.tileSize);
+    const row: number = Math.floor(point.y / this.tileMap.tileSize);
 
     return [Layer.Foreground, Layer.Background].reduce((res, _, layer) => {
       const tile = this.tileMap.getTile(layer, col, row);

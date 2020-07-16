@@ -2,8 +2,9 @@ import * as TypeMoq from "typemoq";
 import * as assert from 'assert';
 import Game from '../../../../src/server/models/game';
 import BruteAuto from '../../../../src/server/hero/abilities/bruteAuto';
+import CircleModel from '../../../../src/server/models/circleModel';
 import { TestHero } from '../../testClasses';
-import { Circle, Point, Vector } from "../../../../src/server/models/basicTypes";
+import { Point, Vector } from "../../../../src/server/models/basicTypes";
 import constants from "../../../../src/server/constants";
 
 describe('bruteAuto', function() {
@@ -19,7 +20,7 @@ describe('bruteAuto', function() {
   });
 
   it('onCast will create attackVector', function() {
-    hero.setup(x => x.model).returns(() => new Circle(1, new Point(0, 0)));
+    hero.setup(x => x.model).returns(() => new CircleModel(new Point(0, 0), 1));
     bruteAuto.targetPosition = new Point(1, 0);
     bruteAuto.onCast();
     assert.equal(parseInt(bruteAuto.attackVector.x.toFixed(2)), 0);

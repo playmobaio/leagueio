@@ -1,7 +1,7 @@
 import { Circle } from 'detect-collisions';
 import Model from './model';
 import { Point } from './basicTypes';
-import { IPoint } from '../../models/interfaces';
+import { IPoint, ICircle, Shape } from '../../models/interfaces';
 
 const BASE_RADIUS = 1;
 
@@ -24,5 +24,27 @@ export default class CircleModel extends Model {
     this.radius = radius;
     // scale the body circle radius to match
     this.body.scale = radius;
+  }
+
+  toICircle(): ICircle {
+    return {
+      type: Shape.Circle,
+      origin: this.position,
+      radius: this.getRadius(),
+    };
+  }
+
+  getMapCollisionPositions(point = this.position): Point[] {
+    const left = point.x - this.radius;
+    const right = point.x + this.radius;
+    const top = point.y - this.radius;
+    const bottom = point.y + this.radius;
+
+    const points: Point[] = [];
+    points.push(new Point(left, point.y));
+    points.push(new Point(right, point.y));
+    points.push(new Point(point.x, top));
+    points.push(new Point(point.x, bottom));
+    return points;
   }
 }

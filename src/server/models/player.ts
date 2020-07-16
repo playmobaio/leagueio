@@ -3,7 +3,6 @@ import { IPlayer,
   IHealth,
   IGameState,
   IProjectile } from '../../models/interfaces';
-import { Circle } from './basicTypes';
 import Game from "./game";
 import constants from '../constants';
 import { EmitEvent } from '../tools/emitEvent'
@@ -61,7 +60,7 @@ class Player {
   }
 
   respawn(): void {
-    this.hero.model = new Circle(this.hero.model.radius);
+    this.hero.respawn();
     this.health.current = constants.DEFAULT_PLAYER_MAXIMUM_HEALTH;
   }
 

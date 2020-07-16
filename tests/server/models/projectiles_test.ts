@@ -24,7 +24,7 @@ describe('Projectile', function() {
 
     it('out of range projectiles return true', function() {
       projectile.range = 10;
-      projectile.model.origin = new Point(11, 0);
+      projectile.model.updatePosition(new Point(11, 0));
       assert(projectile.rangeExpired());
     });
   });

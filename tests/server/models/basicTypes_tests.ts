@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { Velocity, Point, Vector } from '../../../src/server/models/basicTypes';
+import { Velocity, Point, VectorBuilder, Vector } from '../../../src/server/models/basicTypes';
 
 describe('Velocity', function() {
   describe('#VelocityTests', function() {
@@ -81,15 +81,20 @@ describe('Vector', function() {
     assert.equal(0, unitVector.x);
     assert.equal(0, unitVector.y);
   });
+});
 
+describe('VectorBuilder', function() {
   it('rotateCounterClockwise works as expected', function() {
-    const vector = new Vector(1, 0);
-    vector.rotateCounterClockWise(Math.PI / 2);
+    const vector: Vector = new VectorBuilder(1, 0)
+      .rotateCounterClockWise(Math.PI / 2)
+      .build();
     assert.equal(parseInt(vector.x.toFixed(2)), 0);
     assert.equal(parseInt(vector.y.toFixed(2)), 1);
 
-    vector.rotateCounterClockWise(Math.PI / 2);
-    assert.equal(parseInt(vector.x.toFixed(2)), -1);
-    assert.equal(parseInt(vector.y.toFixed(2)), 0);
+    const vector2: Vector = VectorBuilder.createFromVector(vector)
+      .rotateCounterClockWise(Math.PI / 2)
+      .build();
+    assert.equal(parseInt(vector2.x.toFixed(2)), -1);
+    assert.equal(parseInt(vector2.y.toFixed(2)), 0);
   });
 });

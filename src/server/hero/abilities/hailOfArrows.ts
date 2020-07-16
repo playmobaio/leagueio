@@ -9,7 +9,6 @@ class HailOfArrows extends Ability {
 
   onCast(): void {
     console.log("Casting Hail of Arrows");
-    //    console.log(`Casting Hail of Arrows at ${this.targetPosition.x}, ${this.targetPosition.y}`);
     //    const shape = Abilities[this.name].castingShape as ICircle;
     //    const point = new Point(this.targetPosition.x, this.targetPosition.y);
     //    const circle = new Circle(shape.radius, point);

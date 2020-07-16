@@ -1,7 +1,6 @@
 import { Body } from 'detect-collisions';
 import { EmitEvent } from '../tools/emitEvent'
 import { Point, Velocity } from './basicTypes';
-import { IPoint } from '../../models/interfaces';
 import Game from './game';
 
 // A Model is the representation of an in game object. A model is an interface
@@ -16,8 +15,8 @@ export default abstract class Model {
     this.exists = true;
   }
 
-  updatePosition(position: IPoint): void {
-    this.position = new Point(position.x, position.y);
+  updatePosition(position: Point): void {
+    this.position = position;
     this.body.x = position.x;
     this.body.y = position.y;
   }

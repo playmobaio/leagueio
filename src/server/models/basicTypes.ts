@@ -3,8 +3,8 @@ import GameMap from './gameMap';
 import Game from './game';
 
 export class Vector {
-  x: number
-  y: number;
+  readonly x: number;
+  readonly y: number;
 
   constructor(x: number, y: number) {
     this.x = x;
@@ -21,7 +21,50 @@ export class Vector {
     return Math.sqrt(this.x**2 + this.y**2);
   }
 
-  setMagnitude(newMagnitude: number): Vector {
+  getUnitVector(): Vector {
+    const magnitude = this.getMagnitude();
+
+    // Unit vector of the null vector is the null vector
+    if (magnitude == 0) {
+      return Vector.createNullVector();
+    }
+
+    return new Vector(this.x/magnitude, this.y/magnitude);
+  }
+
+  isNullVector(): boolean {
+    return this.x == 0 && this.y == 0;
+  }
+
+  static createNullVector(): Vector {
+    return new Vector(0, 0);
+  }
+}
+
+export class VectorBuilder {
+  x: number;
+  y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+
+  static createFromVector(vector: Vector): VectorBuilder {
+    return new VectorBuilder(vector.x, vector.y);
+  }
+
+  static createFromPoints(src: IPoint, dest: IPoint): VectorBuilder {
+    const x: number = dest.x - src.x;
+    const y: number = dest.y - src.y;
+    return new VectorBuilder(x, y);
+  }
+
+  private getMagnitude(): number {
+    return Math.sqrt(this.x**2 + this.y**2);
+  }
+
+  setMagnitude(newMagnitude: number): VectorBuilder {
     if (newMagnitude == 0) {
       this.x = 0;
       this.y = 0;
@@ -34,42 +77,32 @@ export class Vector {
     return this;
   }
 
-  getUnitVector(): Vector {
-    const magnitude = this.getMagnitude();
-
-    // Unit vector of the null vector is the null vector
-    if (magnitude == 0) {
-      return Vector.createNullVector();
-    }
-
-    return new Vector(this.x/magnitude, this.y/magnitude);
-  }
-
-  rotateCounterClockWise(radians: number): void {
+  rotateCounterClockWise(radians: number): VectorBuilder {
     const cosine = Math.cos(radians);
     const sine = Math.sin(radians);
     const translatedX = this.x * cosine - this.y * sine;
     const translatedY = this.x * sine + this.y * cosine;
     this.x = translatedX;
     this.y = translatedY;
+    return this;
   }
 
-  isNullVector(): boolean {
-    return this.x == 0 && this.y == 0;
-  }
-
-  static createNullVector(): Vector {
-    return new Vector(0, 0);
+  build(): Vector {
+    return new Vector(this.x, this.y);
   }
 }
 
 export class Point implements IPoint {
-  x: number;
-  y: number;
+  readonly x: number;
+  readonly y: number;
 
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
+  }
+
+  static createFromIPoint(iPoint: IPoint): Point {
+    return new Point(iPoint.x, iPoint.y);
   }
 
   transform(velocity: Velocity): Point {
@@ -132,8 +165,8 @@ export class Circle implements ICircle {
 }
 
 export class Velocity {
-  private unitVector: Vector;
-  private speed: number;
+  readonly unitVector: Vector;
+  readonly speed: number;
 
   constructor(dest: IPoint, speed: number, src: IPoint = { x: 0, y: 0 }) {
     if (speed < 0) {
@@ -142,22 +175,6 @@ export class Velocity {
 
     this.unitVector = Vector.createFromPoints(src, dest).getUnitVector();
     this.speed = this.unitVector.getMagnitude() == 0 ? 0 : speed;
-  }
-
-  getSpeed(): number {
-    return this.speed;
-  }
-
-  setSpeed(speed: number): boolean {
-    if (this.unitVector.isNullVector()) {
-      return false;
-    }
-    this.speed = speed;
-    return true;
-  }
-
-  getUnitVector(): Vector {
-    return this.unitVector;
   }
 
   getVector(): Vector {

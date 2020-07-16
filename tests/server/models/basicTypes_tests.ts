@@ -5,8 +5,8 @@ describe('Velocity', function() {
   describe('#VelocityTests', function() {
     it('Construct Velocity with just dest and speed', function() {
       const velocity: Velocity = new Velocity({ x: 3, y: 4 }, 1);
-      assert.equal(1, velocity.getSpeed());
-      const unitVector: Vector = velocity.getUnitVector();
+      assert.equal(1, velocity.speed);
+      const unitVector: Vector = velocity.unitVector;
       assert.equal(0.6, unitVector.x);
       assert.equal(0.8, unitVector.y);
       const vector: Vector = velocity.getVector();
@@ -16,8 +16,8 @@ describe('Velocity', function() {
 
     it('Construct Velocity with all inputs', function() {
       const velocity: Velocity = new Velocity({ x: 4, y: 5 }, 1, { x: 1, y: 1 });
-      assert.equal(1, velocity.getSpeed());
-      const unitVector: Vector = velocity.getUnitVector();
+      assert.equal(1, velocity.speed);
+      const unitVector: Vector = velocity.unitVector;
       assert.equal(0.6, unitVector.x);
       assert.equal(0.8, unitVector.y);
       const vector: Vector = velocity.getVector();
@@ -27,8 +27,8 @@ describe('Velocity', function() {
 
     it('Unit vector of 0,0 is valid', function() {
       const velocity = new Velocity(new Point(0, 0), 0);
-      assert.equal(0, velocity.getSpeed());
-      const vector: Vector = velocity.getUnitVector();
+      assert.equal(0, velocity.speed);
+      const vector: Vector = velocity.unitVector;
       assert.equal(0, vector.x);
       assert.equal(0, vector.y);
     });
@@ -49,13 +49,6 @@ describe('Point', function() {
       const retPoint = point.transform(velocity);
       assert.equal(0.6, retPoint.x);
       assert.equal(0.8, retPoint.y);
-    });
-
-    it('Point correctly transform with velocity magnitude(speed)', function() {
-      velocity.setSpeed(10);
-      const retPoint = point.transform(velocity);
-      assert.equal(6, retPoint.x);
-      assert.equal(8, retPoint.y);
     });
 
     it('Point correctly transform with vector', function() {

@@ -1,4 +1,4 @@
-import { Point, Velocity, Vector, Circle } from './basicTypes';
+import { Point, Velocity, VectorBuilder, Vector, Circle } from './basicTypes';
 import { v4 as uuidv4 } from 'uuid';
 import { IProjectile, IPoint } from '../../models/interfaces';
 import constants from '../constants';
@@ -25,8 +25,9 @@ class Projectile implements IProjectile {
   }
 
   static create(player: Player, model: Circle, dest: IPoint, range: number): Projectile {
-    const offsetVector = Vector.createFromPoints(model.origin, dest)
-      .setMagnitude(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET);
+    const offsetVector: Vector = VectorBuilder.createFromPoints(model.origin, dest)
+      .setMagnitude(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET)
+      .build();
     const origin: Point = model.origin.transformWithVector(offsetVector);
     const velocity = new Velocity(dest,
       constants.DEFAULT_PROJECTILE_SPEED,

@@ -9,7 +9,7 @@ export class Vector {
     this.y = y;
   }
 
-  static createFromPoints(src: IPoint, dest: IPoint): Vector {
+  static createFromPoints(src: Point, dest: Point): Vector {
     const x = dest.x - src.x;
     const y = dest.y - src.y;
     return new Vector(x, y);
@@ -52,7 +52,7 @@ export class VectorBuilder {
     return new VectorBuilder(vector.x, vector.y);
   }
 
-  static createFromPoints(src: IPoint, dest: IPoint): VectorBuilder {
+  static createFromPoints(src: Point, dest: Point): VectorBuilder {
     const x: number = dest.x - src.x;
     const y: number = dest.y - src.y;
     return new VectorBuilder(x, y);
@@ -112,7 +112,7 @@ export class Point implements IPoint {
     return new Point(this.x + vector.x, this.y + vector.y);
   }
 
-  equals(point: IPoint): boolean {
+  equals(point: Point): boolean {
     return this.x == point.x && this.y == point.y
   }
 
@@ -125,7 +125,7 @@ export class Velocity {
   readonly unitVector: Vector;
   readonly speed: number;
 
-  constructor(dest: IPoint, speed: number, src: IPoint = { x: 0, y: 0 }) {
+  constructor(dest: Point, speed: number, src: Point = new Point(0, 0)) {
     if (speed < 0) {
       throw new Error("Speed cannot be negative");
     }
@@ -135,7 +135,7 @@ export class Velocity {
   }
 
   static createNull(): Velocity {
-    return new Velocity({ x: 0, y: 0 }, 0);
+    return new Velocity(new Point(0, 0), 0);
   }
 
   getVector(): Vector {

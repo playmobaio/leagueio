@@ -29,7 +29,7 @@ export function registerPlayerCast(clientId: string, userInput: IUserInput): voi
     break;
   }
   if (ability != null) {
-    ability.targetPosition = userInput.cursorPosition;
+    ability.targetPosition = Point.createFromIPoint(userInput.cursorPosition);
     console.log(`Player casting ${ability.name}`);
     ability.cast();
   }

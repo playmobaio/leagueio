@@ -1,6 +1,5 @@
 import { Polygon } from 'detect-collisions';
 import { Point } from './basicTypes';
-import { IPoint } from '../../models/interfaces';
 import Model from './model';
 
 const BASE_RECTANGLE_COORDINATES: number[][] = [[0, 0], [1, 0], [1, 1], [0, 1]];
@@ -18,9 +17,9 @@ export default class RectangleModel extends Model {
   // [(x, y), (x, y - width), (x - height, y - width), (x - height, y)]
   private angle: number;
 
-  constructor(position: IPoint, width: number, height: number, angle = 0) {
+  constructor(position: Point, width: number, height: number, angle = 0) {
     super();
-    this.position = new Point(position.x, position.y);
+    this.position = position;
     this.width = width;
     this.height = height;
     this.body = new Polygon(position.x, position.y, BASE_RECTANGLE_COORDINATES);

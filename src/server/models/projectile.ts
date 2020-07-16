@@ -1,7 +1,7 @@
 import { Point, Velocity, VectorBuilder, Vector } from './basicTypes';
 import CircleModel from './circleModel';
 import { v4 as uuidv4 } from 'uuid';
-import { IProjectile, IPoint } from '../../models/interfaces';
+import { IProjectile } from '../../models/interfaces';
 import constants from '../constants';
 import Game from './game';
 import Player from './player';
@@ -23,7 +23,7 @@ class Projectile {
     this.model.setVelocity(velocity);
   }
 
-  static create(player: Player, casterPosition: Point, dest: IPoint, range: number): Projectile {
+  static create(player: Player, casterPosition: Point, dest: Point, range: number): Projectile {
     const offsetVector: Vector = VectorBuilder.createFromPoints(casterPosition, dest)
       .setMagnitude(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET)
       .build();

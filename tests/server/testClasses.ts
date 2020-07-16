@@ -4,7 +4,6 @@ import Ability from "../../src/server/hero/ability";
 import Effect from "../../src/server/hero/effect";
 import { CastRestriction } from "../../src/models/interfaces";
 import Model from "../../src/server/models/model";
-import CircleModel from "../../src/server/models/circleModel";
 import { Point as dcPoint, Body } from 'detect-collisions';
 
 export class TestAbility extends Ability {

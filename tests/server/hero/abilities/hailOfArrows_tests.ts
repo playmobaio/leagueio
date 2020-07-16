@@ -1,10 +1,7 @@
 import * as TypeMoq from "typemoq";
 import Hero from '../../../../src/server/hero/hero';
 import HailOfArrows from "../../../../src/server/hero/abilities/hailOfArrows";
-import { Point } from "../../../../src/server/models/basicTypes";
-import Player from "../../../../src/server/models/player";
 import Game from "../../../../src/server/models/game";
-import * as assert from 'assert';
 
 describe('HailOfArrows', function() {
   let hailOfArrows: HailOfArrows;
@@ -16,6 +13,10 @@ describe('HailOfArrows', function() {
     hailOfArrows = new HailOfArrows(hero.object);
     game = Game.getInstance();
     game.reset();
+  });
+
+  it('smoke', function() {
+    hailOfArrows.onCast();
   });
 
   //  it('User in area of effect will be damaged', function() {

@@ -1,7 +1,6 @@
 import Hero from "../hero";
 import { IPoint } from '../../../models/interfaces';
 import Player from '../../models/player';
-import constants from '../../constants';
 import BruteAuto from '../abilities/bruteAuto';
 
 class Brute extends Hero {

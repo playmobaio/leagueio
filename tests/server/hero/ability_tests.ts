@@ -8,7 +8,7 @@ import { secondsToFrames } from '../../../src/server/tools/frame';
 import { TestAbility, TestAbility2 } from '../testClasses';
 import Player from '../../../src/server/models/player';
 import { Abilities } from '../../../src/models/data/heroAbilities';
-import { Point, Circle } from '../../../src/server/models/basicTypes';
+import { Point } from '../../../src/server/models/basicTypes';
 import CircleModel from '../../../src/server/models/circleModel';
 
 describe('Ability', function() {

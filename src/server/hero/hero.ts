@@ -1,5 +1,5 @@
 import { Velocity, Vector, Point } from "../models/basicTypes";
-import { IHealth, IPoint, IHero, Condition } from '../../models/interfaces';
+import { IHealth, IHero, Condition } from '../../models/interfaces';
 import CircleModel from '../models/circleModel';
 import HeroState from './heroState';
 import Ability from './ability';
@@ -61,7 +61,7 @@ abstract class Hero {
     }
   }
 
-  performAutoAttack(dest: IPoint): void {
+  performAutoAttack(dest: Point): void {
     if (dest == undefined || this.model.getPosition().equals(dest) || !this.canAutoAttack()) {
       return;
     }
@@ -69,7 +69,7 @@ abstract class Hero {
     this.lastAutoAttackFrame = Game.getInstance().currentFrame;
   }
 
-  abstract onAutoAttack(dest: IPoint): void;
+  abstract onAutoAttack(dest: Point): void;
 
   respawn(): void {
     this.model = new CircleModel(this.spawnLocation, constants.DEFAULT_CIRCLE_RADIUS);

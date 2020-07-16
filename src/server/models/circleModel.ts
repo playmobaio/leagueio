@@ -1,7 +1,7 @@
 import { Circle } from 'detect-collisions';
 import Model from './model';
 import { Point } from './basicTypes';
-import { IPoint, ICircle, Shape } from '../../models/interfaces';
+import { ICircle, Shape } from '../../models/interfaces';
 
 const BASE_RADIUS = 1;
 
@@ -9,9 +9,9 @@ export default class CircleModel extends Model {
   body = null;
   private radius: number;
 
-  constructor(position: IPoint, radius: number) {
+  constructor(position: Point, radius: number) {
     super();
-    this.position = new Point(position.x, position.y);
+    this.position = position;
     this.body = new Circle(position.x, position.y, BASE_RADIUS);
     this.updateRadius(radius);
   }

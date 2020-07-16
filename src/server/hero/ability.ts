@@ -2,7 +2,7 @@ import Hero from './hero';
 import Game from '../models/game';
 import { secondsToFrames } from '../tools/frame';
 import constants from '../constants';
-import { IShape, IPoint, ICasting, IAbility, CastRestriction } from '../../models/interfaces';
+import { IShape, ICasting, IAbility, CastRestriction } from '../../models/interfaces';
 import { Abilities } from '../../models/data/heroAbilities';
 import { Vector, Point } from '../models/basicTypes';
 
@@ -13,7 +13,7 @@ abstract class Ability {
   range: number;
   hero: Hero;
   area: IShape;
-  targetPosition: IPoint;
+  targetPosition: Point;
   abstract castRestriction: CastRestriction;
   abstract name: string;
 
@@ -31,7 +31,7 @@ abstract class Ability {
       return;
     }
     if (!this.isInRange()) {
-      this.hero.updateVelocity(new Point(this.targetPosition.x, this.targetPosition.y));
+      this.hero.updateVelocity(this.targetPosition);
       this.hero.state.queueCast(this);
       return;
     }

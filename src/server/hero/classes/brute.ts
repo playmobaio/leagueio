@@ -1,6 +1,6 @@
 import Hero from "../hero";
-import { IPoint } from '../../../models/interfaces';
 import Player from '../../models/player';
+import { Point } from '../../models/basicTypes';
 import BruteAuto from '../abilities/bruteAuto';
 
 class Brute extends Hero {
@@ -14,7 +14,7 @@ class Brute extends Hero {
     this.autoAttack = new BruteAuto(player.hero);
   }
 
-  onAutoAttack(dest: IPoint): void {
+  onAutoAttack(dest: Point): void {
     this.autoAttack.targetPosition = dest;
     this.autoAttack.cast();
   }

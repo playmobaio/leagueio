@@ -64,7 +64,7 @@ export class TestEffect extends Effect {
 export class TestModel extends Model {
   body = null;
 
-  constructor(position: IPoint) {
+  constructor(position: Point) {
     super();
     this.position = new Point(position.x, position.y);
     this.body = new dcPoint(position.x, position.y);

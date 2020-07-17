@@ -1,7 +1,7 @@
 import Hero from "../hero";
 import Projectile from '../../models/projectile';
-import Player from '../../models/player';
 import { Point } from '../../models/basicTypes';
+import Player from '../../player';
 import constants from '../../constants';
 import RapidFire from '../abilities/rapidFire';
 import HailOfArrows from '../abilities/hailOfArrows';

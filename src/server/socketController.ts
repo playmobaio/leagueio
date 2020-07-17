@@ -6,8 +6,8 @@ import {
   Click
 } from '../models/interfaces';
 import { Point } from "./models/basicTypes";
-import Player from "./models/player";
-import Game from "./models/game";
+import Player from "./player";
+import Game from "./game";
 import Ability from './hero/ability';
 
 export function clientJoinGame(socket: SocketIO.Socket, joinGame: IJoinGame): void {

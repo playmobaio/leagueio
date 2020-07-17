@@ -1,7 +1,7 @@
 import * as express from "express";
 import * as path from "path";
 import *  as socketController from "./socketController";
-import Game from './models/game';
+import Game from './game';
 import { IUserInput, IUserMouseClick, IGameState, IJoinGame } from '../models/interfaces';
 import constants from './constants';
 

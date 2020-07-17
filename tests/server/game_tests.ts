@@ -1,6 +1,6 @@
 import * as assert from 'assert';
-import Game from '../../src/server/models/game';
-import Player from '../../src/server/models/player';
+import Game from '../../src/server/game';
+import Player from '../../src/server/player';
 
 describe('Game', function() {
   let game: Game;

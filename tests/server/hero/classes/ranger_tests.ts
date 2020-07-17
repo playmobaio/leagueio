@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as TypeMoq from "typemoq";
-import Player from "../../../../src/server/models/player";
-import Game from "../../../../src/server/models/game";
+import Player from "../../../../src/server/player";
+import Game from "../../../../src/server/game";
 import Ranger from "../../../../src/server/hero/classes/ranger";
 
 describe('Ranger', function() {

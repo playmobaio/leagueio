@@ -3,8 +3,8 @@ import { IHealth, IHero, Condition } from '../../models/interfaces';
 import CircleModel from '../models/circleModel';
 import HeroState from './heroState';
 import Ability from './ability';
-import Player from '../models/player';
-import Game from '../models/game';
+import Player from '../player';
+import Game from '../game';
 import constants from '../constants';
 import { getFramesBetweenAutoAttack } from '../tools/frame';
 

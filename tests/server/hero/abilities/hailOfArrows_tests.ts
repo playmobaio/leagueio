@@ -1,7 +1,7 @@
 import * as TypeMoq from "typemoq";
 import Hero from '../../../../src/server/hero/hero';
 import HailOfArrows from "../../../../src/server/hero/abilities/hailOfArrows";
-import Game from "../../../../src/server/models/game";
+import Game from "../../../../src/server/game";
 
 describe('HailOfArrows', function() {
   let hailOfArrows: HailOfArrows;

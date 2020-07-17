@@ -1,6 +1,6 @@
 import Hero from "../hero";
-import Player from '../../models/player';
 import { Point } from '../../models/basicTypes';
+import Player from '../../player';
 import BruteAuto from '../abilities/bruteAuto';
 
 class Brute extends Hero {

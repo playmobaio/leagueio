@@ -3,8 +3,8 @@ import CircleModel from './circleModel';
 import { v4 as uuidv4 } from 'uuid';
 import { IProjectile } from '../../models/interfaces';
 import constants from '../constants';
-import Game from './game';
-import Player from './player';
+import Game from '../game';
+import Player from '../player';
 import { EmitEvent } from '../tools/emitEvent'
 
 class Projectile {

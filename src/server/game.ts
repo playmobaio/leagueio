@@ -2,12 +2,12 @@ import Player from './player';
 import GameMap from './gameMap';
 import { IGameState,
   IPlayer,
-  IProjectile } from '../../models/interfaces';
-import Projectile from './projectile';
-import constants from '../constants';
+  IProjectile } from '../models/interfaces';
+import Projectile from './models/projectile';
+import constants from './constants';
 import { Collisions, Body } from 'detect-collisions';
-import { EmitEvent } from '../tools/emitEvent'
-import { IEmitEventMapping } from '../tools/iEmitEventMapping'
+import { EmitEvent } from './tools/emitEvent'
+import { IEmitEventMapping } from './tools/iEmitEventMapping'
 import { StrictEventEmitter } from 'strict-event-emitter-types';
 import { EventEmitter } from 'events';
 

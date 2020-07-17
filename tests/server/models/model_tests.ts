@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import { Body, Polygon } from 'detect-collisions';
 import { EmitEvent } from '../../../src/server/tools/emitEvent'
-import Game from "../../../src/server/models/game";
+import Game from "../../../src/server/game";
 import { TestModel } from "../testClasses";
 import { Velocity } from "../../../src/server/models/basicTypes";
 

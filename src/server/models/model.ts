@@ -1,8 +1,8 @@
 import { Body } from 'detect-collisions';
 import { EmitEvent } from '../tools/emitEvent'
 import { Point, Velocity } from './basicTypes';
-import Game from './game';
-import GameMap from './gameMap';
+import Game from '../game';
+import GameMap from '../gameMap';
 
 // A Model is the representation of an in game object. A model is an interface
 // for using the detect-collisions package

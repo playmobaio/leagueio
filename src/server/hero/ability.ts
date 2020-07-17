@@ -1,5 +1,5 @@
 import Hero from './hero';
-import Game from '../models/game';
+import Game from '../game';
 import { secondsToFrames } from '../tools/frame';
 import constants from '../constants';
 import { IShape, ICasting, IAbility, CastRestriction } from '../../models/interfaces';

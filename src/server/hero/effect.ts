@@ -1,5 +1,5 @@
 import Hero from './hero';
-import Game from '../models/game';
+import Game from '../game';
 import { secondsToFrames } from '../tools/frame';
 
 abstract class Effect {

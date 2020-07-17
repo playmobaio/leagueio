@@ -1,6 +1,6 @@
 import * as TypeMoq from "typemoq";
 import * as assert from 'assert';
-import Game from '../../../../src/server/models/game';
+import Game from '../../../../src/server/game';
 import BruteAuto from '../../../../src/server/hero/abilities/bruteAuto';
 import CircleModel from '../../../../src/server/models/circleModel';
 import { TestHero } from '../../testClasses';

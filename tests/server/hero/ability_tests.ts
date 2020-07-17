@@ -1,12 +1,12 @@
 import * as assert from 'assert';
 import * as TypeMoq from "typemoq";
 import { Times } from 'typemoq';
-import Game from "../../../src/server/models/game";
+import Game from "../../../src/server/game";
 import HeroState from "../../../src/server/hero/heroState";
 import Hero from "../../../src/server/hero/hero";
 import { secondsToFrames } from '../../../src/server/tools/frame';
 import { TestAbility, TestAbility2 } from '../testClasses';
-import Player from '../../../src/server/models/player';
+import Player from '../../../src/server/player';
 import { Abilities } from '../../../src/models/data/heroAbilities';
 import { Point } from '../../../src/server/models/basicTypes';
 import CircleModel from '../../../src/server/models/circleModel';

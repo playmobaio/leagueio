@@ -1,6 +1,6 @@
 import Projectile from '../models/projectile';
 import { Body } from 'detect-collisions';
-import Player from '../models/player';
+import Player from '../player';
 
 // To add a new event, add the corresponding EmitEvent, and assign the value as
 // a property on this interface.

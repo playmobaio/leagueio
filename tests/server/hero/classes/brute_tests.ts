@@ -1,6 +1,6 @@
 import * as TypeMoq from "typemoq";
-import Player from "../../../../src/server/models/player";
-import Game from "../../../../src/server/models/game";
+import Player from "../../../../src/server/player";
+import Game from "../../../../src/server/game";
 import Brute from '../../../../src/server/hero/classes/brute';
 import BruteAuto from "../../../../src/server/hero/abilities/bruteAuto";
 

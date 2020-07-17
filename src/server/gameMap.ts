@@ -1,7 +1,7 @@
-import { Point } from './basicTypes';
-import constants from '../../models/constants';
-import TileMap from '../../models/tileMap';
-import { Layer, Tile } from '../../models/interfaces';
+import { Point } from './models/basicTypes';
+import constants from '../models/constants';
+import TileMap from '../models/tileMap';
+import { Layer, Tile } from '../models/interfaces';
 
 class GameMap {
   width: number;

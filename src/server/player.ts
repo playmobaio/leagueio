@@ -2,13 +2,13 @@ import { IPlayer,
   HeroID,
   IHealth,
   IGameState,
-  IProjectile } from '../../models/interfaces';
+  IProjectile } from '../models/interfaces';
 import Game from "./game";
-import constants from '../constants';
-import { EmitEvent } from '../tools/emitEvent'
-import Hero from '../hero/hero';
-import Ranger from '../hero/classes/ranger';
-import Brute from '../hero/classes/brute';
+import constants from './constants';
+import { EmitEvent } from './tools/emitEvent'
+import Hero from './hero/hero';
+import Ranger from './hero/classes/ranger';
+import Brute from './hero/classes/brute';
 
 class Player {
   id: string;

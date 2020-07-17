@@ -1,9 +1,9 @@
 import * as assert from 'assert';
 import * as TypeMoq from "typemoq";
 import { Times } from 'typemoq';
-import Player from '../../../src/server/models/player';
-import Game from '../../../src/server/models/game';
-import GameMap from '../../../src/server/models/gameMap';
+import Player from '../../../src/server/player';
+import Game from '../../../src/server/game';
+import GameMap from '../../../src/server/gameMap';
 import { Point, Velocity } from '../../../src/server/models/basicTypes';
 import HeroState from '../../../src/server/hero/heroState';
 import { TestHero } from '../testClasses';

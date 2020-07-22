@@ -3,6 +3,56 @@ import { IPoint } from '../../models/interfaces';
 export class Vector {
   readonly x: number;
   readonly y: number;
+  static Builder = class {
+    x: number;
+    y: number;
+
+    constructor(x: number, y: number) {
+      this.x = x;
+      this.y = y;
+    }
+
+    static createFromVector(vector: Vector): Vector.Builder {
+      return new Vector.Builder(vector.x, vector.y);
+    }
+
+    static createFromPoints(src: Point, dest: Point): Vector.Builder {
+      const x: number = dest.x - src.x;
+      const y: number = dest.y - src.y;
+      return new Vector.Builder(x, y);
+    }
+
+    private getMagnitude(): number {
+      return Math.sqrt(this.x**2 + this.y**2);
+    }
+
+    setMagnitude(newMagnitude: number): Vector.Builder {
+      if (newMagnitude == 0) {
+        this.x = 0;
+        this.y = 0;
+        return this;
+      }
+
+      const originalMagnitude = this.getMagnitude();
+      this.x *= newMagnitude/originalMagnitude;
+      this.y *= newMagnitude/originalMagnitude;
+      return this;
+    }
+
+    rotateCounterClockWise(radians: number): Vector.Builder {
+      const cosine = Math.cos(radians);
+      const sine = Math.sin(radians);
+      const translatedX = this.x * cosine - this.y * sine;
+      const translatedY = this.x * sine + this.y * cosine;
+      this.x = translatedX;
+      this.y = translatedY;
+      return this;
+    }
+
+    build(): Vector {
+      return new Vector(this.x, this.y);
+    }
+  }
 
   constructor(x: number, y: number) {
     this.x = x;
@@ -36,57 +86,6 @@ export class Vector {
 
   static createNullVector(): Vector {
     return new Vector(0, 0);
-  }
-}
-
-export class VectorBuilder {
-  x: number;
-  y: number;
-
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
-
-  static createFromVector(vector: Vector): VectorBuilder {
-    return new VectorBuilder(vector.x, vector.y);
-  }
-
-  static createFromPoints(src: Point, dest: Point): VectorBuilder {
-    const x: number = dest.x - src.x;
-    const y: number = dest.y - src.y;
-    return new VectorBuilder(x, y);
-  }
-
-  private getMagnitude(): number {
-    return Math.sqrt(this.x**2 + this.y**2);
-  }
-
-  setMagnitude(newMagnitude: number): VectorBuilder {
-    if (newMagnitude == 0) {
-      this.x = 0;
-      this.y = 0;
-      return this;
-    }
-
-    const originalMagnitude = this.getMagnitude();
-    this.x *= newMagnitude/originalMagnitude;
-    this.y *= newMagnitude/originalMagnitude;
-    return this;
-  }
-
-  rotateCounterClockWise(radians: number): VectorBuilder {
-    const cosine = Math.cos(radians);
-    const sine = Math.sin(radians);
-    const translatedX = this.x * cosine - this.y * sine;
-    const translatedY = this.x * sine + this.y * cosine;
-    this.x = translatedX;
-    this.y = translatedY;
-    return this;
-  }
-
-  build(): Vector {
-    return new Vector(this.x, this.y);
   }
 }
 

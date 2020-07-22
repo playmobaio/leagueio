@@ -1,5 +1,5 @@
 import Ability from "../ability";
-import { VectorBuilder, Vector } from '../../models/basicTypes';
+import { Vector } from '../../models/basicTypes';
 import modelConstants from '../../../models/constants';
 import serverConstants from '../../constants';
 import { CastRestriction } from '../../../models/interfaces';
@@ -12,7 +12,7 @@ class BruteAuto extends Ability {
   castRestriction = CastRestriction.None;
 
   onCast(): void {
-    this.attackVector = VectorBuilder
+    this.attackVector = Vector.Builder
       .createFromPoints(this.hero.model.getPosition(), this.targetPosition)
       .setMagnitude(serverConstants.BRUTE_MELEE_RANGE)
       // Start from 90 degrees clockwise
@@ -22,7 +22,7 @@ class BruteAuto extends Ability {
 
   onUpdate(): void {
     // rotate the vector at the fixed rate
-    this.attackVector = VectorBuilder.createFromVector(this.attackVector)
+    this.attackVector = Vector.Builder.createFromVector(this.attackVector)
       .rotateCounterClockWise(this.radiansPerFrame())
       .build();
   }

@@ -12,9 +12,9 @@ class Layers {
 
   private constructor() {
     this.tileMap = new TileMap();
-    this.tileSize= this.tileMap.tileSize;
-    this.width = this.tileMap.cols * this.tileMap.tileSize
-    this.height = this.tileMap.rows * this.tileMap.tileSize
+    this.tileSize= TileMap.tileSize;
+    this.width = TileMap.cols * TileMap.tileSize
+    this.height = TileMap.rows * TileMap.tileSize
   }
 
   static getLayers(): Layers {

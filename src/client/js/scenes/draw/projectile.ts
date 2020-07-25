@@ -2,7 +2,7 @@ import { IProjectile } from '../../../../models/interfaces';
 import GameScene from '../gameScene';
 
 function drawProjectile(scene: GameScene, projectile: IProjectile): void {
-  const projectileArc = scene.add.circle(
+  const projectileArc: Phaser.GameObjects.Arc = scene.add.circle(
     projectile.model.origin.x,
     projectile.model.origin.y,
     projectile.model.radius,

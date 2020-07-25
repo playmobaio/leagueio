@@ -2,8 +2,10 @@ import GameScene from "../gameScene";
 import { IPlayer } from '../../../../models/interfaces';
 import constants from '../../constants';
 
+const healthBarOffset = 8;
+
 function drawHealthBar(scene: GameScene, player: IPlayer): void {
-  const YOffset = -player.hero.model.radius - 8;
+  const YOffset = player.hero.model.radius + healthBarOffset;
   let healthBarSize: number = Math.ceil(
     player.health.current / player.health.maximum * constants.HEALTH_BAR_LENGTH
   );
@@ -11,7 +13,7 @@ function drawHealthBar(scene: GameScene, player: IPlayer): void {
   const position = player.hero.model.origin;
 
   const x = position.x;
-  const y = position.y + YOffset;
+  const y = position.y - YOffset;
   const healthBar = scene.add.rectangle(x, y, healthBarSize, 5, 0xff0000);
   scene.gameObjects.push(healthBar);
 }

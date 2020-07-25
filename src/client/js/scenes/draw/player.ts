@@ -3,6 +3,7 @@ import { IPlayer } from '../../../../models/interfaces';
 import constants from '../../constants';
 
 const healthBarOffset = 8;
+const healthBarHeight = 5;
 
 function drawHealthBar(scene: GameScene, player: IPlayer): void {
   const YOffset = player.hero.model.radius + healthBarOffset;
@@ -14,7 +15,7 @@ function drawHealthBar(scene: GameScene, player: IPlayer): void {
 
   const x = position.x;
   const y = position.y - YOffset;
-  const healthBar = scene.add.rectangle(x, y, healthBarSize, 5, 0xff0000);
+  const healthBar = scene.add.rectangle(x, y, healthBarSize, healthBarHeight, 0xff0000);
   scene.gameObjects.push(healthBar);
 }
 

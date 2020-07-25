@@ -5,7 +5,7 @@ import { drawStocks } from './draw/stocks';
 
 class HudScene extends Phaser.Scene {
   socket: SocketIO.Socket;
-  gameObjects: Phaser.GameObjects.GameObject[];
+  stockText: Phaser.GameObjects.Text;
 
   constructor()
   {
@@ -13,7 +13,6 @@ class HudScene extends Phaser.Scene {
       key: "HudScene",
       active: true
     });
-    this.gameObjects = [];
   }
 
   create(): void
@@ -25,10 +24,6 @@ class HudScene extends Phaser.Scene {
   }
 
   render(userGame: IGameState): void {
-    // clear game objects
-    this.gameObjects.forEach(x => x.destroy());
-
-    // render new objects
     drawStocks(this, userGame.client);
   }
 }

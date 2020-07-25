@@ -7,6 +7,7 @@ import Game from './game';
 import 'phaser';
 import GameScene from './scenes/gameScene';
 import PhaserInputController from './phaserInputController';
+import HudScene from './scenes/hudScene';
 
 function resizeCanvas(): void {
   const canvas: HTMLElement = document.getElementById("canvas");
@@ -45,7 +46,7 @@ function InitializePhaserUI(fullScreen: boolean): void {
         debug: true
       }
     },
-    scene: [ GameScene ]
+    scene: [ GameScene, HudScene ]
   };
   const game = new Phaser.Game(config);
   if (fullScreen) {

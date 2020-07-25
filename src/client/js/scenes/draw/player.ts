@@ -1,23 +1,33 @@
 import GameScene from "../gameScene";
 import { IPlayer } from '../../../../models/interfaces';
+import constants from '../../constants';
+
+function drawHealthBar(scene: GameScene, player: IPlayer): void {
+  const YOffset = -player.hero.model.radius - 8;
+  let healthBarSize: number = Math.ceil(
+    player.health.current / player.health.maximum * constants.HEALTH_BAR_LENGTH
+  );
+  healthBarSize = Math.max(healthBarSize, 0);
+  const position = player.hero.model.origin;
+
+  const x = position.x;
+  const y = position.y + YOffset;
+  const healthBar = scene.add.rectangle(x, y, healthBarSize, 5, 0xff0000);
+  scene.gameObjects.push(healthBar);
+}
 
 function drawPlayer(scene: GameScene, player: IPlayer): void {
   const userId = scene.socket.id;
   const model = player.hero.model;
-  // update player position if they exist
-  if (scene.players.has(player.id)) {
-    const playerArc = scene.players.get(player.id);
-    playerArc.x = model.origin.x;
-    playerArc.y = model.origin.y;
-    return;
-  }
+
+  // draw health bar
+  drawHealthBar(scene, player);
   const playerArc = scene.add.circle(model.origin.x, model.origin.y, model.radius, 0);
   // Lock on camera to player model
   if (player.id == userId) {
     scene.cameras.main.startFollow(playerArc);
   }
-  scene.physics.world.enableBody(playerArc);
-  scene.players.set(player.id, playerArc);
+  scene.gameObjects.push(playerArc);
 }
 
 export { drawPlayer }

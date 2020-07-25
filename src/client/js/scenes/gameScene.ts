@@ -4,19 +4,20 @@ import { IGameState } from '../../../models/interfaces';
 import PhaserInputController from '../phaserInputController';
 import { drawPlayer } from './draw/player';
 import { drawTiles } from './draw/tiles';
+import { drawProjectile } from './draw/projectile';
 
 class GameScene extends Phaser.Scene {
   tileMap: TileMap;
   dest: Phaser.GameObjects.GameObject;
   socket: SocketIO.Socket;
-  players: Map<string, Phaser.GameObjects.Arc>;
+  gameObjects: Phaser.GameObjects.GameObject[];
 
   constructor()
   {
     super({
       key: "GameScene"
     });
-    this.players = new Map<string, Phaser.GameObjects.Arc>();
+    this.gameObjects = [];
   }
 
   preload(): void
@@ -44,7 +45,13 @@ class GameScene extends Phaser.Scene {
   }
 
   render(userGame: IGameState): void {
-    userGame.players.forEach(x => drawPlayer(this, x));
+    // cleanup old game objects
+    this.gameObjects.forEach(x => x.destroy());
+    this.gameObjects = [];
+
+    // render new game objects
+    userGame.players.forEach(player => drawPlayer(this, player));
+    userGame.projectiles.forEach(projectile => drawProjectile(this, projectile));
   }
 
   update(): void {

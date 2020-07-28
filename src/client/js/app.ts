@@ -9,6 +9,7 @@ import GameScene from './scenes/gameScene';
 import PhaserInputController from './phaserInputController';
 import HudScene from './scenes/hudScene';
 
+let phaserGame:  Phaser.Game;
 function resizeCanvas(): void {
   const canvas: HTMLElement = document.getElementById("canvas");
   const width: number = window.innerWidth;
@@ -48,9 +49,9 @@ function InitializePhaserUI(fullScreen: boolean): void {
     },
     scene: [ GameScene, HudScene ]
   };
-  const game = new Phaser.Game(config);
+  phaserGame = new Phaser.Game(config);
   if (fullScreen) {
-    game.scale.startFullscreen();
+    phaserGame.scale.startFullscreen();
   }
 }
 
@@ -60,6 +61,11 @@ function InitializeSocket(usePhaser: boolean): void {
   const name: string = (document.getElementById("playerName") as HTMLInputElement).value;
   const heroId: HeroID = parseInt((document.getElementById("hero") as HTMLInputElement).value);
   const joinGame: IJoinGame = { name, heroId };
+  socket.on("S:END_GAME", () => {
+    phaserGame.destroy(true);
+    socket.disconnect(true);
+    document.getElementById('startpanel').setAttribute("style", "display:initial;");
+  });
   if (usePhaser) {
     PhaserInputController.createInstance(socket);
   } else {

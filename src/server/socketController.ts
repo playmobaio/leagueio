@@ -41,10 +41,10 @@ export function registerPlayerClick(clientId: string, clickEvent: IUserMouseClic
   const cursorPoint = new Point(clickEvent.cursorPosition.x, clickEvent.cursorPosition.y)
   switch(clickEvent.click) {
   case Click.Left:
-    player.hero.performAttack(cursorPoint);
+    player?.hero.performAttack(cursorPoint);
     break;
   case Click.Right:
-    player.hero.updateVelocity(cursorPoint);
+    player?.hero.updateVelocity(cursorPoint);
     break;
   }
 }

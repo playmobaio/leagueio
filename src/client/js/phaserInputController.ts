@@ -11,9 +11,7 @@ class PhaserInputController {
   }
 
   static createInstance(socket: SocketIO.Socket): void {
-    if (!PhaserInputController.instance) {
-      PhaserInputController.instance = new PhaserInputController(socket);
-    }
+    PhaserInputController.instance = new PhaserInputController(socket);
   }
 
   static getInstance(): PhaserInputController {

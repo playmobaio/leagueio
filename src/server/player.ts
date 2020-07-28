@@ -65,7 +65,9 @@ class Player {
   }
 
   endPlayerGame(): void {
-    Game.getInstance().removePlayer(this.id);
+    const score = Game.getInstance().currentFrame;
+    console.log(`Score ${score}`);
+    Game.getInstance().reset();
   }
 
   update(): void {

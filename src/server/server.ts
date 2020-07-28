@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, "../client")));
 
 const io = require("socket.io").listen(server);
 const game: Game = Game.getInstance();
-
+game.setSocketManager(io);
 io.sockets.on(
   "connect",
   function(socket: SocketIO.Socket) {

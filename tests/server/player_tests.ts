@@ -6,7 +6,6 @@ import Game from '../../src/server/game';
 describe('Player', function() {
   let player: Player;
   let socket: TypeMoq.IMock<SocketIO.Socket>;
-  let socketManager: TypeMoq.IMock<SocketIO.Server>;
   const id = "id";
   const defaultName = "DEFAULT_NAME";
   const defaultHeroID = 1;
@@ -15,9 +14,7 @@ describe('Player', function() {
   beforeEach(function(){
     socket = TypeMoq.Mock.ofType<SocketIO.Socket>();
     socket.setup((socket) => socket.id).returns(() => id);
-    socketManager = TypeMoq.Mock.ofType<SocketIO.Server>();
     game = Game.getInstance();
-    game.setSocketManager(socketManager.object);
     // new game not initiated, singleton. So just deleting projectiles
     game.reset();
     player = Player.create(id, socket.object, defaultName, defaultHeroID);
@@ -43,6 +40,6 @@ describe('Player', function() {
 
   it("end player game resets game", function() {
     player.endPlayerGame();
-    socketManager.verify(x => x.emit("S:END_GAME"), TypeMoq.Times.atLeastOnce());
+    socket.verify(x => x.emit("S:END_GAME"), TypeMoq.Times.atLeastOnce());
   })
 });

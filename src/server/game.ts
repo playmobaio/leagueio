@@ -21,7 +21,6 @@ class Game {
   gameStates: Map<string, IGameState>;
   emitter: StrictEventEmitter<EventEmitter, IEmitEventMapping>;
   system: Collisions;
-  socketManager: SocketIO.Server;
 
   private constructor() {
     this.players = new Map<string, Player>();
@@ -39,10 +38,6 @@ class Game {
     }
 
     return Game.instance;
-  }
-
-  setSocketManager(io: SocketIO.Server): void {
-    this.socketManager = io;
   }
 
   registerEvents(): void {
@@ -74,7 +69,7 @@ class Game {
   }
 
   reset(): void {
-    this.socketManager?.emit("S:END_GAME");
+    this.players.forEach(x => x.socket.emit("S:END_GAME"));
     this.players.clear();
     this.projectiles.clear();
     this.gameMap = new GameMap();

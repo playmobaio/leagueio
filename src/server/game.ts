@@ -3,8 +3,7 @@ import GameMap from './gameMap';
 import { IGameState,
   IPlayer,
   IProjectile } from '../models/interfaces';
-import Projectile from './models/projectile';
-import constants from './constants';
+import Projectile from './projectiles/projectile';
 import { Collisions, Body } from 'detect-collisions';
 import { EmitEvent } from './tools/emitEvent'
 import { IEmitEventMapping } from './tools/iEmitEventMapping'
@@ -82,36 +81,46 @@ class Game {
   }
 
   update(): void {
-    this.players.forEach((player): void => {
-      if(player.health.current <= 0) {
-        if(player.stocks > 1) {
-          player.stocks -= 1;
-          player.respawn();
+    // Update all projectiles
+    for (const projectile of this.projectiles.values()) {
+      projectile.update();
+    }
+
+    // Update all players
+    for (const player of this.players.values()) {
+      player.update();
+    }
+
+    // Update collision system
+    this.system.update();
+
+    // Resolve all collisions
+    for (const projectile of this.projectiles.values()) {
+      for (const player of this.players.values()) {
+        if (projectile.collidesWithPlayer(player)) {
+          projectile.onPlayerCollision(player);
+          if (!projectile.exists()) {
+            break;
+          }
         }
-        else {
-          player.endPlayerGame();
-        }
+      }
+    }
+
+    // Remove dead players
+    for (const player of this.players.values()) {
+      if (player.health.current > 0) {
+        continue;
+      }
+      if (player.stocks > 1) {
+        player.stocks -= 1;
+        player.respawn();
       }
       else {
-        player.update();
+        player.endPlayerGame();
       }
-    });
+    }
 
-    this.projectiles.forEach((projectile): void => {
-      if (projectile.shouldDelete()) {
-        projectile.delete();
-        return;
-      }
-      projectile.update();
-      // check each player to see if collides
-      this.players.forEach((player): void => {
-        if(projectile.creatorId != player.id &&
-            player.hero.model.collides(projectile.model)) {
-          player.receiveDamage(constants.DEFAULT_DAMAGE_FROM_PROJECTILE);
-          projectile.delete();
-        }
-      });
-    });
+    // update frame counter
     this.currentFrame++;
   }
 

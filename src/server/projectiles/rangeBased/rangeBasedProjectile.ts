@@ -1,5 +1,5 @@
-import { Point, Vector } from '../models/basicTypes';
-import Projectile from './projectile';
+import { Point, Vector } from '../../models/basicTypes';
+import Projectile from '../projectile';
 
 // RangeBasedProjectile represents a projectile that will live until it has
 // moved a fixed distance from it's origin in a straight line.

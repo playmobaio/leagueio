@@ -1,20 +1,22 @@
 import { Point, Velocity, Vector, VectorBuilder } from '../../models/basicTypes';
-import RangeBasedProjectile from '../rangeBasedProjectile';
+import RangeBasedProjectile from './rangeBasedProjectile';
 import CircleModel from '../../models/circleModel';
 import { IProjectile } from '../../../models/interfaces';
 import Player from '../../player';
-import constants from '../../constants';
 
 export default class RangerAutoAttackProjectile extends RangeBasedProjectile {
   static range = 300;
   static radius = 10;
   static damage = 10;
   static speed = 12;
+  static projectileOffset = 12;
 
   constructor(creatorId: string, casterPosition: Point, dest: Point) {
     super(creatorId);
+    // offset origin, so the projectile is starting beyond the ranger's current
+    // location.
     const offsetVector: Vector = VectorBuilder.createFromPoints(casterPosition, dest)
-      .setMagnitude(constants.DEFAULT_PROJECTILE_TO_USER_OFFSET)
+      .setMagnitude(RangerAutoAttackProjectile.projectileOffset)
       .build();
     const origin: Point = casterPosition.transformWithVector(offsetVector);
 

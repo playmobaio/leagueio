@@ -28,9 +28,7 @@ describe('TimedProjectile', function() {
     });
 
     it('will delete after lifespan passes', function() {
-      console.log(game.currentFrame);
       game.currentFrame += lifespanInFrames + 1;
-      console.log(game.currentFrame);
       projectile.update();
       assert(!projectile.model.exists);
     });

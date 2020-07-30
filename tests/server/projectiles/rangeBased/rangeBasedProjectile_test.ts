@@ -1,6 +1,6 @@
 import * as assert from 'assert';
-import { Velocity, Point } from '../../../src/server/models/basicTypes';
-import { TestRangeBasedProjectile } from '../testClasses';
+import { Velocity, Point } from '../../../../src/server/models/basicTypes';
+import { TestRangeBasedProjectile } from '../../testClasses';
 
 describe('RangeBasedProjectile', function() {
   let velocity: Velocity;

@@ -19,7 +19,7 @@ class Game {
   currentFrame: number;
   gameStates: Map<string, IGameState>;
   emitter: StrictEventEmitter<EventEmitter, IEmitEventMapping>;
-  system: Collisions;
+  collisionSystem: Collisions;
 
   private constructor() {
     this.players = new Map<string, Player>();
@@ -28,7 +28,7 @@ class Game {
     this.currentFrame = 0;
     this.emitter = new EventEmitter;
     this.registerEvents();
-    this.system = new Collisions();
+    this.collisionSystem = new Collisions();
   }
 
   static getInstance(): Game {
@@ -53,7 +53,7 @@ class Game {
     }
 
     const newBody = (body: Body): void => {
-      this.system.insert(body);
+      this.collisionSystem.insert(body);
     }
 
     const removeBody = (body: Body): void => {
@@ -72,7 +72,7 @@ class Game {
     this.players.clear();
     this.projectiles.clear();
     this.gameMap = new GameMap();
-    this.system = new Collisions();
+    this.collisionSystem = new Collisions();
     this.currentFrame = 0;
   }
 
@@ -91,8 +91,8 @@ class Game {
       player.update();
     }
 
-    // Update collision system
-    this.system.update();
+    // Update collision collisionSystem
+    this.collisionSystem.update();
 
     // Resolve all collisions
     for (const projectile of this.projectiles.values()) {

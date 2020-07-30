@@ -8,7 +8,7 @@ import CircleModel from "../../src/server/models/circleModel";
 import { Point as dcPoint, Body } from 'detect-collisions';
 import Player from '../../src/server/player';
 import Projectile from '../../src/server/projectiles/projectile';
-import RangeBasedProjectile from '../../src/server/projectiles/rangeBasedProjectile';
+import RangeBasedProjectile from '../../src/server/projectiles/rangeBased/rangeBasedProjectile';
 import TimedProjectile from '../../src/server/projectiles/timedProjectile';
 
 export class TestAbility extends Ability {

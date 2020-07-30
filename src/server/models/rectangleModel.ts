@@ -1,6 +1,7 @@
 import { Polygon } from 'detect-collisions';
 import { Point } from './basicTypes';
 import Model from './model';
+import { ICircle } from '../../models/interfaces';
 
 const BASE_RECTANGLE_COORDINATES: number[][] = [[0, 0], [1, 0], [1, 1], [0, 1]];
 
@@ -62,6 +63,11 @@ export default class RectangleModel extends Model {
   updateAngle(angle: number): void {
     this.angle = angle;
     this.body.angle = angle;
+  }
+
+  toICircle(): ICircle {
+    console.log("BROKEN DO NOT USE");
+    return null;
   }
 
   getMapCollisionPositions(point = this.position): Point[] {

@@ -3,6 +3,7 @@ import { EmitEvent } from '../tools/emitEvent'
 import { Point, Velocity } from './basicTypes';
 import Game from '../game';
 import GameMap from '../gameMap';
+import { ICircle } from '../../models/interfaces';
 
 // A Model is the representation of an in game object. A model is an interface
 // for using the detect-collisions package
@@ -21,6 +22,7 @@ export default abstract class Model {
   getPosition(): Point {
     return this.position;
   }
+
   updatePosition(position: Point): void {
     this.position = position;
     this.body.x = position.x;
@@ -35,7 +37,7 @@ export default abstract class Model {
     this.velocity = velocity;
   }
 
-  collides(otherModel: Model): boolean {
+  collidesWithModel(otherModel: Model): boolean {
     return otherModel.collidesWithBody(this.body)
   }
 
@@ -62,6 +64,8 @@ export default abstract class Model {
     Game.getInstance().emitter.emit(EmitEvent.RemoveBody, this.body);
     this.exists = false;
   }
+
+  abstract toICircle(): ICircle;
 
   // The points that should be checked for map related position collisions.
   // Primarily if a model is colliding with a wall or is on the map.

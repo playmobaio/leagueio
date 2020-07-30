@@ -1,8 +1,7 @@
 import Hero from "../hero";
-import Projectile from '../../models/projectile';
+import RangerAutoAttackProjectile from '../../projectiles/rangeBased/rangerAutoAttackProjectile';
 import { Point } from '../../models/basicTypes';
 import Player from '../../player';
-import constants from '../../constants';
 import RapidFire from '../abilities/rapidFire';
 import HailOfArrows from '../abilities/hailOfArrows';
 
@@ -17,10 +16,9 @@ class Ranger extends Hero {
   }
 
   onAutoAttack(dest: Point): void {
-    Projectile.create(this.player,
+    new RangerAutoAttackProjectile(this.player.id,
       this.model.getPosition(),
-      dest,
-      constants.RANGER_PROJECTILE_RANGE);
+      dest);
   }
 }
 

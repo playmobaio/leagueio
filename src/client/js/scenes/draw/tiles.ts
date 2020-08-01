@@ -9,7 +9,13 @@ function drawTiles(scene: GameScene, data: number[][]): void {
     width: TileMap.cols,
     height: TileMap.rows
   });
-  const tiles = map.addTilesetImage('tileMap');
+  const tiles = map.addTilesetImage(
+    'tileMap',
+    'tileMap',
+    TileMap.tileSize,
+    TileMap.tileSize,
+    1,
+    2);
   map.createStaticLayer(0, tiles, 0, 0);
 }
 

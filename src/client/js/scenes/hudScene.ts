@@ -2,10 +2,12 @@ import 'phaser';
 import { IGameState } from '../../../models/interfaces';
 import PhaserInputController from '../phaserInputController';
 import { drawStocks } from './draw/stocks';
+import { drawGameTime } from './draw/gameTime';
 
 class HudScene extends Phaser.Scene {
   socket: SocketIO.Socket;
   stockText: Phaser.GameObjects.Text;
+  gameTimeText: Phaser.GameObjects.Text;
 
   constructor()
   {
@@ -25,6 +27,7 @@ class HudScene extends Phaser.Scene {
 
   render(userGame: IGameState): void {
     drawStocks(this, userGame.client);
+    drawGameTime(this, userGame.currentFrame);
   }
 }
 export default HudScene;

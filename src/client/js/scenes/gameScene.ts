@@ -33,7 +33,7 @@ class GameScene extends Phaser.Scene {
       0,
       0,
       TileMap.tileSize * TileMap.cols,
-      TileMap.tileSize * TileMap.rows).setZoom(1.5);
+      TileMap.tileSize * TileMap.rows).setZoom(2);
     // Draw Tiles
     drawTiles(this, this.tileMap.background);
     drawTiles(this, this.tileMap.foreground);

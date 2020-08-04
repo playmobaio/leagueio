@@ -115,7 +115,7 @@ abstract class Hero {
 
   toInterface(): IHero {
     return {
-      model: this.model.toICircle(),
+      model: this.model.toIModel(),
     }
   }
 

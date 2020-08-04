@@ -39,6 +39,6 @@ export default class RangerAutoAttackProjectile extends RangeBasedProjectile {
   }
 
   toInterface(): IProjectile {
-    return { id: this.id, model: this.model.toICircle() };
+    return { id: this.id, model: this.model.toIModel() };
   }
 }

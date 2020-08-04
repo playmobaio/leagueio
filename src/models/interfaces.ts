@@ -6,7 +6,7 @@ export interface IPlayer {
 }
 
 export interface IAbility {
-  castingShape: IShape;
+  model: IModel;
   range: number;
   abilityName: string;
 }
@@ -17,7 +17,7 @@ export interface ICasting {
 }
 
 export interface IHero {
-  model: ICircle;
+  model: ICircleModel;
 }
 
 export interface IPoint {
@@ -25,13 +25,19 @@ export interface IPoint {
   y: number;
 }
 
-export interface IShape {
-  origin: IPoint;
-  type: Shape;
+export interface IModel {
+  position: IPoint;
+  type: IShape;
 }
 
-export interface ICircle extends IShape {
+export interface ICircleModel extends IModel {
   radius: number;
+}
+
+export interface IRectangleModel extends IModel {
+  width: number;
+  height: number;
+  angle: number; // degrees
 }
 
 export interface IUserInput {
@@ -46,7 +52,7 @@ export interface IUserMouseClick {
 
 export interface IProjectile {
   id: string;
-  model: ICircle;
+  model: IModel;
 }
 
 export interface IGameState {
@@ -104,9 +110,10 @@ export enum Condition {
   Dead
 }
 
-export enum Shape {
+export enum IShape {
   Circle,
-  Line
+  Line,
+  Rectangle
 }
 
 export enum CastRestriction {

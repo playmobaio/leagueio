@@ -1,13 +1,24 @@
-import { IProjectile } from '../../../../models/interfaces';
+import { IProjectile, IShape, ICircleModel, IModel } from '../../../../models/interfaces';
 import GameScene from '../gameScene';
 
 function drawProjectile(scene: GameScene, projectile: IProjectile): void {
-  const projectileArc: Phaser.GameObjects.Arc = scene.add.circle(
-    projectile.model.origin.x,
-    projectile.model.origin.y,
-    projectile.model.radius,
-    0x13220);
-  scene.gameObjects.push(projectileArc);
+  const model: IModel = projectile.model;
+  switch(model.type) {
+  case IShape.Circle: {
+    const circleModel = model as ICircleModel;
+    const projectileArc: Phaser.GameObjects.Arc = scene.add.circle(
+      circleModel.position.x,
+      circleModel.position.y,
+      circleModel.radius,
+      0x13220);
+    scene.gameObjects.push(projectileArc);
+    break;
+  }
+  default: {
+    console.log("unimplemented");
+    break;
+  }
+  }
 }
 
 export {

@@ -105,7 +105,7 @@ export class TestProjectile extends Projectile {
   }
 
   toInterface(): IProjectile {
-    return { id: this.id, model: this.model.toICircle() };
+    return { id: this.id, model: this.model.toIModel() };
   }
 }
 
@@ -131,7 +131,7 @@ export class TestRangeBasedProjectile extends RangeBasedProjectile {
   }
 
   toInterface(): IProjectile {
-    return { id: this.id, model: this.model.toICircle() };
+    return { id: this.id, model: this.model.toIModel() };
   }
 }
 
@@ -149,6 +149,6 @@ export class TestTimedProjectile extends TimedProjectile {
   }
 
   toInterface(): IProjectile {
-    return { id: this.id, model: this.model.toICircle() };
+    return { id: this.id, model: this.model.toIModel() };
   }
 }

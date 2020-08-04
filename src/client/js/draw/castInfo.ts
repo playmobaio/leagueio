@@ -2,9 +2,9 @@ import {
   IGameState,
   IHero,
   IPoint,
-  Shape,
   IShape,
-  ICircle,
+  IModel,
+  ICircleModel,
   IAbility
 } from '../../../models/interfaces';
 import CGameMap from '../cgameMap';
@@ -19,19 +19,19 @@ function drawRange(gameMap: CGameMap, camera: Camera, hero: IHero, ability: IAbi
   if (range == null) {
     return;
   }
-  const center: IPoint = camera.absoluteToRelativePosition(hero.model.origin);
+  const center: IPoint = camera.absoluteToRelativePosition(hero.model.position);
   gameMap.context.lineWidth = 2;
   drawCircle(gameMap, center, range, constants.PASTEL_RED_HEX);
 }
 
-function drawCastShape(gameMap: CGameMap, ability: IAbility): void {
-  const shape: IShape = ability.castingShape;
-  switch(shape.type) {
-  case Shape.Circle: {
-    const circle = shape as ICircle;
+function drawCastModel(gameMap: CGameMap, ability: IAbility): void {
+  const model: IModel = ability.model;
+  switch(model.type) {
+  case IShape.Circle: {
+    const circleModel = model as ICircleModel;
     drawCircle(gameMap,
-      circle.origin,
-      circle.radius,
+      circleModel.position,
+      circleModel.radius,
       constants.PASTEL_RED_HEX,
       true,
       constants.PASTEL_RED_HEX);
@@ -50,7 +50,7 @@ function drawCastInfo(gameMap: CGameMap, camera: Camera, state: IGameState): voi
   }
 
   drawRange(gameMap, camera, state.client.hero, ability);
-  drawCastShape(gameMap, ability);
+  drawCastModel(gameMap, ability);
 }
 
 export default drawCastInfo

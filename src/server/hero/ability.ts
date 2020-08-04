@@ -2,7 +2,7 @@ import Hero from './hero';
 import Game from '../game';
 import { secondsToFrames } from '../tools/frame';
 import constants from '../constants';
-import { IShape, ICasting, IAbility, CastRestriction } from '../../models/interfaces';
+import { IModel, ICasting, IAbility, CastRestriction } from '../../models/interfaces';
 import { Abilities } from '../../models/data/heroAbilities';
 import { Vector, Point } from '../models/basicTypes';
 
@@ -12,7 +12,7 @@ abstract class Ability {
   nextAvailableCastFrame: number;
   range: number;
   hero: Hero;
-  area: IShape;
+  area: IModel;
   targetPosition: Point;
   abstract castRestriction: CastRestriction;
   abstract name: string;

@@ -98,11 +98,11 @@ class UserInputController {
     default:
       return null;
     }
-    if (abilityName == null || Abilities[abilityName].castingShape == null) {
+    if (abilityName == null || Abilities[abilityName].model == null) {
       return null;
     }
     const ability: IAbility = Abilities[abilityName];
-    ability.castingShape.origin = game.camera.getRelativePosition(this.cursorPosition);
+    ability.model.position = game.camera.getRelativePosition(this.cursorPosition);
     return ability;
   }
 

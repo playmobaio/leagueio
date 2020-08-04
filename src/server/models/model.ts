@@ -3,7 +3,7 @@ import { EmitEvent } from '../tools/emitEvent'
 import { Point, Velocity } from './basicTypes';
 import Game from '../game';
 import GameMap from '../gameMap';
-import { ICircle } from '../../models/interfaces';
+import { IModel } from '../../models/interfaces';
 
 // A Model is the representation of an in game object. A model is an interface
 // for using the detect-collisions package
@@ -65,7 +65,7 @@ export default abstract class Model {
     this.exists = false;
   }
 
-  abstract toICircle(): ICircle;
+  abstract toIModel(): IModel;
 
   // The points that should be checked for map related position collisions.
   // Primarily if a model is colliding with a wall or is on the map.

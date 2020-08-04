@@ -45,8 +45,8 @@ export default class Camera {
   }
 
   setFrameReference(player: IPlayer): void {
-    const x: number = player.hero.model.origin.x - this.width / 2;
-    const y: number = player.hero.model.origin.y - this.height / 2;
+    const x: number = player.hero.model.position.x - this.width / 2;
+    const y: number = player.hero.model.position.y - this.height / 2;
 
     // clamp values
     this.absolutePosition = {

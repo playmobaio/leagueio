@@ -7,6 +7,7 @@ import { drawHealth } from './draw/health';
 class HudScene extends Phaser.Scene {
   socket: SocketIO.Socket;
   stockText: Phaser.GameObjects.Text;
+  healthRect: Phaser.GameObjects.Rectangle;
   healthText: Phaser.GameObjects.Text;
 
   constructor()

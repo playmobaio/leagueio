@@ -13,6 +13,7 @@ import { EmitEvent } from '../tools/emitEvent'
 // - onPlayerCollision(player: Player): void
 // - protected shouldDelete(): boolean
 // - toInterface(): IProjectile
+// - canCollide(): boolean
 export default abstract class Projectile {
   id: string;
   name: string;
@@ -31,6 +32,8 @@ export default abstract class Projectile {
 
   abstract toInterface(): IProjectile;
 
+  abstract canCollide(): boolean;
+
   update(): void {
     if (this.shouldDelete()) {
       this.delete();
@@ -43,7 +46,7 @@ export default abstract class Projectile {
   }
 
   collidesWithPlayer(player: Player): boolean {
-    return this.model.collidesWithModel(player.hero.model);
+    return this.canCollide() && this.model.collidesWithModel(player.hero.model);
   }
 
   protected delete(): void {

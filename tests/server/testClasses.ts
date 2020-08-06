@@ -9,7 +9,8 @@ import { Point as dcPoint, Body } from 'detect-collisions';
 import Player from '../../src/server/player';
 import Projectile from '../../src/server/projectiles/projectile';
 import RangeBasedProjectile from '../../src/server/projectiles/rangeBased/rangeBasedProjectile';
-import TimedProjectile from '../../src/server/projectiles/timedProjectile';
+import TimedProjectile from '../../src/server/projectiles/timed/timedProjectile';
+import SingleFrameProjectile from '../../src/server/projectiles/singleFrame/singleFrameProjectile';
 
 export class TestAbility extends Ability {
   used = false;
@@ -99,6 +100,10 @@ export class TestProjectile extends Projectile {
     return this.shouldDeleteValue;
   }
 
+  canCollide(): boolean {
+    return true;
+  }
+
   onPlayerCollision(player: Player): void {
     player.receiveDamage(this.damage);
     this.delete();
@@ -126,6 +131,10 @@ export class TestRangeBasedProjectile extends RangeBasedProjectile {
 
   setRange(range: number): void {
     this.range = range;
+  }
+
+  canCollide(): boolean {
+    return true;
   }
 
   getRange(): number {
@@ -156,6 +165,24 @@ export class TestTimedProjectile extends TimedProjectile {
 
   onPlayerCollision(player: Player): void {
     player.receiveDamage(TestTimedProjectile.damage);
+  }
+
+  toInterface(): IProjectile {
+    return { id: this.id, model: this.model.toIModel() };
+  }
+}
+
+export class TestSingleFrameProjectile extends SingleFrameProjectile {
+  static radius = 10;
+  static damage = 10;
+
+  constructor(creatorId: string, armTimeInSeconds: number, position: Point) {
+    super(creatorId, armTimeInSeconds);
+    this.model = new CircleModel(position, TestSingleFrameProjectile.radius);
+  }
+
+  onPlayerCollision(player: Player): void {
+    player.receiveDamage(TestSingleFrameProjectile.damage);
   }
 
   toInterface(): IProjectile {

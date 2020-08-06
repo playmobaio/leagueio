@@ -1,17 +1,29 @@
 import { Point } from './models/basicTypes';
+import { Body, Polygon } from 'detect-collisions';
 import constants from '../models/constants';
 import TileMap from '../models/tileMap';
 import { Layer, Tile } from '../models/interfaces';
+import Model from './models/model';
+import Game from './game';
 
 class GameMap {
   width: number;
   height: number;
   tileMap: TileMap;
+  mapBoundaries: Body;
 
-  constructor() {
+  constructor(game: Game) {
     this.width = constants.DEFAULT_MAP_WIDTH;
     this.height = constants.DEFAULT_MAP_HEIGHT;
     this.tileMap = new TileMap();
+    this.mapBoundaries = new Polygon(0,
+      0,
+      [[0, 0], [this.width, 0], [this.width, this.height], [0, this.height]]);
+    game.collisionSystem.insert(this.mapBoundaries);
+  }
+
+  isModelOnMap(model: Model): boolean {
+    return model.collidesWithBody(this.mapBoundaries);
   }
 
   randomMapPosition(): Point {

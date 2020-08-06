@@ -21,7 +21,7 @@ describe('RangeBasedProjectile', function() {
       assert(!projectile.shouldDelete());
     });
 
-    it('will delete after moving more than range', function() {
+    it('will delete after moving the range', function() {
       const point = new Point(0, projectile.getRange());
       projectile.setPosition(point)
       assert(projectile.shouldDelete());

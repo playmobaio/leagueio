@@ -34,6 +34,10 @@ export class Vector {
     return this.x == 0 && this.y == 0;
   }
 
+  getAngleInRadians(): number {
+    return Math.atan2(this.y, this.x);
+  }
+
   static createNullVector(): Vector {
     return new Vector(0, 0);
   }

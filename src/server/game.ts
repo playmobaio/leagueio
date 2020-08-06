@@ -24,11 +24,11 @@ class Game {
   private constructor() {
     this.players = new Map<string, Player>();
     this.projectiles = new Map<string, Projectile>();
-    this.gameMap = new GameMap();
+    this.collisionSystem = new Collisions();
+    this.gameMap = new GameMap(this);
     this.currentFrame = 0;
     this.emitter = new EventEmitter;
     this.registerEvents();
-    this.collisionSystem = new Collisions();
   }
 
   static getInstance(): Game {
@@ -71,8 +71,8 @@ class Game {
     this.players.forEach(x => x.socket.emit("S:END_GAME"));
     this.players.clear();
     this.projectiles.clear();
-    this.gameMap = new GameMap();
     this.collisionSystem = new Collisions();
+    this.gameMap = new GameMap(this);
     this.currentFrame = 0;
   }
 

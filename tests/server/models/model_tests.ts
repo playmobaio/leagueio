@@ -10,6 +10,11 @@ describe('Model', function() {
   let square: Polygon;
   let initialBodies: number;
 
+  function getNumBodies(): number {
+    const bodies: Body[] = game.collisionSystem._bvh._bodies as Body[];
+    return bodies.length
+  }
+
   beforeEach(function() {
     game = Game.getInstance();
     game.reset();
@@ -17,7 +22,7 @@ describe('Model', function() {
     // a square with side length of 10 and the bottom left point at the origin
     square = new Polygon(0, 0, [[0, 0], [10, 0], [10, 10], [0, 10]]);
     game.emitter.emit(EmitEvent.NewBody, square);
-    initialBodies = 1;
+    initialBodies = getNumBodies();
   });
 
   function assertModelPosition(model: TestModel, x: number, y: number): void {
@@ -52,13 +57,11 @@ describe('Model', function() {
 
   it('removeBody removes body from the collision system', function() {
     const model = new TestModel({ x: 0, y: 0 });
-    let bodies: Body[] = game.collisionSystem._bvh._bodies as Body[];
-    assert(bodies.length == initialBodies + 1);
+    assert(getNumBodies() == initialBodies + 1);
     assert(model.exists);
 
     model.removeBody();
-    bodies = game.collisionSystem._bvh._bodies as Body[];
-    assert(bodies.length == initialBodies);
+    assert(getNumBodies() == initialBodies);
     assert(!model.exists);
   });
 });

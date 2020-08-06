@@ -108,14 +108,7 @@ class Game {
 
     // Remove dead players
     for (const player of this.players.values()) {
-      if (player.health.current > 0) {
-        continue;
-      }
-      if (player.stocks > 1) {
-        player.stocks -= 1;
-        player.respawn();
-      }
-      else {
+      if (player.health.current <= 0) {
         player.endPlayerGame();
       }
     }

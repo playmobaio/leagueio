@@ -2,7 +2,6 @@ export interface IPlayer {
   id: string;
   health: IHealth;
   hero: IHero;
-  stocks: number;
 }
 
 export interface IAbility {

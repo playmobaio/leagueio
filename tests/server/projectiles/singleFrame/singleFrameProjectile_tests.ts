@@ -34,7 +34,7 @@ describe('SingleFrameProjectile', function() {
   });
 
   describe('#shouldDelete', function() {
-    it('should not delete during after initially armed', function() {
+    it('should not delete while arming or during collision frame', function() {
       assert(!projectile.shouldDelete());
 
       game.currentFrame += armTimeInFrames + 1;

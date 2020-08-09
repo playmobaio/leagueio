@@ -19,6 +19,7 @@ export default abstract class TimedProjectile extends Projectile {
     this.lifeSpanInFrames = secondsToFrames(lifeSpanInSeconds);
   }
 
+  // Will always collide
   canCollide(): boolean {
     return true;
   }

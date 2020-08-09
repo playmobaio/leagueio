@@ -21,6 +21,7 @@ export default abstract class RangeBasedProjectile extends Projectile {
   // Negative range means that the ability has infinite range.
   abstract getRange(): number;
 
+  // Will always collide
   canCollide(): boolean {
     return true;
   }

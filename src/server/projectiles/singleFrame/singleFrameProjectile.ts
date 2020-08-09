@@ -11,6 +11,8 @@ import Game from '../../game';
 // - toInterface(): IProjectile
 export default abstract class SingleFrameProjectile extends Projectile {
   startingFrame: number;
+  // Arm time is the time when the projectile animation is indicating the
+  // projectile location but before the projectile can collide.
   armTimeInFrames: number;
 
   constructor(creatorId: string, armTimeInSeconds: number) {
@@ -19,14 +21,13 @@ export default abstract class SingleFrameProjectile extends Projectile {
     this.armTimeInFrames = secondsToFrames(armTimeInSeconds);
   }
 
+  // SingleFrameProjectile should only allow the model to collide for the single
+  // frame after arm time
   canCollide(): boolean {
     return this.startingFrame + this.armTimeInFrames + 1 == Game.getInstance().currentFrame;
   }
 
   protected shouldDelete(): boolean {
-    console.log(Game.getInstance().currentFrame);
-    console.log('here');
-    console.log(this.startingFrame + this.armTimeInFrames + 1);
     return this.startingFrame + this.armTimeInFrames + 1 < Game.getInstance().currentFrame;
   }
 }

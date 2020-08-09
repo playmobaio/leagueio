@@ -32,6 +32,7 @@ export default abstract class Projectile {
 
   abstract toInterface(): IProjectile;
 
+  // Return boolean indicating if Projectile model can collide with players
   abstract canCollide(): boolean;
 
   update(): void {

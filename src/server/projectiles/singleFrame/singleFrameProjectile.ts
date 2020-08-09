@@ -2,8 +2,10 @@ import { secondsToFrames } from '../../tools/frame';
 import Projectile from '../projectile';
 import Game from '../../game';
 
-// TimedProjectile represents a projectile that will live for a fixed amount of
-// time (lifespan).
+// SingleFrameProjectile represents a projectile that will live for a fixed amount of
+// time (armTime) + 1, where the projectile cannot collide with units during
+// armtime followed by one frame where the projectile model can collide with
+// players.
 // Must implement the following attributes:
 // - model: Model
 // Must implement the following methods:
@@ -27,6 +29,7 @@ export default abstract class SingleFrameProjectile extends Projectile {
     return this.startingFrame + this.armTimeInFrames + 1 == Game.getInstance().currentFrame;
   }
 
+  // Delete after arm time and the single frame of collisions
   protected shouldDelete(): boolean {
     return this.startingFrame + this.armTimeInFrames + 1 < Game.getInstance().currentFrame;
   }

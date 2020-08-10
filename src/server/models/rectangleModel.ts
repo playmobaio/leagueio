@@ -1,7 +1,7 @@
 import { Polygon } from 'detect-collisions';
 import { Point } from './basicTypes';
 import Model from './model';
-import { ICircle } from '../../models/interfaces';
+import { IRectangleModel, IShape } from '../../models/interfaces';
 
 const BASE_RECTANGLE_COORDINATES: number[][] = [[0, 0], [1, 0], [1, 1], [0, 1]];
 
@@ -65,9 +65,14 @@ export default class RectangleModel extends Model {
     this.body.angle = angle;
   }
 
-  toICircle(): ICircle {
-    console.log("BROKEN DO NOT USE");
-    return null;
+  toIModel(): IRectangleModel {
+    return {
+      type: IShape.Rectangle,
+      position: this.position,
+      width: this.getWidth(),
+      height: this.getHeight(),
+      angle: this.getAngle()
+    };
   }
 
   getMapCollisionPositions(point = this.position): Point[] {

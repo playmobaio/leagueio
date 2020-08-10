@@ -15,6 +15,7 @@ import { EmitEvent } from '../tools/emitEvent'
 // - toInterface(): IProjectile
 export default abstract class Projectile {
   id: string;
+  name: string;
   model: Model;
   creatorId: string;
 

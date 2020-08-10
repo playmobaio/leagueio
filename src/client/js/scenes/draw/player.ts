@@ -11,7 +11,7 @@ function drawHealthBar(scene: GameScene, player: IPlayer): void {
     player.health.current / player.health.maximum * constants.HEALTH_BAR_LENGTH
   );
   healthBarSize = Math.max(healthBarSize, 0);
-  const position = player.hero.model.origin;
+  const position = player.hero.model.position;
 
   const x = position.x;
   const y = position.y - YOffset;
@@ -25,7 +25,7 @@ function drawPlayer(scene: GameScene, player: IPlayer): void {
 
   // draw health bar
   drawHealthBar(scene, player);
-  const playerArc = scene.add.circle(model.origin.x, model.origin.y, model.radius, 0);
+  const playerArc = scene.add.circle(model.position.x, model.position.y, model.radius, 0);
   // Lock on camera to player model
   if (player.id == userId) {
     scene.cameras.main.startFollow(playerArc);

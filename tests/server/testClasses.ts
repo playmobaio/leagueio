@@ -105,25 +105,35 @@ export class TestProjectile extends Projectile {
   }
 
   toInterface(): IProjectile {
-    return { id: this.id, model: this.model.toICircle() };
+    return { id: this.id, model: this.model.toIModel() };
   }
 }
 
 
 export class TestRangeBasedProjectile extends RangeBasedProjectile {
-  static range = 10;
+  static DEFAULT_RANGE = 10;
   static radius = 10;
   damage = 10;
+  range: number;
 
   constructor(creatorId: string, origin: Point, velocity: Velocity) {
     super(creatorId);
     this.model = new CircleModel(origin, TestRangeBasedProjectile.radius);
     this.model.setVelocity(velocity);
     this.origin = origin;
+    this.range = TestRangeBasedProjectile.DEFAULT_RANGE;
+  }
+
+  setRange(range: number): void {
+    this.range = range;
   }
 
   getRange(): number {
-    return TestRangeBasedProjectile.range;
+    return this.range;
+  }
+
+  setPosition(position: Point): void {
+    this.model.updatePosition(position);
   }
 
   onPlayerCollision(player: Player): void {
@@ -131,7 +141,7 @@ export class TestRangeBasedProjectile extends RangeBasedProjectile {
   }
 
   toInterface(): IProjectile {
-    return { id: this.id, model: this.model.toICircle() };
+    return { id: this.id, model: this.model.toIModel() };
   }
 }
 
@@ -149,6 +159,6 @@ export class TestTimedProjectile extends TimedProjectile {
   }
 
   toInterface(): IProjectile {
-    return { id: this.id, model: this.model.toICircle() };
+    return { id: this.id, model: this.model.toIModel() };
   }
 }

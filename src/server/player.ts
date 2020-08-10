@@ -21,14 +21,12 @@ class Player {
   attackSpeed: number;
   health: IHealth;
   range: number;
-  stocks: number;
 
   constructor(id: string, socket: SocketIO.Socket, name: string, heroId: HeroID) {
     this.id = id;
     this.displayName = name;
     this.socket = socket;
     this.range = 0;
-    this.stocks = constants.DEFAULT_STARTING_STOCK;
     this.health = {
       current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
       maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
@@ -79,7 +77,6 @@ class Player {
       id: this.id,
       hero: this.hero.toInterface(),
       health: this.health,
-      stocks: this.stocks
     };
   }
 

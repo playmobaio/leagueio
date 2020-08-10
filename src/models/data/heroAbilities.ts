@@ -1,20 +1,20 @@
-import { IAbility, Shape, ICircle, HeroID } from "../interfaces";
+import { IAbility, IShape, ICircleModel, HeroID } from "../interfaces";
 import constants from '../constants';
 
-const hailOfArrowsCircle: ICircle = {
-  origin: null,
+const hailOfArrowsCircle: ICircleModel = {
+  position: null,
   radius: 50,
-  type: Shape.Circle,
+  type: IShape.Circle,
 };
 
 const rapidFire: IAbility = {
-  castingShape: null,
+  model: null,
   range: 0,
   abilityName: constants.RAPID_FIRE
 }
 
 const hailOfArrows: IAbility = {
-  castingShape: hailOfArrowsCircle,
+  model: hailOfArrowsCircle,
   range: 200,
   abilityName: constants.HAIL_OF_ARROWS
 };

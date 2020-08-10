@@ -2,11 +2,11 @@ import { IPlayer } from "../../../../models/interfaces";
 import HudScene from "../hudScene";
 import constants from '../../constants';
 
-const x = 510;
-const y = 560;
+const x = constants.DEFAULT_MAP_VIEW_WIDTH/2;
+const y = constants.DEFAULT_MAP_VIEW_HEIGHT;
 
-const xTextOffset = -20;
-const yTextOffset = -8;
+const xTextOffset = -2;
+const yTextOffset = 40;
 
 const healthBarWidthMultiplier = 8;
 
@@ -19,10 +19,10 @@ function drawHealthBar(scene: HudScene, player: IPlayer): void {
   );
   healthBarSize = Math.max(healthBarSize, 0);
 
-  if(!scene.healthRect) {
-    scene.healthRect = scene.add.rectangle(x, y, healthBarSize, healthBarHeight, 0xff0000);
+  if(!scene.healthBar) {
+    scene.healthBar = scene.add.rectangle(x + xTextOffset, y + yTextOffset, healthBarSize, healthBarHeight, 0xff0000);
   }
-  scene.healthRect.width = healthBarSize;
+  scene.healthBar.width = healthBarSize;
 }
 
 function drawHealthText(scene: HudScene, player: IPlayer): void {
@@ -31,7 +31,11 @@ function drawHealthText(scene: HudScene, player: IPlayer): void {
     scene.healthText.setText(text);
     return;
   }
-  scene.healthText = scene.add.text(x+xTextOffset, y+yTextOffset, text, { fontSize: "12px" });
+  scene.healthText = scene.add.text(
+    x+xTextOffset - player.health.maximum/4,
+    y+yTextOffset - healthBarHeight/2,
+    text,
+    { fontSize: "12px" });
 }
 
 function drawHealth(scene: HudScene, player: IPlayer): void {

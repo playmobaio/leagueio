@@ -8,7 +8,7 @@ import { drawGameTime } from './draw/gameTime';
 class HudScene extends Phaser.Scene {
   socket: SocketIO.Socket;
   stockText: Phaser.GameObjects.Text;
-  healthRect: Phaser.GameObjects.Rectangle;
+  healthBar: Phaser.GameObjects.Rectangle;
   healthText: Phaser.GameObjects.Text;
   gameTimeText: Phaser.GameObjects.Text;
 

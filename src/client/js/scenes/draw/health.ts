@@ -20,7 +20,12 @@ function drawHealthBar(scene: HudScene, player: IPlayer): void {
   healthBarSize = Math.max(healthBarSize, 0);
 
   if(!scene.healthBar) {
-    scene.healthBar = scene.add.rectangle(x + xTextOffset, y + yTextOffset, healthBarSize, healthBarHeight, 0xff0000);
+    scene.healthBar = scene.add.rectangle(
+      x + xTextOffset,
+      y + yTextOffset,
+      healthBarSize,
+      healthBarHeight,
+      0xff0000);
   }
   scene.healthBar.width = healthBarSize;
 }

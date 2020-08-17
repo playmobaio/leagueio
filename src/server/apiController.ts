@@ -16,6 +16,18 @@ export const GameServerState: Record<string, string> = {
   UnAllocated: "UnAllocated"
 }
 
+// Hack for getting public URL of node
+const IpPrivateToPublicMap: Map<string, string> = new Map([
+  ["10.240.0.5", "13.86.114.94"],
+  ["10.240.0.6", "13.86.113.254"],
+  ["10.240.0.7", "13.86.117.60"],
+  ["10.240.0.8", "13.86.116.152"]
+]);
+
+function translateLocalIpToProd(ip: string): string {
+  return IpPrivateToPublicMap.has(ip) ? IpPrivateToPublicMap.get(ip) : ip;
+}
+
 export async function requestServer(_, res): Promise<void> {
   if (!process.env.AGONES) {
     res.json(createServerResponse("localhost", "3000"));
@@ -38,7 +50,8 @@ export async function requestServer(_, res): Promise<void> {
   switch (allocation?.status?.state) {
   case GameServerState.Allocated:
     res.json(createServerResponse(
-      allocation.status.address, allocation.status.ports[0].port
+      translateLocalIpToProd(allocation.status.address),
+      allocation.status.ports[0].port
     ));
     return;
   case GameServerState.UnAllocated: {

@@ -21,6 +21,11 @@ export default abstract class RangeBasedProjectile extends Projectile {
   // Negative range means that the ability has infinite range.
   abstract getRange(): number;
 
+  // Will always collide
+  canCollide(): boolean {
+    return true;
+  }
+
   protected shouldDelete(): boolean {
     // Delete any ability that is no longer on the map
     const game = Game.getInstance();

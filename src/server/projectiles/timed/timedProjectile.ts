@@ -1,6 +1,6 @@
-import { secondsToFrames } from '../tools/frame';
-import Projectile from './projectile';
-import Game from '../game';
+import { secondsToFrames } from '../../tools/frame';
+import Projectile from '../projectile';
+import Game from '../../game';
 
 // TimedProjectile represents a projectile that will live for a fixed amount of
 // time (lifespan).
@@ -17,6 +17,11 @@ export default abstract class TimedProjectile extends Projectile {
     super(creatorId);
     this.startingFrame = Game.getInstance().currentFrame;
     this.lifeSpanInFrames = secondsToFrames(lifeSpanInSeconds);
+  }
+
+  // Will always collide
+  canCollide(): boolean {
+    return true;
   }
 
   protected shouldDelete(): boolean {

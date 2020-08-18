@@ -9,9 +9,11 @@ import { Point } from "./models/basicTypes";
 import Player from "./player";
 import Game from "./game";
 import Ability from './hero/ability';
+import * as AgonesSDK from '@google-cloud/agones-sdk';
 
 export function clientJoinGame(socket: SocketIO.Socket, joinGame: IJoinGame): void {
   Player.create(socket.id, socket, joinGame.name, joinGame.heroId);
+  Game.getInstance().currentFrame = 0;
 }
 
 export function registerPlayerCast(clientId: string, userInput: IUserInput): void {
@@ -49,8 +51,13 @@ export function registerPlayerClick(clientId: string, clickEvent: IUserMouseClic
   }
 }
 
-export function disconnect(socket: SocketIO.Socket, io: SocketIO.Server): void {
+// declared outside so we can reuse the client
+const agonesSDK = new AgonesSDK();
+export async function disconnect(socket: SocketIO.Socket): Promise<void> {
   console.log(`Client with id ${socket.id} has disconnected`);
-  io.emit("S:PLAYER_DC", socket.id);
-  Game.getInstance().removePlayer(socket.id);
+  Game.getInstance().reset();
+  if (process.env.AGONES) {
+    // reset game server to ready state
+    await agonesSDK.ready();
+  }
 }

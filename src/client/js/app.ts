@@ -31,9 +31,9 @@ function InitializePhaserUI(fullScreen: boolean): void {
   }
 }
 
-function InitializeSocket(): void {
+function InitializeSocket(server: string): void {
   console.log("Initializing Socket");
-  const socket: SocketIO.Socket = io();
+  const socket: SocketIO.Socket = io(server);
   const name: string = (document.getElementById("playerName") as HTMLInputElement).value;
   const heroId: HeroID = parseInt((document.getElementById("hero") as HTMLInputElement).value);
   const joinGame: IJoinGame = { name, heroId };
@@ -46,8 +46,31 @@ function InitializeSocket(): void {
   socket.emit("C:JOIN_GAME", joinGame);
 }
 
-document.getElementById("joinGame").onclick = (): void => {
+async function GetGameServer(): Promise<string> {
+  return await fetch("/server").then(async response => {
+    if (!response.ok) { throw response }
+    return (await response.json()).url;
+  }).catch(err => {
+    err.text().then(errorMessage => {
+      // We should replace this with some better UI
+      alert(errorMessage);
+    })
+  });
+}
+
+function IsPublicUrl(server: string): boolean {
+  const isPrivate = server.includes("10.240.0");
+  if (isPrivate) {
+    alert("The requested game server isn't currently available please try again.");
+  }
+  return !isPrivate;
+}
+
+document.getElementById("joinGame").onclick = async(): Promise<void> => {
   const fullScreen: boolean = (document.getElementById("fullScreen") as HTMLInputElement).checked;
-  InitializeSocket();
-  InitializePhaserUI(fullScreen);
+  const server = await GetGameServer();
+  if (server && IsPublicUrl(server)) {
+    InitializeSocket(server);
+    InitializePhaserUI(fullScreen);
+  }
 };

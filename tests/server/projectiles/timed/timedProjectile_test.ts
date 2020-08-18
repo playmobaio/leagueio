@@ -1,8 +1,8 @@
 import * as assert from 'assert';
-import { Point } from '../../../src/server/models/basicTypes';
-import { TestTimedProjectile } from '../testClasses';
-import { secondsToFrames } from '../../../src/server/tools/frame';
-import Game from '../../../src/server/game';
+import { Point } from '../../../../src/server/models/basicTypes';
+import { TestTimedProjectile } from '../../testClasses';
+import { secondsToFrames } from '../../../../src/server/tools/frame';
+import Game from '../../../../src/server/game';
 
 describe('TimedProjectile', function() {
   let projectile: TestTimedProjectile;

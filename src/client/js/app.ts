@@ -58,10 +58,18 @@ async function GetGameServer(): Promise<string> {
   });
 }
 
+function IsPublicUrl(server: string): boolean {
+  const isPrivate = server.includes("10.240.0");
+  if (isPrivate) {
+    alert("The requested game server isn't currently available please try again.");
+  }
+  return !isPrivate;
+}
+
 document.getElementById("joinGame").onclick = async(): Promise<void> => {
   const fullScreen: boolean = (document.getElementById("fullScreen") as HTMLInputElement).checked;
   const server = await GetGameServer();
-  if (server) {
+  if (server && IsPublicUrl(server)) {
     InitializeSocket(server);
     InitializePhaserUI(fullScreen);
   }

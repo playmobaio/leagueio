@@ -31,7 +31,7 @@ class GameScene extends Phaser.Scene {
   create(): void
   {
     // Camera will not follow player in the middle of the screen
-    this.cameras.main.deadzone = new Phaser.Geom.Rectangle(100, 100, 400, 175);
+    this.cameras.main.setDeadzone(400, 175);
 
     this.input.mouse.disableContextMenu();
     this.cameras.main.setBounds(

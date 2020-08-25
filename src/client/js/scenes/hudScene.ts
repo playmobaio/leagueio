@@ -1,9 +1,10 @@
 import 'phaser';
-import { IGameState, ICasting } from '../../../models/interfaces';
 import PhaserInputController from '../phaserInputController';
 import { drawHealth } from './draw/health';
 import { drawGameTime } from './draw/gameTime';
 import drawAbilityButtons from './draw/abilities';
+import { ICasting } from '../../../models/interfaces/iAbility';
+import { IGameState } from '../../../models/interfaces/iGameState';
 
 class HudScene extends Phaser.Scene {
   socket: SocketIO.Socket;
@@ -43,7 +44,6 @@ class HudScene extends Phaser.Scene {
     const secondsLeft = Math.ceil((lastFrame - frame) / 60);
     return secondsLeft;
   }
-
 
   render(userGame: IGameState): void {
     drawHealth(this, userGame.client);

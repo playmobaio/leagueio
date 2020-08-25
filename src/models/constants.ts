@@ -8,4 +8,6 @@ export default {
   HAIL_OF_ARROWS: "HailOfArrows",
   RAPID_FIRE: "RapidFire",
   BRUTE_AUTO: "BruteAuto",
+  GHOST: "Ghost",
+  FLASH: "Flash"
 }

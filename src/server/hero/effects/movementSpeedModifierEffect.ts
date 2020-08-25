@@ -1,13 +1,22 @@
 import Effect from '../effect';
+import Hero from '../hero';
 
 class MovementSpeedModifierEffect extends Effect {
-  modiferValue: number
+  multiplier: number
+
+  constructor(hero: Hero,
+      seconds: number,
+      multiplier: number) {
+    super(hero, seconds, `movement speed modified by ${multiplier}`);
+    this.multiplier = multiplier;
+  }
+
   start(): void {
-    return;
+    this.hero.movementSpeed *= this.multiplier;
   }
 
   finish(): void {
-    return;
+    this.hero.movementSpeed /= this.multiplier;
   }
 }
 export default MovementSpeedModifierEffect;

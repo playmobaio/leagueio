@@ -1,6 +1,6 @@
 import 'phaser';
 import TileMap from '../../../models/tileMap';
-import { IGameState } from '../../../models/interfaces';
+import { IGameState, IUserInput } from '../../../models/interfaces';
 import PhaserInputController from '../phaserInputController';
 import { drawPlayer } from './draw/player';
 import { drawTiles } from './draw/tiles';
@@ -42,6 +42,7 @@ class GameScene extends Phaser.Scene {
     this.socket = inputController.socket;
     // Register socket event to bind to render function
     this.socket.on("S:UPDATE_GAME_STATE", this.render.bind(this));
+    ["Q", "W", "E"].forEach(this.addKey.bind(this));
   }
 
   render(userGame: IGameState): void {
@@ -52,6 +53,24 @@ class GameScene extends Phaser.Scene {
     // render new game objects
     userGame.players.forEach(player => drawPlayer(this, player));
     userGame.projectiles.forEach(projectile => drawProjectile(this, projectile));
+  }
+
+  addKey(key: string): void {
+    const keyObj = this.input.keyboard.addKey(key);
+    keyObj.on('up', this.sendPlayerInput.bind(this));
+  }
+
+  sendPlayerInput(event): void {
+    const controller = PhaserInputController.getInstance();
+    const castIO = controller.getPlayerCastIO(event.originalEvent);
+    const userInput: IUserInput = {
+      io: castIO,
+      cursorPosition: {
+        x: this.input.mousePointer.worldX,
+        y: this.input.mousePointer.worldY
+      }
+    };
+    controller.sendPlayerInput(userInput);
   }
 
   update(): void {

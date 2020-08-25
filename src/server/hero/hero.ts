@@ -122,7 +122,6 @@ abstract class Hero {
   update(): void {
     this.transform();
     this.state.update();
-    this.autoAttack?.update();
   }
 }
 export default Hero;

@@ -10,6 +10,7 @@ abstract class Ability {
   cooldown: number;
   castTime: number;
   nextAvailableCastFrame: number;
+  castTimeExpiration: number;
   range: number;
   hero: Hero;
   area: IModel;
@@ -41,6 +42,7 @@ abstract class Ability {
     this.hero.state.addCasting(this);
     this.hero.state.clearQueueCast();
     this.nextAvailableCastFrame = currFrame + secondsToFrames(this.cooldown);
+    this.castTimeExpiration = currFrame + secondsToFrames(this.castTime);
     const casting: ICasting = {
       coolDownLastFrame: this.nextAvailableCastFrame,
       abilityName: this.name
@@ -64,22 +66,8 @@ abstract class Ability {
     return distance <= ability.range;
   }
 
-  onUpdate(): void {
-    return;
-  }
-
-  // Called by parent class on game loop update
-  update(): void {
-    // Only update while executing
-    if (this.nextAvailableCastFrame <= Game.getInstance().currentFrame) {
-      return;
-    }
-
-    this.onUpdate();
-  }
-
   hasCastTimeElapsed(): boolean {
-    return this.nextAvailableCastFrame < Game.getInstance().currentFrame;
+    return this.castTimeExpiration < Game.getInstance().currentFrame;
   }
 }
 export default Ability;

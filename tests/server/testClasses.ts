@@ -14,7 +14,7 @@ import SingleFrameProjectile from '../../src/server/projectiles/singleFrame/sing
 
 export class TestAbility extends Ability {
   used = false;
-  castLength = 10;
+  castTime = 10;
   cooldown = 20;
   name = "TestAbility";
   castRestriction = CastRestriction.InRange;

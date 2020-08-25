@@ -52,10 +52,9 @@ spec:
       connectionDraining:
         drainingTimeoutSec: 600
       health:
-        # waits for 30 seconds before checking health
-        initialDelaySeconds: 30
-        # health ping sends every 20 seconds, so let's give it 5 seconds buffer
-        periodSeconds: 25
+        initialDelaySeconds: 5
+        periodSeconds: 5
+        failureThreshold: 3
       template:
         spec:
           # Without access to the default service account we can't talk to the cluster

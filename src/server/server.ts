@@ -1,12 +1,9 @@
 import * as express from "express";
 import * as path from "path";
 import *  as socketController from "./socketController";
-import Game from './game';
-import { IGameState } from '../models/interfaces/iGameState';
 import { IJoinGame } from '../models/interfaces/iJoinGame';
 import { IUserInput } from '../models/interfaces/iUserInput';
 import { IUserMouseClick } from '../models/interfaces/iUserMouseClick';
-import constants from './constants';
 import * as AgonesSDK from '@google-cloud/agones-sdk';
 import * as apiController from "./apiController";
 
@@ -26,7 +23,6 @@ app.use(express.static(path.join(__dirname, "../client")));
 app.get("/server", apiController.requestServer);
 
 const io = require("socket.io").listen(server);
-const game: Game = Game.getInstance();
 io.sockets.on(
   "connect",
   function(socket: SocketIO.Socket) {
@@ -45,20 +41,13 @@ io.sockets.on(
   }
 );
 
-setInterval(() => {
-  game.update();
-  const gameState: Array<IGameState> = game.getGameStates();
-  game.sendGameStates(gameState);
-}, 1000 / constants.FRAMES_PER_SECOND) // 60 frames a second
-
 const connectAgones = async(): Promise<void> => {
   // Connect game server to agones
   await agonesSDK.connect();
   // Health Check
   setInterval(() => {
     agonesSDK.health();
-    console.log('Health ping sent');
-  }, 20000);
+  }, 5000);
   // Game server is in ready state
   await agonesSDK.ready();
 }

@@ -9,7 +9,7 @@ import * as AgonesSDK from '@google-cloud/agones-sdk';
 
 export function clientJoinGame(socket: SocketIO.Socket, joinGame: IJoinGame): void {
   Player.create(socket.id, socket, joinGame.name, joinGame.heroId);
-  Game.getInstance().currentFrame = 0;
+  Game.getInstance().start();
 }
 
 export function registerPlayerCast(clientId: string, userInput: IUserInput): void {

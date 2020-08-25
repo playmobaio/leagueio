@@ -6,6 +6,7 @@ import { drawPointer } from './scenes/draw/pointer';
 class PhaserInputController {
   private static instance: PhaserInputController;
   socket: SocketIO.Socket;
+  heroId: HeroID;
 
   private constructor(socket: SocketIO.Socket) {
     this.socket = socket
@@ -59,6 +60,10 @@ class PhaserInputController {
       return;
     }
     this.socket.emit("C:USER_CAST", userInput);
+  }
+
+  setHeroId(heroId: HeroID): void {
+    this.heroId = heroId;
   }
 }
 

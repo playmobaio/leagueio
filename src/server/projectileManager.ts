@@ -44,7 +44,10 @@ class ProjectileManager {
       return;
     }
 
-    new EzrealUltimateProjectile(ProjectileManager.ID, this.getCastOrigin(), this.getCastDestination());
+    new EzrealUltimateProjectile(
+      ProjectileManager.ID,
+      this.getCastOrigin(),
+      this.getCastDestination());
   }
 
   private shouldCast(frequency: number): boolean {

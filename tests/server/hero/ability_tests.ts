@@ -56,20 +56,21 @@ describe('Ability', function() {
     assert.equal(abilityA.used, false);
   });
 
-  it('verify ability cast time is less than a second by default', function() {
-    abilityA.nextAvailableCastFrame = 11;
-    game.currentFrame = secondsToFrames(2);
+  it('cast time has elapsed when current frame > castTimeExpiration', function() {
+    abilityA.castTimeExpiration = 1;
+    game.currentFrame = 2;
     assert.equal(abilityA.hasCastTimeElapsed(), true);
   });
 
-  it('verify ability is not expired at current frame', function() {
-    abilityA.nextAvailableCastFrame = secondsToFrames(3);
-    game.currentFrame = secondsToFrames(2);
+  it('cast time has not elapsed when current frame == castTimeExpiration', function() {
+    abilityA.nextAvailableCastFrame = 1;
+    game.currentFrame = 1;
     assert.equal(abilityA.hasCastTimeElapsed(), false);
   });
 
-  it('verify ability is expired at current frame', function() {
-    game.currentFrame = secondsToFrames(10) + 1;
+  it('verify ability is expired at castTime + 1', function() {
+    abilityA.cast();
+    game.currentFrame = secondsToFrames(abilityA.castTime) + 1;
     assert.ok(abilityA.hasCastTimeElapsed());
   });
 
@@ -108,41 +109,5 @@ describe('Ability', function() {
     heroState.verify(x => x.clearQueueCast(), Times.once());
     heroState.verify(x => x.addCasting(TypeMoq.It.isAny()), Times.once());
     socket.verify(x => x.emit(TypeMoq.It.isValue("S:CASTING"), TypeMoq.It.isAny()), Times.once());
-  });
-
-  it("update stops after casting", function() {
-    const flag = abilityA.updated;
-    Game.getInstance().currentFrame = 10
-    abilityA.cast();
-
-    abilityA.update();
-    assert.equal(!flag, abilityA.updated);
-
-    Game.getInstance().currentFrame += secondsToFrames(abilityA.cooldown);
-    abilityA.update();
-    assert.notEqual(!!flag, abilityA.updated);
-  });
-
-  it("update while casting", function() {
-    const flag = abilityA.updated;
-    Game.getInstance().currentFrame = 10
-    abilityA.cast();
-
-    abilityA.update();
-    assert.equal(!flag, abilityA.updated);
-
-    Game.getInstance().currentFrame += 1
-    abilityA.update();
-    assert.equal(!!flag, abilityA.updated);
-  });
-
-  it("do not update when not casting", function() {
-    const flag = abilityA.updated;
-    abilityA.update();
-    assert.notEqual(!flag, abilityA.updated);
-
-    Game.getInstance().currentFrame += 1
-    abilityA.update();
-    assert.notEqual(!flag, abilityA.updated);
   });
 });

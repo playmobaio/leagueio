@@ -1,4 +1,4 @@
-import { Click, IUserMouseClick } from '../../models/interfaces';
+import { Click, IUserMouseClick, PlayerCastIO, IUserInput } from '../../models/interfaces';
 import GameScene from './scenes/gameScene';
 import { drawPointer } from './scenes/draw/pointer';
 
@@ -39,6 +39,25 @@ class PhaserInputController {
 
     const userMouseClick: IUserMouseClick = { cursorPosition: cursorPosition, click: click };
     this.socket.emit("C:USER_MOUSE_CLICK", userMouseClick);
+  }
+
+  getPlayerCastIO(event: KeyboardEvent): PlayerCastIO {
+    switch(event.code) {
+    case "KeyQ":
+      return PlayerCastIO.Q;
+    case "KeyW":
+      return PlayerCastIO.W;
+    case "KeyE":
+      return PlayerCastIO.E;
+    }
+    return PlayerCastIO.None;
+  }
+
+  sendPlayerInput(userInput: IUserInput): void {
+    if (this.socket == null) {
+      return;
+    }
+    this.socket.emit("C:USER_CAST", userInput);
   }
 }
 

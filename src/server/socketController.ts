@@ -38,7 +38,6 @@ export function registerPlayerCast(clientId: string, userInput: IUserInput): voi
 }
 
 export function registerPlayerClick(clientId: string, clickEvent: IUserMouseClick): void {
-  console.log("Player clicking");
   const player: Player = Game.getInstance().players.get(clientId);
   const cursorPoint = new Point(clickEvent.cursorPosition.x, clickEvent.cursorPosition.y)
   switch(clickEvent.click) {

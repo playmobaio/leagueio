@@ -28,7 +28,12 @@ function drawPlayer(scene: GameScene, player: IPlayer): void {
   const playerArc = scene.add.circle(model.position.x, model.position.y, model.radius, 0);
   // Lock on camera to player model
   if (player.id == userId) {
-    scene.cameras.main.startFollow(playerArc);
+    if (scene.client == null) {
+      scene.client = playerArc;
+      scene.cameras.main.startFollow(playerArc);
+    } else {
+      scene.client.setPosition(model.position.x, model.position.y);
+    }
   }
   scene.gameObjects.push(playerArc);
 }

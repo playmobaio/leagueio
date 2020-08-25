@@ -2,7 +2,7 @@ import Ability from "../ability";
 import { VectorBuilder, Vector } from '../../models/basicTypes';
 import modelConstants from '../../../models/constants';
 import serverConstants from '../../constants';
-import { CastRestriction } from '../../../models/interfaces';
+import { CastRestriction } from '../../../models/interfaces/iAbility';
 import { secondsToFrames } from '../../tools/frame';
 
 class BruteAuto extends Ability {

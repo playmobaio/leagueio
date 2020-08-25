@@ -2,7 +2,8 @@ import Hero from './hero';
 import Game from '../game';
 import { secondsToFrames } from '../tools/frame';
 import constants from '../constants';
-import { IModel, ICasting, IAbility, CastRestriction } from '../../models/interfaces';
+import { ICasting } from '../../models/interfaces/iAbility';
+import { IAbility, CastRestriction } from '../../models/interfaces/iAbility';
 import { Abilities } from '../../models/data/heroAbilities';
 import { Vector, Point } from '../models/basicTypes';
 
@@ -13,7 +14,6 @@ abstract class Ability {
   castTimeExpiration: number;
   range: number;
   hero: Hero;
-  area: IModel;
   targetPosition: Point;
   abstract castRestriction: CastRestriction;
   abstract name: string;

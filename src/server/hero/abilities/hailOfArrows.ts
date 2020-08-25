@@ -1,6 +1,6 @@
 import Ability from "../ability";
 import constants from '../../../models/constants';
-import { CastRestriction } from '../../../models/interfaces';
+import { CastRestriction } from '../../../models/interfaces/iAbility';
 
 class HailOfArrows extends Ability {
   cooldown = 18;

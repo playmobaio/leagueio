@@ -1,5 +1,5 @@
 import GameScene from "../gameScene";
-import { IPoint } from '../../../../models/interfaces';
+import { IPoint } from '../../../../models/interfaces/basicTypes';
 
 function drawPointer(scene: GameScene, cursorPosition: IPoint): void {
   // destroy previous set pointer

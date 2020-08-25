@@ -2,9 +2,19 @@ import { Point } from './models/basicTypes';
 import { Body, Polygon } from 'detect-collisions';
 import constants from '../models/constants';
 import TileMap from '../models/tileMap';
-import { Layer, Tile } from '../models/interfaces';
+import { Layer } from '../models/interfaces/basicTypes';
 import Model from './models/model';
 import Game from './game';
+
+enum Tile {
+  Empty = 0,
+  Grass = 1,
+  Building = 2,
+  TreeTrunk = 3,
+  TreeTop = 4,
+  Bush = 5
+}
+
 
 class GameMap {
   width: number;

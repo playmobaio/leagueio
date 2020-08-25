@@ -1,6 +1,6 @@
 import Ability from '../ability';
 import modelConstants from '../../../models/constants';
-import { CastRestriction } from '../../../models/interfaces';
+import { CastRestriction } from '../../../models/interfaces/iAbility';
 import { VectorBuilder } from '../../models/basicTypes';
 
 class Flash extends Ability {

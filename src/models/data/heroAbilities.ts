@@ -1,4 +1,6 @@
-import { IAbility, IShape, ICircleModel, HeroID } from "../interfaces";
+import { HeroID } from "../interfaces/iJoinGame";
+import { IShape, ICircleModel } from "../interfaces/iModel";
+import { IAbility } from "../interfaces/iAbility";
 import constants from '../constants';
 
 const hailOfArrowsCircle: ICircleModel = {

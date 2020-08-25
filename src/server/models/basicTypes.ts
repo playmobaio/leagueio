@@ -1,4 +1,4 @@
-import { IPoint } from '../../models/interfaces';
+import { IPoint } from '../../models/interfaces/basicTypes';
 
 export class Vector {
   readonly x: number;

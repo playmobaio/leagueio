@@ -1,5 +1,5 @@
 import 'phaser';
-import { IGameState } from '../../../models/interfaces';
+import { IGameState } from '../../../models/interfaces/iGameState';
 import PhaserInputController from '../phaserInputController';
 import { drawHealth } from './draw/health';
 import { drawGameTime } from './draw/gameTime';

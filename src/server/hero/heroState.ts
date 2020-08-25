@@ -1,6 +1,6 @@
 import Effect from './effect';
 import Ability from './ability';
-import { Condition } from '../../models/interfaces';
+import { Condition } from '../../models/interfaces/basicTypes';
 
 class HeroState {
   effects: Effect[];

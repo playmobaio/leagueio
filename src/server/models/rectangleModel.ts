@@ -1,7 +1,7 @@
 import { Polygon } from 'detect-collisions';
 import { Point } from './basicTypes';
 import Model from './model';
-import { IRectangleModel, IShape } from '../../models/interfaces';
+import { IRectangleModel, IShape } from '../../models/interfaces/iModel';
 
 const BASE_RECTANGLE_COORDINATES: number[][] = [[0, 0], [1, 0], [1, 1], [0, 1]];
 

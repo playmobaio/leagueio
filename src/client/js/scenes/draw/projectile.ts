@@ -1,4 +1,5 @@
-import { IProjectile, IShape, ICircleModel, IModel } from '../../../../models/interfaces';
+import { IProjectile } from '../../../../models/interfaces/iGameState';
+import { IShape, ICircleModel, IModel } from '../../../../models/interfaces/iModel';
 import GameScene from '../gameScene';
 
 function drawProjectile(scene: GameScene, projectile: IProjectile): void {

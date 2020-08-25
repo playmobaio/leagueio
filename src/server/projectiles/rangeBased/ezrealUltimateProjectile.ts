@@ -1,7 +1,7 @@
 import { Point, Velocity, Vector } from '../../models/basicTypes';
 import RangeBasedProjectile from './rangeBasedProjectile';
 import RectangleModel from '../../models/rectangleModel';
-import { IProjectile } from '../../../models/interfaces';
+import { IProjectile } from '../../../models/interfaces/iGameState';
 import Player from '../../player';
 
 export default class EzrealUltimateProjectile extends RangeBasedProjectile {

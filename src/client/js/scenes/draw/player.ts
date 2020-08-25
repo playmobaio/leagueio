@@ -1,5 +1,5 @@
 import GameScene from "../gameScene";
-import { IPlayer } from '../../../../models/interfaces';
+import { IPlayer } from '../../../../models/interfaces/iGameState';
 import constants from '../../constants';
 
 const healthBarOffset = 8;

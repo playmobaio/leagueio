@@ -3,7 +3,7 @@ import GameMap from './gameMap';
 import ProjectileManager from './projectileManager';
 import { IGameState,
   IPlayer,
-  IProjectile } from '../models/interfaces';
+  IProjectile } from '../models/interfaces/iGameState';
 import Projectile from './projectiles/projectile';
 import { Collisions, Body } from 'detect-collisions';
 import { EmitEvent } from './tools/emitEvent'

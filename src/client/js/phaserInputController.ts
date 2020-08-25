@@ -2,10 +2,12 @@ import { PlayerCastIO, IUserInput } from '../../models/interfaces/iUserInput';
 import { Click, IUserMouseClick } from '../../models/interfaces/iUserMouseClick';
 import GameScene from './scenes/gameScene';
 import { drawPointer } from './scenes/draw/pointer';
+import { HeroID } from '../../models/interfaces/iJoinGame';
 
 class PhaserInputController {
   private static instance: PhaserInputController;
   socket: SocketIO.Socket;
+  heroId: HeroID;
 
   private constructor(socket: SocketIO.Socket) {
     this.socket = socket
@@ -59,6 +61,10 @@ class PhaserInputController {
       return;
     }
     this.socket.emit("C:USER_CAST", userInput);
+  }
+
+  setHeroId(heroId: HeroID): void {
+    this.heroId = heroId;
   }
 }
 

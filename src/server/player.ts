@@ -6,6 +6,7 @@ import { EmitEvent } from './tools/emitEvent'
 import Hero from './hero/hero';
 import Ranger from './hero/classes/ranger';
 import Brute from './hero/classes/brute';
+import Dodge from './hero/classes/dodge';
 
 class Player {
   id: string;
@@ -32,6 +33,9 @@ class Player {
 
   createHero(heroId: HeroID): Hero {
     switch (heroId) {
+    case HeroID.Dodge: {
+      return new Dodge(this);
+    }
     case HeroID.Ranger: {
       return new Ranger(this);
     }

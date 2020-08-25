@@ -2,12 +2,12 @@ import Hero from "../hero";
 import RangerAutoAttackProjectile from '../../projectiles/rangeBased/rangerAutoAttackProjectile';
 import { Point } from '../../models/basicTypes';
 import Player from '../../player';
-import Flash from '../abilities/flash';
-import Ghost from '../abilities/ghost';
+import RapidFire from '../abilities/rapidFire';
+import HailOfArrows from '../abilities/hailOfArrows';
 
 class Ranger extends Hero {
-  qAbility = new Flash(this);
-  wAbility = new Ghost(this);
+  qAbility = new RapidFire(this);
+  wAbility = new HailOfArrows(this);
   eAbility = null;
 
   constructor(player: Player) {

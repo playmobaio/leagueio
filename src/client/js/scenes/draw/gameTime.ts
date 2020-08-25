@@ -1,7 +1,8 @@
 import HudScene from "../hudScene";
+import constants from '../../constants';
 
-const TIME_X = 800;
-const TIME_Y = 20;
+const xOffset = constants.DEFAULT_MAP_VIEW_WIDTH / 2;
+const yOffset = 20;
 
 function drawGameTime(scene: HudScene, currentFrame: number): void {
   const text = `Score: ${currentFrame}`;
@@ -9,7 +10,8 @@ function drawGameTime(scene: HudScene, currentFrame: number): void {
     scene.gameTimeText.setText(text);
     return;
   }
-  scene.gameTimeText = scene.add.text(TIME_X, TIME_Y, text, { fontSize: "30px" });
+  scene.gameTimeText = scene.add.text(xOffset, yOffset, text, { fontSize: "30px" });
+  scene.gameTimeText.setOrigin(0.5, 0.1);
 }
 
 export { drawGameTime }

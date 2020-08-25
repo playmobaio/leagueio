@@ -4,6 +4,7 @@ export interface IJoinGame {
 }
 
 export enum HeroID {
+  Dodge = 0,
   Ranger = 1,
-  Brute = 2,
+  Brute = 2
 }

@@ -5,8 +5,7 @@ import constants from '../../constants';
 const x = constants.DEFAULT_MAP_VIEW_WIDTH/2;
 const y = constants.DEFAULT_MAP_VIEW_HEIGHT;
 
-const xTextOffset = -2;
-const yTextOffset = 40;
+const yTextOffset = -17.5;
 
 const healthBarWidthMultiplier = 8;
 
@@ -21,7 +20,7 @@ function drawHealthBar(scene: HudScene, player: IPlayer): void {
 
   if(!scene.healthBar) {
     scene.healthBar = scene.add.rectangle(
-      x + xTextOffset,
+      x,
       y + yTextOffset,
       healthBarSize,
       healthBarHeight,
@@ -37,7 +36,7 @@ function drawHealthText(scene: HudScene, player: IPlayer): void {
     return;
   }
   scene.healthText = scene.add.text(
-    x+xTextOffset - player.health.maximum/4,
+    x - player.health.maximum/4,
     y+yTextOffset - healthBarHeight/2,
     text,
     { fontSize: "12px" });

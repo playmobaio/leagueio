@@ -4,6 +4,7 @@ import 'phaser';
 import GameScene from './scenes/gameScene';
 import PhaserInputController from './phaserInputController';
 import HudScene from './scenes/hudScene';
+import constants from './constants';
 
 let phaserGame:  Phaser.Game;
 function InitializePhaserUI(fullScreen: boolean): void {
@@ -11,17 +12,14 @@ function InitializePhaserUI(fullScreen: boolean): void {
   document.getElementById('game').setAttribute("style", "display:none;");
   const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
-    width: 1024,
-    height: 576,
+    width: constants.DEFAULT_MAP_VIEW_WIDTH,
+    height: constants.DEFAULT_MAP_VIEW_HEIGHT,
     scale: {
-      mode: Phaser.Scale.FIT,
+      mode: Phaser.Scale.ENVELOP,
       autoCenter: Phaser.Scale.CENTER_BOTH,
     },
     physics: {
       default: 'arcade',
-      arcade: {
-        debug: true
-      }
     },
     scene: [ GameScene, HudScene ]
   };
@@ -35,7 +33,7 @@ function InitializeSocket(server: string): void {
   console.log("Initializing Socket");
   const socket: SocketIO.Socket = io(server);
   const name: string = (document.getElementById("playerName") as HTMLInputElement).value;
-  const heroId: HeroID = parseInt((document.getElementById("hero") as HTMLInputElement).value);
+  const heroId: HeroID = HeroID.Dodge;
   const joinGame: IJoinGame = { name, heroId };
   socket.on("S:END_GAME", () => {
     phaserGame.destroy(true);
@@ -43,6 +41,7 @@ function InitializeSocket(server: string): void {
     document.getElementById('startpanel').setAttribute("style", "display:initial;");
   });
   PhaserInputController.createInstance(socket);
+  PhaserInputController.getInstance().setHeroId(heroId);
   socket.emit("C:JOIN_GAME", joinGame);
 }
 

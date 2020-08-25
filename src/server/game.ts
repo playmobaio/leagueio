@@ -13,6 +13,7 @@ import { EventEmitter } from 'events';
 
 // Server
 class Game {
+  static FRAMES_PER_SECOND = 60;
   private static instance: Game;
   players: Map<string, Player>;
   projectiles: Map<string, Projectile>;
@@ -22,6 +23,7 @@ class Game {
   emitter: StrictEventEmitter<EventEmitter, IEmitEventMapping>;
   collisionSystem: Collisions;
   projectileManager: ProjectileManager;
+  gameLoop: NodeJS.Timeout;
 
   private constructor() {
     this.players = new Map<string, Player>();
@@ -71,12 +73,25 @@ class Game {
   }
 
   reset(): void {
+    console.log("Game Reset");
     this.players.forEach(x => x.socket.emit("S:END_GAME"));
+    clearInterval(this.gameLoop);
     this.players.clear();
     this.projectiles.clear();
     this.collisionSystem = new Collisions();
     this.gameMap = new GameMap(this);
     this.currentFrame = 0;
+  }
+
+  start(): void {
+    console.log("Game Start");
+    this.currentFrame = 0;
+    this.gameLoop = setInterval(() => {
+      const game = Game.getInstance();
+      game.update();
+      const gameState: Array<IGameState> = game.getGameStates();
+      game.sendGameStates(gameState);
+    }, 1000 / Game.FRAMES_PER_SECOND); // 60 frames a second
   }
 
   removePlayer(id: string): void {

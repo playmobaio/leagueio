@@ -1,10 +1,6 @@
-import {
-  IJoinGame,
-  IUserInput,
-  PlayerCastIO,
-  IUserMouseClick,
-  Click
-} from '../models/interfaces';
+import { IUserInput, PlayerCastIO } from '../models/interfaces/iUserInput';
+import { IJoinGame } from '../models/interfaces/iJoinGame';
+import { IUserMouseClick, Click } from '../models/interfaces/iUserMouseClick';
 import { Point } from "./models/basicTypes";
 import Player from "./player";
 import Game from "./game";

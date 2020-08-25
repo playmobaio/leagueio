@@ -1,6 +1,6 @@
 import Ability from '../ability';
 import modelConstants from '../../../models/constants';
-import { CastRestriction } from '../../../models/interfaces';
+import { CastRestriction } from '../../../models/interfaces/iAbility';
 import MovementSpeedModifierEffect from '../effects/movementSpeedModifierEffect';
 
 class Ghost extends Ability {

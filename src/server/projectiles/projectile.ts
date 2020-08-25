@@ -1,6 +1,6 @@
 import Model from '../models/model';
 import { v4 as uuidv4 } from 'uuid';
-import { IProjectile } from '../../models/interfaces';
+import { IProjectile } from '../../models/interfaces/iGameState';
 import Game from '../game';
 import Player from '../player';
 import { EmitEvent } from '../tools/emitEvent'

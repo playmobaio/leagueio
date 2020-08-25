@@ -1,4 +1,4 @@
-import { IPlayer } from "../../../../models/interfaces";
+import { IPlayer } from "../../../../models/interfaces/iGameState";
 import HudScene from "../hudScene";
 import constants from '../../constants';
 

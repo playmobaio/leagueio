@@ -1,8 +1,5 @@
-import { IPlayer,
-  HeroID,
-  IHealth,
-  IGameState,
-  IProjectile } from '../models/interfaces';
+import { HeroID } from '../models/interfaces/iJoinGame';
+import { IGameState, IHealth, IProjectile, IPlayer } from '../models/interfaces/iGameState';
 import Game from "./game";
 import constants from './constants';
 import { EmitEvent } from './tools/emitEvent'

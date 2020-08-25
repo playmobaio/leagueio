@@ -7,7 +7,7 @@ import GameMap from '../../../src/server/gameMap';
 import { Point, Velocity } from '../../../src/server/models/basicTypes';
 import HeroState from '../../../src/server/hero/heroState';
 import { TestHero } from '../testClasses';
-import { Condition } from '../../../src/models/interfaces';
+import { Condition } from '../../../src/models/interfaces/basicTypes';
 
 describe('Hero', function() {
   let player: TypeMoq.IMock<Player>;

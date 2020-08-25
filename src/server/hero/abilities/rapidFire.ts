@@ -1,7 +1,7 @@
 import Ability from "../ability";
 import AttackSpeedModifierEffect from '../effects/attackSpeedModifierEffect';
 import constants from '../../../models/constants';
-import { CastRestriction } from '../../../models/interfaces';
+import { CastRestriction } from '../../../models/interfaces/iAbility';
 
 class RapidFire extends Ability {
   cooldown = 20;

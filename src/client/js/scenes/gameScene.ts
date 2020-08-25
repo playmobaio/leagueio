@@ -1,6 +1,7 @@
 import 'phaser';
 import TileMap from '../../../models/tileMap';
-import { IGameState, IUserInput } from '../../../models/interfaces';
+import { IUserInput } from '../../../models/interfaces/iUserInput';
+import { IGameState } from '../../../models/interfaces/iGameState';
 import PhaserInputController from '../phaserInputController';
 import { drawPlayer } from './draw/player';
 import { drawTiles } from './draw/tiles';

@@ -1,7 +1,7 @@
 import { Circle } from 'detect-collisions';
 import Model from './model';
 import { Point } from './basicTypes';
-import { ICircleModel, IShape } from '../../models/interfaces';
+import { ICircleModel, IShape } from '../../models/interfaces/iModel';
 
 const BASE_RADIUS = 1;
 

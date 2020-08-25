@@ -1,5 +1,5 @@
 import constants from './constants';
-import { Layer } from './interfaces';
+import { Layer } from './interfaces/basicTypes';
 
 class TileMap {
   static readonly rows = constants.DEFAULT_ROWS;

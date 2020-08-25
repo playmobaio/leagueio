@@ -1,7 +1,7 @@
 import { Point, Velocity, Vector, VectorBuilder } from '../../models/basicTypes';
 import RangeBasedProjectile from './rangeBasedProjectile';
 import CircleModel from '../../models/circleModel';
-import { IProjectile } from '../../../models/interfaces';
+import { IProjectile } from '../../../models/interfaces/iGameState';
 import Player from '../../player';
 
 export default class RangerAutoAttackProjectile extends RangeBasedProjectile {

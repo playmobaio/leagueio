@@ -1,5 +1,5 @@
 import * as io from 'socket.io-client';
-import { HeroID, IJoinGame } from "../../models/interfaces";
+import { HeroID, IJoinGame } from "../../models/interfaces/iJoinGame";
 import 'phaser';
 import GameScene from './scenes/gameScene';
 import PhaserInputController from './phaserInputController';

@@ -2,7 +2,7 @@ import { Point } from '../../models/basicTypes';
 import Player from '../../player';
 import SingleFrameProjectile from './singleFrameProjectile';
 import CircleModel from '../../models/circleModel';
-import { IProjectile } from '../../../models/interfaces';
+import { IProjectile } from '../../../models/interfaces/iGameState';
 
 export default class MeteorProjectile extends SingleFrameProjectile {
   static radius = 20;

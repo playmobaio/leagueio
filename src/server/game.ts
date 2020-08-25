@@ -1,5 +1,7 @@
 import Player from './player';
 import GameMap from './gameMap';
+import ProjectileManager from './projectileManager';
+import { ProjectileManagerConfig, ProjectileManagerConfigBuilder } from './projectileManagerConfig';
 import { IGameState,
   IPlayer,
   IProjectile } from '../models/interfaces';
@@ -20,6 +22,7 @@ class Game {
   gameStates: Map<string, IGameState>;
   emitter: StrictEventEmitter<EventEmitter, IEmitEventMapping>;
   collisionSystem: Collisions;
+  projectileManager: ProjectileManager;
 
   private constructor() {
     this.players = new Map<string, Player>();
@@ -29,6 +32,9 @@ class Game {
     this.currentFrame = 0;
     this.emitter = new EventEmitter;
     this.registerEvents();
+    const config: ProjectileManagerConfig =
+      new ProjectileManagerConfigBuilder().build();
+    this.projectileManager = new ProjectileManager(this, config);
   }
 
   static getInstance(): Game {
@@ -112,6 +118,9 @@ class Game {
         player.endPlayerGame();
       }
     }
+
+    // update ProjectileManager
+    this.projectileManager.update();
 
     // update frame counter
     this.currentFrame++;

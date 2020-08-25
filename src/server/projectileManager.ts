@@ -4,18 +4,20 @@ import MeteorProjectile from './projectiles/singleFrame/meteorProjectile';
 import EzrealUltimateProjectile from './projectiles/rangeBased/ezrealUltimateProjectile';
 import { Point } from './models/basicTypes';
 import { secondsToFrames } from './tools/frame';
-import { ProjectileManagerConfig } from './projectileManagerConfig';
 
 // ProjectileManager autogenerate projectiles to shoot at the player.
 class ProjectileManager {
   game: Game;
-  config: ProjectileManagerConfig;
   id: string;
 
-  constructor(game: Game, config: ProjectileManagerConfig) {
+  // all frequencies are in 10 second increments
+  static METEOR_FREQUENCY = 8;
+  static EZREAL_ULTIMATE_FREQUENCY = 2;
+
+  static ID = "PROJECTILE_MANAGER";
+
+  constructor(game: Game) {
     this.game = game;
-    this.config = config;
-    this.id = "PROJECTILE_MANAGER";
   }
 
   update(): void {
@@ -30,19 +32,19 @@ class ProjectileManager {
   }
 
   private maybeCreateMeteor(): void {
-    if (!this.shouldCast(this.config.getMeteorFrequency())) {
+    if (!this.shouldCast(ProjectileManager.METEOR_FREQUENCY)) {
       return;
     }
 
-    new MeteorProjectile(this.id, this.getCastDestination());
+    new MeteorProjectile(ProjectileManager.ID, this.getCastDestination());
   }
 
   private maybeCreateEzrealUltimate(): void {
-    if (!this.shouldCast(this.config.getEzrealUltimateFrequency())) {
+    if (!this.shouldCast(ProjectileManager.EZREAL_ULTIMATE_FREQUENCY)) {
       return;
     }
 
-    new EzrealUltimateProjectile(this.id, this.getCastOrigin(), this.getCastDestination());
+    new EzrealUltimateProjectile(ProjectileManager.ID, this.getCastOrigin(), this.getCastDestination());
   }
 
   private shouldCast(frequency: number): boolean {

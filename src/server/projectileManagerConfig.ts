@@ -1,10 +1,6 @@
 export class ProjectileManagerConfig {
-  // all frequencies are in 10 second increments
   meteorFrequency: number;
   ezrealUltimateFrequency: number;
-
-  static DEFAULT_METEOR_FREQUENCY = 8;
-  static DEFAULT_EZREAL_ULTIMATE_FREQUENCY = 2;
 
   constructor(meteorFrequency: number, ezrealUltimateFrequency: number) {
     this.meteorFrequency = meteorFrequency;

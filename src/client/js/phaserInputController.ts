@@ -1,4 +1,4 @@
-import { PlayerCastIO, IUserInput } from '../../../models/interfaces/iUserInput';
+import { PlayerCastIO, IUserInput } from '../../models/interfaces/iUserInput';
 import { Click, IUserMouseClick } from '../../models/interfaces/iUserMouseClick';
 import GameScene from './scenes/gameScene';
 import { drawPointer } from './scenes/draw/pointer';

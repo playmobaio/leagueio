@@ -65,6 +65,8 @@ export default abstract class Model {
     this.exists = false;
   }
 
+  abstract getAngle(): number;
+
   abstract toIModel(): IModel;
 
   // The points that should be checked for map related position collisions.

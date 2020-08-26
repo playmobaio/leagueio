@@ -1,4 +1,5 @@
-import { IModel, ICircleModel } from './iModel';
+import { ICircleModel } from './iModel';
+import { IPoint } from './basicTypes';
 
 export interface IGameState {
   client: IPlayer;
@@ -23,6 +24,14 @@ export interface IHero {
 }
 
 export interface IProjectile {
-  id: string;
-  model: IModel;
+  projectileType: ProjectileType;
+  position: IPoint;
+  angle?: number; // optional for circle models, in radians
+  armed?: boolean; // optional
+}
+
+export enum ProjectileType {
+  Meteor,
+  EzrealUltimate,
+  RangerAutoAttack,
 }

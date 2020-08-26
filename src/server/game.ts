@@ -116,6 +116,7 @@ class Game {
     for (const projectile of this.projectiles.values()) {
       for (const player of this.players.values()) {
         if (projectile.collidesWithPlayer(player)) {
+          console.log(`Projectile ${projectile.id} collided with player ${player.id}`);
           projectile.onPlayerCollision(player);
           if (!projectile.exists()) {
             break;

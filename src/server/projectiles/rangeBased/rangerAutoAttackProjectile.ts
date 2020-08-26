@@ -1,12 +1,12 @@
 import { Point, Velocity, Vector, VectorBuilder } from '../../models/basicTypes';
 import RangeBasedProjectile from './rangeBasedProjectile';
 import CircleModel from '../../models/circleModel';
-import { IProjectile } from '../../../models/interfaces/iGameState';
+import { IProjectile, ProjectileType } from '../../../models/interfaces/iGameState';
+import projectileConstants from '../../../models/constants/projectileConstants';
 import Player from '../../player';
 
 export default class RangerAutoAttackProjectile extends RangeBasedProjectile {
   static range = 300;
-  static radius = 10;
   static damage = 10;
   static speed = 12;
   static projectileOffset = 12;
@@ -21,7 +21,7 @@ export default class RangerAutoAttackProjectile extends RangeBasedProjectile {
     const origin: Point = casterPosition.transformWithVector(offsetVector);
 
     this.origin = origin;
-    this.model = new CircleModel(origin, RangerAutoAttackProjectile.radius);
+    this.model = new CircleModel(origin, projectileConstants.RangerAutoAttack.radius);
 
     const velocity = new Velocity(dest,
       RangerAutoAttackProjectile.speed,
@@ -39,6 +39,9 @@ export default class RangerAutoAttackProjectile extends RangeBasedProjectile {
   }
 
   toInterface(): IProjectile {
-    return { id: this.id, model: this.model.toIModel() };
+    return {
+      projectileType: ProjectileType.RangerAutoAttack,
+      position: this.model.getPosition(),
+    };
   }
 }

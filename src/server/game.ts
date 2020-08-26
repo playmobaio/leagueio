@@ -10,6 +10,7 @@ import { EmitEvent } from './tools/emitEvent'
 import { IEmitEventMapping } from './tools/iEmitEventMapping'
 import { StrictEventEmitter } from 'strict-event-emitter-types';
 import { EventEmitter } from 'events';
+import ScoreCollection from './db/scoreCollection';
 
 // Server
 class Game {
@@ -24,6 +25,7 @@ class Game {
   collisionSystem: Collisions;
   projectileManager: ProjectileManager;
   gameLoop: NodeJS.Timeout;
+  scoreCollection: ScoreCollection;
 
   private constructor() {
     this.players = new Map<string, Player>();
@@ -34,6 +36,7 @@ class Game {
     this.emitter = new EventEmitter;
     this.registerEvents();
     this.projectileManager = new ProjectileManager(this);
+    this.scoreCollection = new ScoreCollection();
   }
 
   static getInstance(): Game {

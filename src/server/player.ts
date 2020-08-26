@@ -66,7 +66,16 @@ class Player {
   endPlayerGame(): void {
     const score = Game.getInstance().currentFrame;
     console.log(`Score ${score}`);
+    this.addScore(score);
     Game.getInstance().reset();
+  }
+
+  addScore(score: number): void {
+    Game.getInstance().scoreCollection.addScore({
+      score: score,
+      name: this.displayName == "" ? "Anonymous" : this.displayName,
+      date: new Date()
+    });
   }
 
   update(): void {

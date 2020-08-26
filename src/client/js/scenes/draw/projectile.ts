@@ -34,7 +34,6 @@ function drawRectangleProjectile(
   angle: number,
   color: number): void {
 
-
   const graphics: Phaser.GameObjects.Graphics = scene.add.graphics();
   graphics.setPosition(position.x, position.y);
   graphics.fillStyle(color, FILL_ALPHA);

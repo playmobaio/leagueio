@@ -1,4 +1,5 @@
 import * as exec from 'await-exec'
+import Game from './game';
 
 function createServerResponse(ip: string, port: string): object {
   return {
@@ -63,4 +64,9 @@ export async function requestServer(_, res): Promise<void> {
     console.log(allocation);
     sendMessage(res, 400, "Game server is in unknown state");
   }
+}
+
+export async function getTopScores(_, res): Promise<void> {
+  const topScores = await Game.getInstance().scoreCollection.getTopN(20);
+  res.json(topScores);
 }

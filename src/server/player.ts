@@ -7,6 +7,7 @@ import Hero from './hero/hero';
 import Ranger from './hero/classes/ranger';
 import Brute from './hero/classes/brute';
 import Dodge from './hero/classes/dodge';
+import { secondsToFrames } from './tools/frame';
 
 class Player {
   id: string;
@@ -66,7 +67,19 @@ class Player {
   endPlayerGame(): void {
     const score = Game.getInstance().currentFrame;
     console.log(`Score ${score}`);
+    this.addSignificantScore(score);
     Game.getInstance().reset();
+  }
+
+  addSignificantScore(score: number): void {
+    if (score < secondsToFrames(60)) {
+      return;
+    }
+    Game.getInstance().scoreCollection.addScore({
+      score: score,
+      name: this.displayName == "" ? "Anonymous" : this.displayName,
+      date: new Date()
+    });
   }
 
   update(): void {

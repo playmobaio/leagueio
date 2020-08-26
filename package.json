@@ -42,6 +42,7 @@
     "await-exec": "^0.1.2",
     "detect-collisions": "^2.5.2",
     "express": "^4.17.1",
+    "firebase-admin": "^9.1.1",
     "path": "^0.12.7",
     "phaser": "^3.23.0",
     "socket.io": "^2.3.0",

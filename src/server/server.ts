@@ -21,6 +21,7 @@ const server = app.listen(process.env.PORT || 3000, function() {
 
 app.use(express.static(path.join(__dirname, "../client")));
 app.get("/server", apiController.requestServer);
+app.get("/scores", apiController.getTopScores);
 
 const io = require("socket.io").listen(server);
 io.sockets.on(

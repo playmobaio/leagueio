@@ -26,6 +26,11 @@ export default class CircleModel extends Model {
     this.body.scale = radius;
   }
 
+  // default value of 0, angles on circles are irrelevant
+  getAngle(): number {
+    return 0;
+  }
+
   toIModel(): ICircleModel {
     return {
       type: IShape.Circle,

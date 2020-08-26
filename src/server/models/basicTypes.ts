@@ -41,6 +41,10 @@ export class Vector {
   static createNullVector(): Vector {
     return new Vector(0, 0);
   }
+
+  toString(): string {
+    return "Vector(" + this.x + ", " + this.y + ")";
+  }
 }
 
 export class VectorBuilder {
@@ -122,6 +126,10 @@ export class Point implements IPoint {
 
   distanceFrom(otherPoint: Point): number {
     return Vector.createFromPoints(this, otherPoint).getMagnitude();
+  }
+
+  toString(): string {
+    return "(" + this.x + ", " + this.y + ")";
   }
 }
 

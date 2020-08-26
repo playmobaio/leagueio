@@ -12,7 +12,7 @@ class ProjectileManager {
 
   // all frequencies are in 10 second increments
   static METEOR_FREQUENCY = 8;
-  static EZREAL_ULTIMATE_FREQUENCY = 2;
+  static EZREAL_ULTIMATE_FREQUENCY = 4;
 
   static ID = "PROJECTILE_MANAGER";
 

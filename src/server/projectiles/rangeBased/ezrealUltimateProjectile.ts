@@ -1,23 +1,25 @@
 import { Point, Velocity, Vector } from '../../models/basicTypes';
 import RangeBasedProjectile from './rangeBasedProjectile';
 import RectangleModel from '../../models/rectangleModel';
-import { IProjectile } from '../../../models/interfaces/iGameState';
+import { IProjectile, ProjectileType } from '../../../models/interfaces/iGameState';
+import projectileConstants from '../../../models/constants/projectileConstants';
 import Player from '../../player';
 
 export default class EzrealUltimateProjectile extends RangeBasedProjectile {
-  static width = 50;
-  static height = 20;
   static damage = 20;
-  static speed = 10;
+  static speed = 7;
+
+  collidedPlayerIds: Set<string>;
 
   constructor(creatorId: string, origin: Point, dest: Point) {
     super(creatorId);
 
     this.origin = origin;
-    const angleInRadians = Vector.createFromPoints(origin, dest).getAngleInRadians();
+    // get angle and rotate by 90 degrees
+    const angleInRadians = Vector.createFromPoints(origin, dest).getAngleInRadians() - Math.PI/2;
     this.model = new RectangleModel(origin,
-      EzrealUltimateProjectile.width,
-      EzrealUltimateProjectile.height,
+      projectileConstants.EzrealUltimate.width,
+      projectileConstants.EzrealUltimate.height,
       angleInRadians
     );
 
@@ -25,6 +27,7 @@ export default class EzrealUltimateProjectile extends RangeBasedProjectile {
       EzrealUltimateProjectile.speed,
       origin);
     this.model.setVelocity(velocity);
+    this.collidedPlayerIds = new Set();
   }
 
   getRange(): number {
@@ -32,11 +35,21 @@ export default class EzrealUltimateProjectile extends RangeBasedProjectile {
   }
 
   onPlayerCollision(player: Player): void {
+    // Ezreal Ultimate can only hit each player once
+    if (this.collidedPlayerIds.has(player.id)) {
+      return;
+    }
+
+    this.collidedPlayerIds.add(player.id);
     player.receiveDamage(EzrealUltimateProjectile.damage);
   }
 
   toInterface(): IProjectile {
-    return { id: this.id, model: this.model.toIModel() };
+    return {
+      projectileType: ProjectileType.EzrealUltimate,
+      position: this.model.getPosition(),
+      angle: this.model.getAngle(),
+    };
   }
 }
 

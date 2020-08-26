@@ -23,6 +23,7 @@ export default abstract class Projectile {
   constructor(creatorId: string) {
     this.id = uuidv4();
     this.creatorId = creatorId;
+    console.log(`Creator ${creatorId} created projectile ${this.id}`);
     Game.getInstance().emitter.emit(EmitEvent.NewProjectile, this);
   }
 

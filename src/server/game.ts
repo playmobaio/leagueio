@@ -11,6 +11,7 @@ import { IEmitEventMapping } from './tools/iEmitEventMapping'
 import { StrictEventEmitter } from 'strict-event-emitter-types';
 import { EventEmitter } from 'events';
 import ScoreCollection from './db/scoreCollection';
+import * as assert from "assert";
 
 // Server
 class Game {
@@ -106,6 +107,8 @@ class Game {
     for (const projectile of this.projectiles.values()) {
       projectile.update();
     }
+
+    assert(false);
 
     // Update all players
     for (const player of this.players.values()) {

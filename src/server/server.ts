@@ -6,6 +6,9 @@ import { IUserInput } from '../models/interfaces/iUserInput';
 import { IUserMouseClick } from '../models/interfaces/iUserMouseClick';
 import * as AgonesSDK from '@google-cloud/agones-sdk';
 import * as apiController from "./apiController";
+import * as Sentry from "@sentry/node";
+
+const SENTRY_DSN = "https://72774f64d7884b3f996466e24412134e@o439719.ingest.sentry.io/5406960";
 
 // Create the app
 const app = express();
@@ -53,6 +56,12 @@ const connectAgones = async(): Promise<void> => {
   await agonesSDK.ready();
 }
 
-if (process.env.AGONES) {
+function connectSentry(): void {
+  // Initialize sentry metric system
+  Sentry.init({ dsn: SENTRY_DSN });
+}
+
+if (process.env.IS_PRODUCTION) {
   connectAgones();
+  connectSentry();
 }

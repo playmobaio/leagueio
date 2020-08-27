@@ -10,7 +10,7 @@ import { IModel } from '../../models/interfaces/iModel';
 export default abstract class Model {
   protected position: Point;
   protected velocity: Velocity;
-  protected abstract body: Body;
+  protected body: Body;
   exists: boolean;
 
   // All subclasses should instantiate Body

@@ -6,7 +6,7 @@ import { ICircleModel, IShape } from '../../models/interfaces/iModel';
 const BASE_RADIUS = 1;
 
 export default class CircleModel extends Model {
-  body = null;
+  protected body: Body;
   private radius: number;
 
   constructor(position: Point, radius: number) {

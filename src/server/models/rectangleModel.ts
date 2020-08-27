@@ -6,7 +6,7 @@ import { IRectangleModel, IShape } from '../../models/interfaces/iModel';
 const BASE_RECTANGLE_COORDINATES: number[][] = [[0, 0], [1, 0], [1, 1], [0, 1]];
 
 export default class RectangleModel extends Model {
-  body = null;
+  protected body: Body;
   // point marks the top left corner of the rectangle when angle = 0
   private width: number;
   private height: number;

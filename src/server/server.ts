@@ -61,7 +61,10 @@ function connectSentry(): void {
   Sentry.init({ dsn: SENTRY_DSN });
 }
 
-if (process.env.IS_PRODUCTION) {
+if (process.env.AGONES) {
   connectAgones();
+}
+
+if (process.env.IS_PRODUCTION) {
   connectSentry();
 }

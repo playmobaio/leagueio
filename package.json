@@ -39,6 +39,7 @@
   "homepage": "https://github.com/philipslan/leagueio#readme",
   "dependencies": {
     "@google-cloud/agones-sdk": "^1.7.0",
+    "@sentry/node": "^5.21.4",
     "await-exec": "^0.1.2",
     "detect-collisions": "^2.5.2",
     "express": "^4.17.1",

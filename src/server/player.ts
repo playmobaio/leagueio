@@ -89,15 +89,6 @@ class Player {
       health: this.health,
     };
   }
-
-  getGameState(players: Array<IPlayer>, projectiles: Array<IProjectile>): IGameState {
-    return {
-      client: this.toInterface(),
-      players: players,
-      projectiles: projectiles,
-      currentFrame: Game.getInstance().currentFrame
-    };
-  }
 }
 
 export default Player;

@@ -6,20 +6,64 @@
     <title>Moba IO</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <!-- CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/main.css" />
   </head>
   <body>
-    <div id="startpanel">
-      <input type="text" autofocus placeholder="Enter your name here" id="playerName" maxlength="25" />
-      <div>
-        <input type="checkbox" id="fullScreen" name="fullScreen" value="false">
-        <label for="fullScreen">Use Fullscreen</label><br>
+    <div class="row" id="mainmenu" >
+      <div id="startpanel" class="col-md-4 offset-md-4">
+        <h1 class="display-4">PLAYMOBA</h1>
+        <hr class="my-4">
+        <div class="menu" >
+          <div class="form-group">
+            <label for="playerName">Name</label>
+            <input type="text" class="form-control" id="playerName" placeholder="Enter name here" maxlength="15" autofocus>
+          </div>
+          <div class="form-group">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="fullScreen" checked="">
+              <label class="custom-control-label" for="fullScreen">Fullscreen</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div id="joinGame" class="btn btn-outline-success col-md-12">
+              <div class="spinner-border" role="status" id="gamespinner">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+          </div>
+          <hr class="my-4">
+          <h2 class="display-5">How To Play</h2>
+          <br/>
+          <p>
+            <em>Objective:</em> Avoid projectiles at all cost until your health goes to 0.
+          </p>
+          <p>
+            <em>Controls:</em> Right click on your mouse to navigate to a point on the screen. Q, W, E to use an ability.
+          </p>
+          <p>
+            <em>Projectiles:</em> Projectiles may affect an area or may fly across the screen. Outlined projectiles have not taken effect.
+          </p>
+          <p>
+            <em>Abilities:</em> Use Q to teleport a short distance. Use W to temporarily increase player speed. Once a player has cast an ability there is a delay before the ability effect is realized. Once the ability is cast there is a cooldown before the player may cast again.
+          </p>
+        </div>
       </div>
-      <button id="joinGame">Join Game</button>
-    </div>
-    <div id="game">
-      <canvas id="canvas" style="border:1px solid #000;" oncontextmenu="return false;"></canvas>
-      <div id="inventory"></div>
+      <div id="scores" class="col-md-4">
+        <div class="row">
+          <div class="col-md-11">
+            <div id="scoreTitle">
+              <h2 class="display-5">Scores</h2>
+              <hr class="my-4">
+            </div>
+            <div id="entries">
+              <div class="spinner-border" role="status" id="scorespinner">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
     </div>
   </body>
   <script src="js/webpack_app.js"></script>

@@ -5,11 +5,12 @@ import GameScene from './scenes/gameScene';
 import PhaserInputController from './phaserInputController';
 import HudScene from './scenes/hudScene';
 import constants from './constants';
+import { CreateScoreEntries } from './scores';
+import { IScore } from '../../server/models/iScore';
 
 let phaserGame:  Phaser.Game;
 function InitializePhaserUI(fullScreen: boolean): void {
-  document.getElementById('startpanel').setAttribute("style", "display:none;");
-  document.getElementById('game').setAttribute("style", "display:none;");
+  document.getElementById('mainmenu').setAttribute("style", "display:none;");
   const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
     width: constants.DEFAULT_MAP_VIEW_WIDTH,
@@ -38,7 +39,7 @@ function InitializeSocket(server: string): void {
   socket.on("S:END_GAME", () => {
     phaserGame.destroy(true);
     socket.disconnect(true);
-    document.getElementById('startpanel').setAttribute("style", "display:initial;");
+    document.getElementById('mainmenu').removeAttribute("style");
   });
   PhaserInputController.createInstance(socket);
   PhaserInputController.getInstance().setHeroId(heroId);
@@ -73,3 +74,18 @@ document.getElementById("joinGame").onclick = async(): Promise<void> => {
     InitializePhaserUI(fullScreen);
   }
 };
+
+// Load Scores
+fetch("/scores").then(async response => {
+  if (response.ok) {
+    const scores = await response.json() as IScore[];
+    const entriesDiv = document.getElementById("entries") as HTMLElement;
+    const entries = CreateScoreEntries(scores);
+    entriesDiv.replaceWith(entries);
+  } else {
+    alert("Could not load scores at this time");
+  }
+});
+
+// If JS is not yet loaded button will have spinner
+document.getElementById("gamespinner").outerHTML = "Join Game";

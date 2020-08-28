@@ -26,8 +26,13 @@ function createRow(parent: HTMLElement, col1: string, col2: string, col3: string
 export function CreateScoreEntries(scores: IScore[]): HTMLElement {
   const entries = document.createElement("div");
   entries.setAttribute("id", "entries");
+  entries.classList.add("panel", "entries-active");
 
   createRow(entries, "NAME", "SCORE", "DATE");
+  const divider = document.createElement("hr");
+  divider.classList.add("margin-0");
+  entries.appendChild(divider);
+
   scores.forEach(score => {
     // Values should look like:
     // <div class="justify-content-between d-flex">

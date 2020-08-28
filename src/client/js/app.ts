@@ -10,7 +10,7 @@ import { IScore } from '../../server/models/iScore';
 
 let phaserGame:  Phaser.Game;
 function InitializePhaserUI(fullScreen: boolean): void {
-  document.getElementById('mainmenu').setAttribute("style", "display:none;");
+  document.getElementById('main-menu').setAttribute("style", "display:none;");
   const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
     width: constants.DEFAULT_MAP_VIEW_WIDTH,
@@ -39,7 +39,7 @@ function InitializeSocket(server: string): void {
   socket.on("S:END_GAME", () => {
     phaserGame.destroy(true);
     socket.disconnect(true);
-    document.getElementById('mainmenu').removeAttribute("style");
+    document.getElementById('main-menu').removeAttribute("style");
   });
   PhaserInputController.createInstance(socket);
   PhaserInputController.getInstance().setHeroId(heroId);
@@ -66,7 +66,7 @@ function IsPublicUrl(server: string): boolean {
   return !isPrivate;
 }
 
-document.getElementById("joinGame").onclick = async(): Promise<void> => {
+document.getElementById("join-game").onclick = async(): Promise<void> => {
   const fullScreen: boolean = (document.getElementById("fullScreen") as HTMLInputElement).checked;
   const server = await GetGameServer();
   if (server && IsPublicUrl(server)) {

@@ -4,6 +4,7 @@ import MeteorProjectile from './projectiles/singleFrame/meteorProjectile';
 import EzrealUltimateProjectile from './projectiles/rangeBased/ezrealUltimateProjectile';
 import { Point } from './models/basicTypes';
 import { secondsToFrames } from './tools/frame';
+import FinalSparkProjectile from './projectiles/singleFrame/finalSparkProjectile';
 
 // ProjectileManager autogenerate projectiles to shoot at the player.
 class ProjectileManager {
@@ -13,6 +14,7 @@ class ProjectileManager {
   // all frequencies are in 10 second increments
   static METEOR_FREQUENCY = 8;
   static EZREAL_ULTIMATE_FREQUENCY = 4;
+  static LUX_ULTIMATE_FREQUENCY = 3;
 
   static ID = "PROJECTILE_MANAGER";
 
@@ -29,6 +31,7 @@ class ProjectileManager {
 
     this.maybeCreateMeteor();
     this.maybeCreateEzrealUltimate();
+    this.maybeCreateLuxUltimate();
   }
 
   private maybeCreateMeteor(): void {
@@ -45,6 +48,17 @@ class ProjectileManager {
     }
 
     new EzrealUltimateProjectile(
+      ProjectileManager.ID,
+      this.getCastOrigin(),
+      this.getCastDestination());
+  }
+
+  private maybeCreateLuxUltimate(): void {
+    if (!this.shouldCast(ProjectileManager.LUX_ULTIMATE_FREQUENCY)) {
+      return;
+    }
+
+    new FinalSparkProjectile(
       ProjectileManager.ID,
       this.getCastOrigin(),
       this.getCastDestination());

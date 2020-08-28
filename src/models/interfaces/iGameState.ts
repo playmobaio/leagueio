@@ -34,4 +34,5 @@ export enum ProjectileType {
   Meteor,
   EzrealUltimate,
   RangerAutoAttack,
+  FinalSpark
 }

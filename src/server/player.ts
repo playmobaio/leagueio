@@ -1,5 +1,5 @@
 import { HeroID } from '../models/interfaces/iJoinGame';
-import { IGameState, IHealth, IProjectile, IPlayer } from '../models/interfaces/iGameState';
+import { IHealth, IPlayer } from '../models/interfaces/iGameState';
 import Game from "./game";
 import constants from './constants';
 import { EmitEvent } from './tools/emitEvent'

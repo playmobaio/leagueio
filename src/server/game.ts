@@ -157,8 +157,8 @@ class Game {
     for (const player of iPlayers) {
       const gameState: IGameState = {
         client: player,
-        players: players,
-        projectiles: projectiles,
+        players: iPlayers,
+        projectiles: iProjectiles,
         currentFrame: this.currentFrame
       }
       states.push(gameState);

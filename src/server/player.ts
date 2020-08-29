@@ -1,5 +1,5 @@
 import { HeroID } from '../models/interfaces/iJoinGame';
-import { IGameState, IHealth, IProjectile, IPlayer } from '../models/interfaces/iGameState';
+import { IHealth, IPlayer } from '../models/interfaces/iGameState';
 import Game from "./game";
 import constants from './constants';
 import { EmitEvent } from './tools/emitEvent'
@@ -87,15 +87,6 @@ class Player {
       id: this.id,
       hero: this.hero.toInterface(),
       health: this.health,
-    };
-  }
-
-  getGameState(players: Array<IPlayer>, projectiles: Array<IProjectile>): IGameState {
-    return {
-      client: this.toInterface(),
-      players: players,
-      projectiles: projectiles,
-      currentFrame: Game.getInstance().currentFrame
     };
   }
 }

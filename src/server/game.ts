@@ -144,14 +144,24 @@ class Game {
 
   getGameStates(): Array<IGameState> {
     const iPlayers: IPlayer[] = [];
-    const iProjectiles: IProjectile[] = [];
-    const states = new Array<IGameState>();
     for (const player of this.players.values()) {
       iPlayers.push(player.toInterface());
-      for (const projectile of this.projectiles.values()) {
-        iProjectiles.push(projectile.toInterface());
+    }
+
+    const iProjectiles: IProjectile[] = [];
+    for (const projectile of this.projectiles.values()) {
+      iProjectiles.push(projectile.toInterface());
+    }
+
+    const states = new Array<IGameState>();
+    for (const player of iPlayers) {
+      const gameState: IGameState = {
+        client: player,
+        players: iPlayers,
+        projectiles: iProjectiles,
+        currentFrame: this.currentFrame
       }
-      states.push(player.getGameState(iPlayers, iProjectiles));
+      states.push(gameState);
     }
     return states;
   }

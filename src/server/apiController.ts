@@ -30,6 +30,11 @@ function translateLocalIpToProd(ip: string): string {
 }
 
 export async function requestServer(_, res): Promise<void> {
+  if (process.env.HEROKU) {
+    res.json({ url: "https://leagueio-test.herokuapp.com/" });
+    return;
+  }
+
   if (!process.env.AGONES) {
     res.json(createServerResponse("localhost", "3000"));
     return;
@@ -67,6 +72,6 @@ export async function requestServer(_, res): Promise<void> {
 }
 
 export async function getTopScores(_, res): Promise<void> {
-  const topScores = await Game.getInstance().scoreCollection.getTopN(20);
+  const topScores = await Game.getInstance().scoreCollection.getTopN(10);
   res.json(topScores);
 }

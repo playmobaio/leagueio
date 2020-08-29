@@ -2,19 +2,26 @@ import Game from './game';
 import Player from './player';
 import MeteorProjectile from './projectiles/singleFrame/meteorProjectile';
 import EzrealUltimateProjectile from './projectiles/rangeBased/ezrealUltimateProjectile';
-import { Point } from './models/basicTypes';
+import { Point, VectorBuilder } from './models/basicTypes';
 import { secondsToFrames } from './tools/frame';
+import FinalSparkProjectile from './projectiles/singleFrame/finalSparkProjectile';
+import MysticShotProjectile from './projectiles/rangeBased/mysticShotProjectile';
 
 // ProjectileManager autogenerate projectiles to shoot at the player.
 class ProjectileManager {
   game: Game;
   id: string;
+  private multiplier: number;
 
   // all frequencies are in 10 second increments
   static METEOR_FREQUENCY = 8;
+  static MYSTIC_SHOT_FREQUENCY = 6;
   static EZREAL_ULTIMATE_FREQUENCY = 4;
+  static FINAL_SPARK_FREQUENCY = 3;
 
   static ID = "PROJECTILE_MANAGER";
+  static AppxmLogBase2500 = 7.824
+  static RANDOM_POINT_RADIUS = 50;
 
   constructor(game: Game) {
     this.game = game;
@@ -26,9 +33,17 @@ class ProjectileManager {
     if (numPlayers != 1) {
       return;
     }
-
+    this.setMultiplier();
     this.maybeCreateMeteor();
     this.maybeCreateEzrealUltimate();
+    this.maybeCreateFinalSpark();
+    this.maybeCreateMysticShot();
+  }
+
+  private setMultiplier(): void {
+    // The goal here is that frequency multipler rises by
+    // https://www.wolframalpha.com/input/?i=graph+log+base+2500+x+from+500+to+10000
+    this.multiplier = Math.log(this.game.currentFrame) / ProjectileManager.AppxmLogBase2500;
   }
 
   private maybeCreateMeteor(): void {
@@ -50,8 +65,30 @@ class ProjectileManager {
       this.getCastDestination());
   }
 
+  private maybeCreateFinalSpark(): void {
+    if (!this.shouldCast(ProjectileManager.FINAL_SPARK_FREQUENCY)) {
+      return;
+    }
+
+    new FinalSparkProjectile(
+      ProjectileManager.ID,
+      this.getCastOrigin(),
+      this.getCastDestination());
+  }
+
+  private maybeCreateMysticShot(): void {
+    if (!this.shouldCast(ProjectileManager.MYSTIC_SHOT_FREQUENCY)) {
+      return;
+    }
+
+    new MysticShotProjectile(
+      ProjectileManager.ID,
+      this.getCastOrigin(),
+      this.getCastDestination());
+  }
+
   private shouldCast(frequency: number): boolean {
-    return frequency > this.getRandomInt(secondsToFrames(10));
+    return frequency * this.multiplier > this.getRandomInt(secondsToFrames(10));
   }
 
   // return random int from 0 - (ceiling - 1)
@@ -60,8 +97,14 @@ class ProjectileManager {
   }
 
   private getCastDestination(): Point {
+    const angle = Math.random() * 2 * Math.PI;
+    const radius = Math.random() * ProjectileManager.RANDOM_POINT_RADIUS;
     const player: Player = this.game.players.values().next().value;
-    return player.hero.model.getPosition();
+    const vector = new VectorBuilder(1, 0)
+      .rotateCounterClockWise(angle)
+      .setMagnitude(radius)
+      .build();
+    return player.hero.model.getPosition().transformWithVector(vector);
   }
 
   private getCastOrigin(): Point {

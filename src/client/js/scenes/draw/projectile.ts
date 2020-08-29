@@ -19,7 +19,7 @@ function drawCircleProjectile(
   graphics.strokeCircle(position.x, position.y, radius);
 
   if (shouldFill) {
-    fillColor = fillColor == null ? fillColor : borderColor;
+    fillColor = fillColor != null ? fillColor : borderColor;
     graphics.fillStyle(fillColor, FILL_ALPHA);
     graphics.fillCircle(position.x, position.y, radius);
   }
@@ -32,12 +32,22 @@ function drawRectangleProjectile(
   height: number,
   width: number,
   angle: number,
-  color: number): void {
+  borderColor: number,
+  shouldFill = false,
+  borderWidth = 1,
+  fillColor?: number): void {
 
   const graphics: Phaser.GameObjects.Graphics = scene.add.graphics();
+  graphics.lineStyle(borderWidth, borderColor);
   graphics.setPosition(position.x, position.y);
-  graphics.fillStyle(color, FILL_ALPHA);
-  graphics.fillRect(0, 0, width, height);
+  graphics.strokeRect(0, 0, width, height);
+
+  if (shouldFill) {
+    fillColor = fillColor != null ? fillColor : borderColor;
+    graphics.fillStyle(fillColor, FILL_ALPHA);
+    graphics.fillRect(0, 0, width, height);
+  }
+
   graphics.setRotation(angle);
   scene.gameObjects.push(graphics);
 }
@@ -53,7 +63,8 @@ function drawProjectile(scene: GameScene, projectile: IProjectile): void {
       projectileConstants.EzrealUltimate.height,
       projectileConstants.EzrealUltimate.width,
       projectile.angle,
-      projectileConstants.EzrealUltimate.color
+      projectileConstants.EzrealUltimate.color,
+      true,
     );
     break;
   }
@@ -76,6 +87,30 @@ function drawProjectile(scene: GameScene, projectile: IProjectile): void {
       projectileConstants.RangerAutoAttack.radius,
       projectileConstants.RangerAutoAttack.color
     );
+    break;
+  }
+  case ProjectileType.FinalSpark: {
+    drawRectangleProjectile(
+      scene,
+      position,
+      projectileConstants.FinalSpark.height,
+      projectileConstants.FinalSpark.width,
+      projectile.angle,
+      projectileConstants.FinalSpark.color,
+      projectile.armed
+    );
+    break;
+  }
+  case ProjectileType.MysticShot: {
+    drawRectangleProjectile(
+      scene,
+      position,
+      projectileConstants.MysticShot.height,
+      projectileConstants.MysticShot.width,
+      projectile.angle,
+      projectileConstants.MysticShot.color,
+      true
+    )
     break;
   }
   default: {

@@ -14,4 +14,14 @@ export default {
     radius: 10,
     color: 0x13220,
   },
+  FinalSpark: {
+    width: 30,
+    height: 5000,
+    color: 0x65AFFF
+  },
+  MysticShot: {
+    width: 10,
+    height: 50,
+    color: 0x00FFFF
+  }
 }

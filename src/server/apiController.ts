@@ -30,6 +30,11 @@ function translateLocalIpToProd(ip: string): string {
 }
 
 export async function requestServer(_, res): Promise<void> {
+  if (process.env.HEROKU) {
+    res.json({ url: "https://leagueio-test.herokuapp.com/" });
+    return;
+  }
+
   if (!process.env.AGONES) {
     res.json(createServerResponse("localhost", "3000"));
     return;

@@ -19,7 +19,7 @@ function drawHealthBar(scene: GameScene, player: IPlayer): void {
   scene.gameObjects.push(healthBar);
 }
 
-function drawPlayer(scene: GameScene, player: IPlayer): void {
+export function drawPlayer(scene: GameScene, player: IPlayer): void {
   const userId = scene.socket.id;
   const model = player.hero.model;
 
@@ -38,4 +38,6 @@ function drawPlayer(scene: GameScene, player: IPlayer): void {
   scene.gameObjects.push(playerArc);
 }
 
-export { drawPlayer }
+export function drawClientReceivedDamage(scene: GameScene): void {
+  scene.cameras.main.flash(50);
+}

@@ -55,6 +55,7 @@ class Player {
   }
 
   receiveDamage(incomingDamage: number): void {
+    this.socket.emit("S:RECEIVED_DAMAGE");
     this.health.current = Math.max(0, this.health.current - incomingDamage);
   }
 

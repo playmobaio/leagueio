@@ -3,7 +3,7 @@ import TileMap from '../../../models/tileMap';
 import { IUserInput } from '../../../models/interfaces/iUserInput';
 import { IGameState } from '../../../models/interfaces/iGameState';
 import PhaserInputController from '../phaserInputController';
-import { drawPlayer } from './draw/player';
+import { drawPlayer, drawClientReceivedDamage } from './draw/player';
 import { drawTiles } from './draw/tiles';
 import { drawProjectile } from './draw/projectile';
 
@@ -47,6 +47,7 @@ class GameScene extends Phaser.Scene {
     this.socket = inputController.socket;
     // Register socket event to bind to render function
     this.socket.on("S:UPDATE_GAME_STATE", this.render.bind(this));
+    this.socket.on("S:RECEIVED_DAMAGE", () => drawClientReceivedDamage(this));
     ["Q", "W", "E"].forEach(this.addKey.bind(this));
   }
 

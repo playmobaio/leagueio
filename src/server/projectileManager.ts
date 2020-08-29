@@ -5,6 +5,7 @@ import EzrealUltimateProjectile from './projectiles/rangeBased/ezrealUltimatePro
 import { Point } from './models/basicTypes';
 import { secondsToFrames } from './tools/frame';
 import FinalSparkProjectile from './projectiles/singleFrame/finalSparkProjectile';
+import MysticShotProjectile from './projectiles/rangeBased/mysticShotProjectile';
 
 // ProjectileManager autogenerate projectiles to shoot at the player.
 class ProjectileManager {
@@ -13,8 +14,9 @@ class ProjectileManager {
 
   // all frequencies are in 10 second increments
   static METEOR_FREQUENCY = 8;
+  static MYSTIC_SHOT_FREQUENCY = 6;
   static EZREAL_ULTIMATE_FREQUENCY = 4;
-  static LUX_ULTIMATE_FREQUENCY = 3;
+  static FINAL_SPARK_FREQUENCY = 3;
 
   static ID = "PROJECTILE_MANAGER";
 
@@ -31,7 +33,8 @@ class ProjectileManager {
 
     this.maybeCreateMeteor();
     this.maybeCreateEzrealUltimate();
-    this.maybeCreateLuxUltimate();
+    this.maybeCreateFinalSpark();
+    this.maybeCreateMysticShot();
   }
 
   private maybeCreateMeteor(): void {
@@ -53,12 +56,23 @@ class ProjectileManager {
       this.getCastDestination());
   }
 
-  private maybeCreateLuxUltimate(): void {
-    if (!this.shouldCast(ProjectileManager.LUX_ULTIMATE_FREQUENCY)) {
+  private maybeCreateFinalSpark(): void {
+    if (!this.shouldCast(ProjectileManager.FINAL_SPARK_FREQUENCY)) {
       return;
     }
 
     new FinalSparkProjectile(
+      ProjectileManager.ID,
+      this.getCastOrigin(),
+      this.getCastDestination());
+  }
+
+  private maybeCreateMysticShot(): void {
+    if (!this.shouldCast(ProjectileManager.MYSTIC_SHOT_FREQUENCY)) {
+      return;
+    }
+
+    new MysticShotProjectile(
       ProjectileManager.ID,
       this.getCastOrigin(),
       this.getCastDestination());

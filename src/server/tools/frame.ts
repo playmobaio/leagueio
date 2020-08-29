@@ -1,15 +1,15 @@
-import Game from '../game';
+import constants from '../constants';
 
 function secondsToFrames(seconds: number): number {
-  return Game.FRAMES_PER_SECOND * seconds;
+  return constants.FRAME_RATE * seconds;
 }
 
 function framesToSeconds(frames: number): number {
-  return frames / Game.FRAMES_PER_SECOND;
+  return frames / constants.FRAME_RATE;
 }
 
 function getFramesBetweenAutoAttack(speed: number): number {
-  return Game.FRAMES_PER_SECOND / speed;
+  return constants.FRAME_RATE / speed;
 }
 
 export { secondsToFrames, framesToSeconds, getFramesBetweenAutoAttack }

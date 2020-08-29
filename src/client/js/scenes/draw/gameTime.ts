@@ -10,7 +10,7 @@ function drawGameTime(scene: HudScene, currentFrame: number): void {
     scene.gameTimeText.setText(text);
     return;
   }
-  scene.gameTimeText = scene.add.text(xOffset, yOffset, text, { fontSize: "30px" });
+  scene.gameTimeText = scene.add.text(xOffset, yOffset, text, { font: "30px Arial" });
   scene.gameTimeText.setOrigin(0.5, 0.1);
 }
 

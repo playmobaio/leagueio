@@ -34,7 +34,7 @@ function drawAbilityButtons(scene: HudScene, frame: number): void {
         abilityButtonWidth,
         abilityButtonWidth,
         colorFill);
-      label = scene.add.text(0, 0, text, { fontSize: "20px", color: '#000' });
+      label = scene.add.text(0, 0, text, { font: "20px Arial", color: '#000' });
       const container = scene.add.container(x, y, [rectangle, label]);
       scene.abilities.push(container);
     } else {

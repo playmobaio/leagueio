@@ -39,7 +39,7 @@ function drawHealthText(scene: HudScene, player: IPlayer): void {
     x - player.health.maximum/4,
     y+yTextOffset - healthBarHeight/2,
     text,
-    { fontSize: "12px" });
+    { font: "12px Arial" });
 }
 
 function drawHealth(scene: HudScene, player: IPlayer): void {

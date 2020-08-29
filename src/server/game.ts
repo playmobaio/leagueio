@@ -11,10 +11,10 @@ import { IEmitEventMapping } from './tools/iEmitEventMapping'
 import { StrictEventEmitter } from 'strict-event-emitter-types';
 import { EventEmitter } from 'events';
 import ScoreCollection from './db/scoreCollection';
+import constants from './constants';
 
 // Server
 class Game {
-  static FRAMES_PER_SECOND = 60;
   private static instance: Game;
   players: Map<string, Player>;
   projectiles: Map<string, Projectile>;
@@ -94,7 +94,7 @@ class Game {
       game.update();
       const gameState: Array<IGameState> = game.getGameStates();
       game.sendGameStates(gameState);
-    }, 1000 / Game.FRAMES_PER_SECOND); // 60 frames a second
+    }, 1000 / constants.FRAME_RATE);
   }
 
   removePlayer(id: string): void {

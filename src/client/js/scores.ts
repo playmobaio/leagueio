@@ -6,19 +6,20 @@ function ToDateTime(secs): Date {
   return t;
 }
 
-function createAndAppend(parent: HTMLElement, content: string): void {
+function createAndAppend(parent: HTMLElement, content: string): HTMLElement {
   const div = document.createElement("div");
   div.textContent = content;
   parent.appendChild(div);
+  return div
 }
 
 function createRow(parent: HTMLElement, col1: string, col2: string, col3: string): void {
   const container = document.createElement("div");
-  container.classList.add("justify-content-between", "d-flex", "score-entry");
+  container.classList.add("score-entry", "row");
 
-  createAndAppend(container, col1);
-  createAndAppend(container, col2);
-  createAndAppend(container, col3);
+  createAndAppend(container, col1).classList.add("col-md-4");
+  createAndAppend(container, col2).classList.add("col-md-4");
+  createAndAppend(container, col3).classList.add("col-md-4");
 
   parent.appendChild(container);
 }

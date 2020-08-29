@@ -18,5 +18,10 @@ export default {
     width: 30,
     height: 5000,
     color: 0x65AFFF
+  },
+  MysticShot: {
+    width: 10,
+    height: 50,
+    color: 0x00FFFF
   }
 }

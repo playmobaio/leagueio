@@ -101,6 +101,18 @@ function drawProjectile(scene: GameScene, projectile: IProjectile): void {
     );
     break;
   }
+  case ProjectileType.MysticShot: {
+    drawRectangleProjectile(
+      scene,
+      position,
+      projectileConstants.MysticShot.height,
+      projectileConstants.MysticShot.width,
+      projectile.angle,
+      projectileConstants.MysticShot.color,
+      true
+    )
+    break;
+  }
   default: {
     console.log("unimplemented");
     break;

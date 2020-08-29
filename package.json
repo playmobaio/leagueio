@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/server/server.js",
   "scripts": {
+    "circular-dependencies": "webpack --config ./webpack-back.config.js",
     "serve-debug": "nodemon --inspect dist/server/server.js",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Webpack,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-webpack\" \"npm run watch-ts\" \"npm run serve-debug\"",
     "start": "npm run serve",
@@ -64,6 +65,7 @@
     "@types/uuid": "^8.0.0",
     "@typescript-eslint/eslint-plugin": "~2.34.0",
     "@typescript-eslint/parser": "~2.34.0",
+    "circular-dependency-plugin": "^5.2.0",
     "concurrently": "^5.2.0",
     "copyfiles": "^2.3.0",
     "eslint": "~6.8.0",

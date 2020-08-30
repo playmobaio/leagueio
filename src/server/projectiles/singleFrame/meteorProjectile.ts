@@ -4,13 +4,14 @@ import SingleFrameProjectile from './singleFrameProjectile';
 import CircleModel from '../../models/circleModel';
 import { IProjectile, ProjectileType } from '../../../models/interfaces/iGameState';
 import projectileConstants from '../../../models/constants/projectileConstants';
+import Game from '../../game';
 
 export default class MeteorProjectile extends SingleFrameProjectile {
   static damage = 10;
   static armTimeInSeconds = 0.5;
 
-  constructor(creatorId: string, position: Point) {
-    super(creatorId, MeteorProjectile.armTimeInSeconds);
+  constructor(game: Game, creatorId: string, position: Point) {
+    super(game, creatorId, MeteorProjectile.armTimeInSeconds);
     this.model = new CircleModel(position, projectileConstants.Meteor.radius);
   }
 

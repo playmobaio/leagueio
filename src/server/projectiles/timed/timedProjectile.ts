@@ -13,9 +13,9 @@ export default abstract class TimedProjectile extends Projectile {
   startingFrame: number;
   lifeSpanInFrames: number;
 
-  constructor(creatorId: string, lifeSpanInSeconds: number) {
-    super(creatorId);
-    this.startingFrame = Game.getInstance().currentFrame;
+  constructor(game: Game, creatorId: string, lifeSpanInSeconds: number) {
+    super(game, creatorId);
+    this.startingFrame = this.game.currentFrame;
     this.lifeSpanInFrames = secondsToFrames(lifeSpanInSeconds);
   }
 
@@ -25,7 +25,7 @@ export default abstract class TimedProjectile extends Projectile {
   }
 
   protected shouldDelete(): boolean {
-    return this.startingFrame + this.lifeSpanInFrames < Game.getInstance().currentFrame;
+    return this.startingFrame + this.lifeSpanInFrames < this.game.currentFrame;
   }
 }
 

@@ -14,8 +14,8 @@ import Projectile from '../projectile';
 export default abstract class RangeBasedProjectile extends Projectile {
   origin: Point;
 
-  constructor(creatorId: string) {
-    super(creatorId);
+  constructor(game: Game, creatorId: string) {
+    super(game, creatorId);
   }
 
   // Negative range means that the ability has infinite range.
@@ -28,7 +28,7 @@ export default abstract class RangeBasedProjectile extends Projectile {
 
   protected shouldDelete(): boolean {
     // Delete any ability that is no longer on the map
-    const game = Game.getInstance();
+    const game = this.game;
     if (!game.gameMap.isModelOnMap(this.model)) {
       return true;
     }

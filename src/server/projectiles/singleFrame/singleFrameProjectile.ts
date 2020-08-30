@@ -17,20 +17,20 @@ export default abstract class SingleFrameProjectile extends Projectile {
   // projectile location but before the projectile can collide.
   armTimeInFrames: number;
 
-  constructor(creatorId: string, armTimeInSeconds: number) {
-    super(creatorId);
-    this.startingFrame = Game.getInstance().currentFrame;
+  constructor(game: Game, creatorId: string, armTimeInSeconds: number) {
+    super(game, creatorId);
+    this.startingFrame = game.currentFrame;
     this.armTimeInFrames = secondsToFrames(armTimeInSeconds);
   }
 
   // SingleFrameProjectile should only allow the model to collide for the single
   // frame after arm time
   canCollide(): boolean {
-    return this.startingFrame + this.armTimeInFrames + 1 == Game.getInstance().currentFrame;
+    return this.startingFrame + this.armTimeInFrames + 1 == this.game.currentFrame;
   }
 
   // Delete after arm time and the single frame of collisions
   protected shouldDelete(): boolean {
-    return this.startingFrame + this.armTimeInFrames + 1 < Game.getInstance().currentFrame;
+    return this.startingFrame + this.armTimeInFrames + 1 < this.game.currentFrame;
   }
 }

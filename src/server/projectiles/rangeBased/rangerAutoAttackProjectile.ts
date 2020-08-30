@@ -13,7 +13,7 @@ export default class RangerAutoAttackProjectile extends RangeBasedProjectile {
   static projectileOffset = 12;
 
   constructor(game: Game, creatorId: string, casterPosition: Point, dest: Point) {
-    super(game,creatorId);
+    super(game, creatorId);
     // offset origin, so the projectile is starting beyond the ranger's current
     // location.
     const offsetVector: Vector = VectorBuilder.createFromPoints(casterPosition, dest)

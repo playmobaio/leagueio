@@ -60,7 +60,7 @@ class ProjectileManager {
     }
 
     new EzrealUltimateProjectile(
-      this.game, 
+      this.game,
       ProjectileManager.ID,
       this.getCastOrigin(),
       this.getCastDestination());
@@ -72,7 +72,7 @@ class ProjectileManager {
     }
 
     new FinalSparkProjectile(
-      this.game, 
+      this.game,
       ProjectileManager.ID,
       this.getCastOrigin(),
       this.getCastDestination());
@@ -84,7 +84,7 @@ class ProjectileManager {
     }
 
     new MysticShotProjectile(
-      this.game, 
+      this.game,
       ProjectileManager.ID,
       this.getCastOrigin(),
       this.getCastDestination());

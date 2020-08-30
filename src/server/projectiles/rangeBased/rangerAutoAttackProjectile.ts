@@ -4,6 +4,7 @@ import CircleModel from '../../models/circleModel';
 import { IProjectile, ProjectileType } from '../../../models/interfaces/iGameState';
 import projectileConstants from '../../../models/constants/projectileConstants';
 import Player from '../../player';
+import Game from '../../game';
 
 export default class RangerAutoAttackProjectile extends RangeBasedProjectile {
   static range = 300;
@@ -11,8 +12,8 @@ export default class RangerAutoAttackProjectile extends RangeBasedProjectile {
   static speed = 12;
   static projectileOffset = 12;
 
-  constructor(creatorId: string, casterPosition: Point, dest: Point) {
-    super(creatorId);
+  constructor(game: Game, creatorId: string, casterPosition: Point, dest: Point) {
+    super(game, creatorId);
     // offset origin, so the projectile is starting beyond the ranger's current
     // location.
     const offsetVector: Vector = VectorBuilder.createFromPoints(casterPosition, dest)
@@ -21,7 +22,7 @@ export default class RangerAutoAttackProjectile extends RangeBasedProjectile {
     const origin: Point = casterPosition.transformWithVector(offsetVector);
 
     this.origin = origin;
-    this.model = new CircleModel(origin, projectileConstants.RangerAutoAttack.radius);
+    this.model = new CircleModel(game, origin, projectileConstants.RangerAutoAttack.radius);
 
     const velocity = new Velocity(dest,
       RangerAutoAttackProjectile.speed,

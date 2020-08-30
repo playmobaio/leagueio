@@ -16,7 +16,7 @@ describe('SingleFrameProjectile', function() {
     game.reset();
     creatorId = "testId";
     position = new Point(0, 0);
-    projectile = new TestSingleFrameProjectile(creatorId, armTimeInSeconds, position);
+    projectile = new TestSingleFrameProjectile(game, creatorId, armTimeInSeconds, position);
   });
 
   describe('#canCollide', function() {

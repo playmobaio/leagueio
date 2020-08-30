@@ -6,12 +6,15 @@ import { TestRangeBasedProjectile } from '../../testClasses';
 describe('RangeBasedProjectile', function() {
   let projectile: TestRangeBasedProjectile;
   let origin: Point;
+  let game: Game;
   let creatorId: string;
 
   beforeEach(function() {
     creatorId = "testId";
     origin = new Point(0, 0);
-    projectile = new TestRangeBasedProjectile(creatorId, origin, Velocity.createNull());
+    game = Game.getInstance();
+    game.reset();
+    projectile = new TestRangeBasedProjectile(game, creatorId, origin, Velocity.createNull());
   });
 
   describe('#shouldDelete', function() {
@@ -38,7 +41,6 @@ describe('RangeBasedProjectile', function() {
     it('infinite ranged ability: should not delete while on the map', function() {
       projectile.setRange(-1);
 
-      const game = Game.getInstance();
       const point = new Point(game.gameMap.width, game.gameMap.height);
       projectile.setPosition(point);
       assert(!projectile.shouldDelete());
@@ -47,7 +49,6 @@ describe('RangeBasedProjectile', function() {
     it('infinite ranged ability: should delete when off the map', function() {
       projectile.setRange(-1);
 
-      const game = Game.getInstance();
       const point =
         new Point(game.gameMap.width, game.gameMap.height + TestRangeBasedProjectile.radius);
       projectile.setPosition(point);

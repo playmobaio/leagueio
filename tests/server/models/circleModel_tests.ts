@@ -17,12 +17,12 @@ describe('CircleModel', function() {
   });
 
   it('correctly initializes Body', function() {
-    const model = new CircleModel({ x: 0, y: 0 }, 20);
+    const model = new CircleModel(game, { x: 0, y: 0 }, 20);
     assert(model.collidesWithBody(point));
   });
 
   it('updateRadius correctly updates radius', function() {
-    const model = new CircleModel({ x: 0, y: 0 }, 10);
+    const model = new CircleModel(game, { x: 0, y: 0 }, 10);
     assert(!model.collidesWithBody(point));
 
     model.updateRadius(20);

@@ -17,7 +17,7 @@ describe('TimedProjectile', function() {
     origin = new Point(0, 0);
     game = Game.getInstance();
     game.reset();
-    projectile = new TestTimedProjectile(creatorId, lifespanInSeconds, origin);
+    projectile = new TestTimedProjectile(game, creatorId, lifespanInSeconds, origin);
   });
 
   describe('#update', function() {

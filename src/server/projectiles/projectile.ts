@@ -19,12 +19,14 @@ export default abstract class Projectile {
   name: string;
   model: Model;
   creatorId: string;
+  game: Game;
 
-  constructor(creatorId: string) {
+  constructor(game: Game, creatorId: string) {
+    this.game = game
     this.id = uuidv4();
     this.creatorId = creatorId;
     console.log(`Creator ${creatorId} created projectile ${this.id}`);
-    Game.getInstance().emitter.emit(EmitEvent.NewProjectile, this);
+    game.emitter.emit(EmitEvent.NewProjectile, this);
   }
 
   abstract onPlayerCollision(player: Player): void;
@@ -54,6 +56,6 @@ export default abstract class Projectile {
   protected delete(): void {
     console.log("deleted Projectile: " + this.id);
     this.model.removeBody();
-    Game.getInstance().emitter.emit(EmitEvent.DeleteProjectile, this.id);
+    this.game.emitter.emit(EmitEvent.DeleteProjectile, this.id);
   }
 }

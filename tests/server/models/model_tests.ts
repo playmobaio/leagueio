@@ -32,7 +32,7 @@ describe('Model', function() {
   }
 
   it('transform correctly updates position', function() {
-    const model = new TestModel({ x: 0, y: 0 });
+    const model = new TestModel(game, { x: 0, y: 0 });
     assertModelPosition(model, 0, 0);
 
     // Should default to having a velocity of 0 initially
@@ -45,7 +45,7 @@ describe('Model', function() {
   });
 
   it('updatePosition updates body position', function() {
-    const model = new TestModel({ x: 0, y: 0 });
+    const model = new TestModel(game, { x: 0, y: 0 });
     assert(!model.collidesWithBody(square));
 
     model.updatePosition({ x: 1, y: 1 });
@@ -56,7 +56,7 @@ describe('Model', function() {
   });
 
   it('removeBody removes body from the collision system', function() {
-    const model = new TestModel({ x: 0, y: 0 });
+    const model = new TestModel(game, { x: 0, y: 0 });
     assert(getNumBodies() == initialBodies + 1);
     assert(model.exists);
 

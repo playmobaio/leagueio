@@ -51,7 +51,7 @@ class ProjectileManager {
       return;
     }
 
-    new MeteorProjectile(ProjectileManager.ID, this.getCastDestination());
+    new MeteorProjectile(this.game, ProjectileManager.ID, this.getCastDestination());
   }
 
   private maybeCreateEzrealUltimate(): void {
@@ -60,6 +60,7 @@ class ProjectileManager {
     }
 
     new EzrealUltimateProjectile(
+      this.game,
       ProjectileManager.ID,
       this.getCastOrigin(),
       this.getCastDestination());
@@ -71,6 +72,7 @@ class ProjectileManager {
     }
 
     new FinalSparkProjectile(
+      this.game,
       ProjectileManager.ID,
       this.getCastOrigin(),
       this.getCastDestination());
@@ -82,6 +84,7 @@ class ProjectileManager {
     }
 
     new MysticShotProjectile(
+      this.game,
       ProjectileManager.ID,
       this.getCastOrigin(),
       this.getCastDestination());

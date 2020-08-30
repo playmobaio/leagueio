@@ -4,18 +4,19 @@ import RectangleModel from '../../models/rectangleModel';
 import { IProjectile, ProjectileType } from '../../../models/interfaces/iGameState';
 import projectileConstants from '../../../models/constants/projectileConstants';
 import Player from '../../player';
+import Game from '../../game';
 
 export default class MysticShotProjectile extends RangeBasedProjectile {
   static damage = 10;
   static speed = 5;
 
-  constructor(creatorId: string, origin: Point, dest: Point) {
-    super(creatorId);
+  constructor(game: Game, creatorId: string, origin: Point, dest: Point) {
+    super(game, creatorId);
 
     this.origin = origin;
     // get angle and rotate by 90 degrees
     const angleInRadians = Vector.createFromPoints(origin, dest).getAngleInRadians() - Math.PI/2;
-    this.model = new RectangleModel(origin,
+    this.model = new RectangleModel(game, origin,
       projectileConstants.EzrealUltimate.width,
       projectileConstants.EzrealUltimate.height,
       angleInRadians

@@ -17,17 +17,17 @@ describe('RectangleModel', function() {
   });
 
   it('correctly initializes Body without angle', function() {
-    const model = new RectangleModel({ x: 0, y: 0 }, 20, 20);
+    const model = new RectangleModel(game, { x: 0, y: 0 }, 20, 20);
     assert(model.collidesWithBody(point));
   });
 
   it('correctly initializes Body with angle', function() {
-    const model = new RectangleModel({ x: 20, y: 0 }, 20, 20, Math.PI/2);
+    const model = new RectangleModel(game, { x: 20, y: 0 }, 20, 20, Math.PI/2);
     assert(model.collidesWithBody(point));
   });
 
   it('updateWidth correctly updates width', function() {
-    const model = new RectangleModel({ x: 0, y: 0 }, 10, 20);
+    const model = new RectangleModel(game, { x: 0, y: 0 }, 10, 20);
     assert(!model.collidesWithBody(point));
 
     model.updateWidth(20);
@@ -36,7 +36,7 @@ describe('RectangleModel', function() {
   });
 
   it('updateHeight correctly updates height', function() {
-    const model = new RectangleModel({ x: 0, y: 0 }, 20, 10);
+    const model = new RectangleModel(game, { x: 0, y: 0 }, 20, 10);
     assert(!model.collidesWithBody(point));
 
     model.updateHeight(20);
@@ -45,7 +45,7 @@ describe('RectangleModel', function() {
   });
 
   it('updateAngle correctly updates angle', function() {
-    const model = new RectangleModel({ x: 20, y: 0 }, 20, 20);
+    const model = new RectangleModel(game, { x: 20, y: 0 }, 20, 20);
     assert(!model.collidesWithBody(point));
 
     model.updateAngle(Math.PI/2);

@@ -91,7 +91,7 @@ export class TestProjectile extends Projectile {
 
   constructor(game: Game, creatorId: string, origin: Point, velocity: Velocity, damage: number) {
     super(game, creatorId);
-    this.model = new CircleModel(origin, TestProjectile.radius);
+    this.model = new CircleModel(game, origin, TestProjectile.radius);
     this.model.setVelocity(velocity);
     this.origin = origin;
     this.damage = damage

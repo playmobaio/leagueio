@@ -11,12 +11,14 @@ export default abstract class Model {
   protected position: Point;
   protected velocity: Velocity;
   protected abstract body: Body;
+  game: Game;
   exists: boolean;
 
   // All subclasses should instantiate Body
-  constructor() {
+  constructor(game: Game) {
     this.velocity = Velocity.createNull();
     this.exists = true;
+    this.game = game;
   }
 
   getPosition(): Point {
@@ -57,11 +59,11 @@ export default abstract class Model {
   // Should be called in every Model's constructor for the detection collision
   // system to recognize the body.
   protected addBody(): void {
-    Game.getInstance().emitter.emit(EmitEvent.NewBody, this.body);
+    this.game.emitter.emit(EmitEvent.NewBody, this.body);
   }
 
   removeBody(): void {
-    Game.getInstance().emitter.emit(EmitEvent.RemoveBody, this.body);
+    this.game.emitter.emit(EmitEvent.RemoveBody, this.body);
     this.exists = false;
   }
 
@@ -74,7 +76,7 @@ export default abstract class Model {
   abstract getMapCollisionPositions(point: Point): Point[];
 
   collidesWithSolidTile(point = this.position): boolean {
-    const map: GameMap = Game.getInstance().gameMap;
+    const map: GameMap = this.game.gameMap;
 
     const mapCollisionPositions = this.getMapCollisionPositions(point);
     for (const index in mapCollisionPositions) {
@@ -86,7 +88,7 @@ export default abstract class Model {
   }
 
   isOnMap(point = this.position): boolean {
-    const map: GameMap = Game.getInstance().gameMap;
+    const map: GameMap = this.game.gameMap;
 
     const mapCollisionPositions = this.getMapCollisionPositions(point);
     for (const index in mapCollisionPositions) {

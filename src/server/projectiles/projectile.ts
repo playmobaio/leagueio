@@ -26,7 +26,7 @@ export default abstract class Projectile {
     this.id = uuidv4();
     this.creatorId = creatorId;
     console.log(`Creator ${creatorId} created projectile ${this.id}`);
-    this.game.emitter.emit(EmitEvent.NewProjectile, this);
+    game.emitter.emit(EmitEvent.NewProjectile, this);
   }
 
   abstract onPlayerCollision(player: Player): void;

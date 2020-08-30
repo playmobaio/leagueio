@@ -72,8 +72,8 @@ export class TestEffect extends Effect {
 export class TestModel extends Model {
   body = null;
 
-  constructor(position: Point) {
-    super();
+  constructor(game: Game, position: Point) {
+    super(game);
     this.position = new Point(position.x, position.y);
     this.body = new dcPoint(position.x, position.y);
     this.addBody();
@@ -125,7 +125,7 @@ export class TestRangeBasedProjectile extends RangeBasedProjectile {
 
   constructor(game: Game, creatorId: string, origin: Point, velocity: Velocity) {
     super(game, creatorId);
-    this.model = new CircleModel(origin, TestRangeBasedProjectile.radius);
+    this.model = new CircleModel(game, origin, TestRangeBasedProjectile.radius);
     this.model.setVelocity(velocity);
     this.origin = origin;
     this.range = TestRangeBasedProjectile.DEFAULT_RANGE;
@@ -162,7 +162,7 @@ export class TestTimedProjectile extends TimedProjectile {
 
   constructor(game: Game, creatorId: string, lifeSpan: number, origin: Point) {
     super(game, creatorId, lifeSpan);
-    this.model = new CircleModel(origin, TestTimedProjectile.radius);
+    this.model = new CircleModel(game, origin, TestTimedProjectile.radius);
   }
 
   onPlayerCollision(player: Player): void {
@@ -180,7 +180,7 @@ export class TestSingleFrameProjectile extends SingleFrameProjectile {
 
   constructor(game: Game, creatorId: string, armTimeInSeconds: number, position: Point) {
     super(game, creatorId, armTimeInSeconds);
-    this.model = new CircleModel(position, TestSingleFrameProjectile.radius);
+    this.model = new CircleModel(game, position, TestSingleFrameProjectile.radius);
   }
 
   onPlayerCollision(player: Player): void {

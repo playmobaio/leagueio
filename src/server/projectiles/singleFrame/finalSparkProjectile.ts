@@ -14,7 +14,7 @@ export default class FinalSparkProjectile extends SingleFrameProjectile {
     super(game, creatorId, FinalSparkProjectile.armTimeInSeconds);
 
     const angleInRadians = Vector.createFromPoints(origin, dest).getAngleInRadians() - Math.PI/2;
-    this.model = new RectangleModel(origin,
+    this.model = new RectangleModel(game, origin,
       projectileConstants.FinalSpark.width,
       projectileConstants.FinalSpark.height,
       angleInRadians

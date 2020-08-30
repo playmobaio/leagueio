@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 import { Velocity, Point } from '../../../src/server/models/basicTypes';
 import { TestProjectile } from '../testClasses';
+import Game from '../../../src/server/game';
 
 describe('Projectile', function() {
   let projectile: TestProjectile;
@@ -12,7 +13,7 @@ describe('Projectile', function() {
     creatorId = "testId";
     origin = new Point(0, 0);
     velocity = new Velocity({ x: 1, y: 0 }, 1);
-    projectile = new TestProjectile(creatorId, origin, velocity, 10);
+    projectile = new TestProjectile(Game.getInstance(), creatorId, origin, velocity, 10);
   });
 
   describe('#update', function() {

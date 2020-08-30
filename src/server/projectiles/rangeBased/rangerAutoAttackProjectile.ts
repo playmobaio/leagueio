@@ -22,7 +22,7 @@ export default class RangerAutoAttackProjectile extends RangeBasedProjectile {
     const origin: Point = casterPosition.transformWithVector(offsetVector);
 
     this.origin = origin;
-    this.model = new CircleModel(origin, projectileConstants.RangerAutoAttack.radius);
+    this.model = new CircleModel(game, origin, projectileConstants.RangerAutoAttack.radius);
 
     const velocity = new Velocity(dest,
       RangerAutoAttackProjectile.speed,

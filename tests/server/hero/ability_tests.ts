@@ -76,7 +76,7 @@ describe('Ability', function() {
 
   it('if cast is not within range; velocity is updated and cast is queued', function() {
     Abilities[abilityA.name] = { model: null, range: 4, abilityName: abilityA.name };
-    hero.setup(x => x.model).returns(() => new CircleModel(new Point(10, 10), 3));
+    hero.setup(x => x.model).returns(() => new CircleModel(game, new Point(10, 10), 3));
     abilityA.targetPosition = new Point(1, 1);
     abilityA.cast();
     hero.verify(x => x.updateVelocity(TypeMoq.It.isAny()), Times.once());
@@ -86,7 +86,7 @@ describe('Ability', function() {
 
   it('if cast is within range and cast is still queued hero is stopped', function() {
     Abilities[abilityA.name] = { model: null, range: 4, abilityName: abilityA.name };
-    hero.setup(x => x.model).returns(() => new CircleModel(new Point(0, 0), 3));
+    hero.setup(x => x.model).returns(() => new CircleModel(game, new Point(0, 0), 3));
     heroState.setup(x => x.isQueuedCast(TypeMoq.It.isAny())).returns(() => true);
     abilityA.targetPosition = new Point(1, 1);
     abilityA.cast();

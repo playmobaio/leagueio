@@ -32,7 +32,7 @@ abstract class Hero {
     this.lastAutoAttackFrame = -1;
     this.player = player;
     this.state = new HeroState();
-    this.model = new CircleModel(this.spawnLocation, constants.DEFAULT_CIRCLE_RADIUS);
+    this.model = new CircleModel(Game.getInstance(), this.spawnLocation, constants.DEFAULT_CIRCLE_RADIUS);
   }
 
   stopHero(): void {
@@ -73,7 +73,7 @@ abstract class Hero {
   abstract onAutoAttack(dest: Point): void;
 
   respawn(): void {
-    this.model = new CircleModel(this.spawnLocation, constants.DEFAULT_CIRCLE_RADIUS);
+    this.model = new CircleModel(Game.getInstance(), this.spawnLocation, constants.DEFAULT_CIRCLE_RADIUS);
   }
 
   canAutoAttack(): boolean {

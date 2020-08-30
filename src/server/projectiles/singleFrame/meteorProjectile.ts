@@ -12,7 +12,7 @@ export default class MeteorProjectile extends SingleFrameProjectile {
 
   constructor(game: Game, creatorId: string, position: Point) {
     super(game, creatorId, MeteorProjectile.armTimeInSeconds);
-    this.model = new CircleModel(position, projectileConstants.Meteor.radius);
+    this.model = new CircleModel(game, position, projectileConstants.Meteor.radius);
   }
 
   onPlayerCollision(player: Player): void {

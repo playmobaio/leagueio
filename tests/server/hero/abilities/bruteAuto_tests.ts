@@ -20,7 +20,7 @@ describe('bruteAuto', function() {
   });
 
   it('onCast will create attackVector', function() {
-    hero.setup(x => x.model).returns(() => new CircleModel(new Point(0, 0), 1));
+    hero.setup(x => x.model).returns(() => new CircleModel(game, new Point(0, 0), 1));
     bruteAuto.targetPosition = new Point(1, 0);
     bruteAuto.onCast();
     assert.equal(parseInt(bruteAuto.attackVector.x.toFixed(2)), 0);

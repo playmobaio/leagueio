@@ -17,8 +17,8 @@ export default class MysticShotProjectile extends RangeBasedProjectile {
     // get angle and rotate by 90 degrees
     const angleInRadians = Vector.createFromPoints(origin, dest).getAngleInRadians() - Math.PI/2;
     this.model = new RectangleModel(game, origin,
-      projectileConstants.EzrealUltimate.width,
-      projectileConstants.EzrealUltimate.height,
+      projectileConstants.MysticShot.width,
+      projectileConstants.MysticShot.height,
       angleInRadians
     );
 

@@ -35,5 +35,6 @@ export enum ProjectileType {
   EzrealUltimate,
   RangerAutoAttack,
   FinalSpark,
-  MysticShot
+  MysticShot,
+  DarkBinding
 }

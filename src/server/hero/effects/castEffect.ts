@@ -1,12 +1,10 @@
-import Hero from '../hero';
 import Effect from '../effect';
+import Hero from '../hero';
 import Condition from '../condition';
 
-class StunEffect extends Effect {
-  duration: number;
-
+class CastEffect extends Effect {
   constructor(seconds: number) {
-    super(seconds, `stunned for ${seconds} seconds`);
+    super(seconds, `hero casting for ${seconds} seconds`);
   }
 
   start(_: Hero): void {
@@ -18,7 +16,7 @@ class StunEffect extends Effect {
   }
 
   causes(): Condition {
-    return Condition.Stunned;
+    return Condition.Casting
   }
 }
-export default StunEffect;
+export default CastEffect;

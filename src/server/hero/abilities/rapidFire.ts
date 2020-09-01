@@ -10,7 +10,7 @@ class RapidFire extends Ability {
 
   onCast(): void {
     console.log("Casting RapidFire");
-    const effect = new AttackSpeedModifierEffect(this.hero, 7, 2);
+    const effect = new AttackSpeedModifierEffect(7, 2);
     this.hero.state.addEffect(effect);
   }
 }

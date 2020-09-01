@@ -6,6 +6,7 @@ import Game from '../../../src/server/game';
 import GameMap from '../../../src/server/gameMap';
 import { Point, Velocity } from '../../../src/server/models/basicTypes';
 import HeroState from '../../../src/server/hero/heroState';
+import Condition from '../../../src/server/hero/condition';
 import { TestHero } from '../testClasses';
 import { Condition } from '../../../src/models/interfaces/basicTypes';
 

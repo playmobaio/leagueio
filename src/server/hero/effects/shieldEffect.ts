@@ -1,12 +1,13 @@
 import Effect from '../effect';
+import Hero from '../hero';
 
 class ShieldEffect extends Effect {
   amount: number;
-  start(): void {
+  start(_: Hero): void {
     return;
   }
 
-  finish(): void {
+  finish(_: Hero): void {
     return;
   }
 }

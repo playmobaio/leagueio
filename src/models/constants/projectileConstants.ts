@@ -1,7 +1,7 @@
 
 export default {
   EzrealUltimate: {
-    height: 20,
+    height: 15,
     width: 50,
     color: 0xF3DE8A,
   },
@@ -21,7 +21,12 @@ export default {
   },
   MysticShot: {
     width: 10,
-    height: 50,
+    height: 30,
     color: 0x00FFFF
+  },
+  DarkBinding: {
+    width: 20,
+    height: 20,
+    color: 0x801fb8
   }
 }

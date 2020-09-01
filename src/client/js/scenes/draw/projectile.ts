@@ -44,7 +44,7 @@ function drawRectangleProjectile(
 
   if (shouldFill) {
     fillColor = fillColor != null ? fillColor : borderColor;
-    graphics.fillStyle(fillColor, FILL_ALPHA);
+    graphics.fillStyle(fillColor);
     graphics.fillRect(0, 0, width, height);
   }
 
@@ -109,6 +109,18 @@ function drawProjectile(scene: GameScene, projectile: IProjectile): void {
       projectileConstants.MysticShot.width,
       projectile.angle,
       projectileConstants.MysticShot.color,
+      true
+    )
+    break;
+  }
+  case ProjectileType.DarkBinding: {
+    drawRectangleProjectile(
+      scene,
+      position,
+      projectileConstants.DarkBinding.height,
+      projectileConstants.DarkBinding.width,
+      projectile.angle,
+      projectileConstants.DarkBinding.color,
       true
     )
     break;

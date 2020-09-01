@@ -1,14 +1,18 @@
 import Effect from './effect';
+import Hero from './hero';
+import CastEffect from './effects/castEffect';
 import Ability from './ability';
-import { Condition } from '../../models/interfaces/basicTypes';
+import Condition from './condition';
 
 class HeroState {
+  hero: Hero;
   effects: Effect[];
   condition: Condition;
   casting: Ability;
   queuedCast: Ability;
 
-  constructor() {
+  constructor(hero: Hero) {
+    this.hero = hero;
     this.effects = [];
     this.condition = Condition.Active;
   }
@@ -22,11 +26,11 @@ class HeroState {
       return;
     }
     this.casting = ability;
-    this.setCondition(Condition.Casting);
+    this.addEffect(new CastEffect(ability.castTime));
   }
 
   addEffect(effect: Effect): void {
-    effect.start();
+    effect.start(this.hero);
     console.log(`Using ${effect.description}`);
     this.effects.push(effect);
   }
@@ -46,21 +50,44 @@ class HeroState {
     this.queuedCast = null;
   }
 
+  filterExpiredEffects(): void {
+    this.effects = this.effects.filter((effect: Effect) => {
+      const expired = effect.isExpired();
+      if (expired) {
+        effect.finish(this.hero);
+        console.log(`Resetting ${effect.description}`);
+      }
+      return !expired;
+    });
+  }
+
+  updateCondition(): void {
+    let finalCondition: Condition = Condition.Active;
+    for (const effect of this.effects) {
+      const effectCondition = effect.causes();
+      if (effectCondition.overrides(finalCondition)) {
+        finalCondition = effectCondition;
+      }
+    }
+    this.setCondition(finalCondition);
+  }
+
   update(): void {
-    if (this.casting?.hasCastTimeElapsed()) {
+    this.filterExpiredEffects();
+    this.updateCondition();
+
+    if (this.condition.equals(Condition.Casting)
+      && this.casting?.hasCastTimeElapsed()) {
+
       this.casting.onCast();
       this.setCondition(Condition.Active);
       this.casting = null;
     }
     this.queuedCast?.cast();
-    this.effects = this.effects.filter((effect: Effect) => {
-      const expired = effect.isExpired();
-      if (expired) {
-        effect.finish();
-        console.log(`Resetting ${effect.description}`);
-      }
-      return !expired;
-    });
+  }
+
+  canMove(): boolean {
+    return this.condition.equals(Condition.Active);
   }
 }
 export default HeroState;

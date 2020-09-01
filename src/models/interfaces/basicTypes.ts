@@ -3,11 +3,11 @@ export interface IPoint {
   y: number;
 }
 
-export enum Condition {
-  Active,
-  Stunned,
-  Casting,
-  Dead
+export enum ICondition {
+  Active = 0,
+  Casting = 1,
+  Stunned = 2,
+  Dead = 3
 }
 
 export enum Layer {

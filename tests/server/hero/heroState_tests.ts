@@ -1,6 +1,9 @@
 import * as assert from 'assert';
 import * as TypeMoq from "typemoq";
 import HeroState from '../../../src/server/hero/heroState';
+import Hero from '../../../src/server/hero/hero';
+import Player from '../../../src/server/player';
+import Game from '../../../src/server/game';
 import { TestAbility, TestEffect } from '../testClasses';
 
 describe('HeroState', function() {
@@ -10,15 +13,16 @@ describe('HeroState', function() {
   let effect2: TypeMoq.IMock<TestEffect>;
 
   beforeEach(function(){
-    heroState = new HeroState();
+    const hero = TypeMoq.Mock.ofType<Hero>();
+    const player = TypeMoq.Mock.ofType<Player>();
+    hero.setup(x => x.player).returns(() => player.object);
+    const game = new Game(false);
+    player.setup(x => x.game).returns(() => game);
+
+    heroState = new HeroState(hero.object);
     ability = TypeMoq.Mock.ofType<TestAbility>();
     effect = TypeMoq.Mock.ofType<TestEffect>();
     effect2 = TypeMoq.Mock.ofType<TestEffect>();
-  });
-
-  it("AddCasting sets casting", function() {
-    heroState.addCasting(ability.object);
-    assert.ok(heroState.casting != null);
   });
 
   it("AddEffect will start effect", function() {
@@ -27,21 +31,15 @@ describe('HeroState', function() {
     effect.verify(x => x.start(), TypeMoq.Times.once());
   });
 
-  it("Update clears expired abilities and calls onCast", function() {
-    ability.setup(x => x.hasCastTimeElapsed()).returns(() => true);
+  it("addCasting adds CastEffect to heroState", function() {
     heroState.addCasting(ability.object);
-
-    heroState.update();
-    ability.verify(x => x.onCast(), TypeMoq.Times.once());
-    assert.equal(heroState.casting, null);
+    assert.equal(heroState.effects.length, 1);
   });
 
-  it("Update does not clear non-expired abilities", function() {
-    ability.setup(x => x.hasCastTimeElapsed()).returns(() => false);
+  it("addCasting does not allow multiple spells to be casted concurrently", function() {
     heroState.addCasting(ability.object);
-
-    heroState.update();
-    assert.ok(heroState.casting != null);
+    heroState.addCasting(ability.object);
+    assert.equal(heroState.effects.length, 1);
   });
 
   it("Update will filter out expired effects", function() {

@@ -24,7 +24,9 @@ class HeroState {
     if (this.condition != Condition.Active) {
       return;
     }
+
     this.addEffect(new CastEffect(this.hero, ability));
+    this.updateCondition();
   }
 
   addEffect(effect: Effect): void {

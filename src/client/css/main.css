@@ -82,3 +82,16 @@ body:before {
 .padding-2-rem {
   padding: 2rem;
 }
+
+#end-menu {
+  position: absolute;
+  top: 30%;
+  height: 100%;
+  width: 100%;
+  z-index: 99;
+  display: none;
+}
+
+#end-menu h2 {
+  color: white;
+}

@@ -26,7 +26,7 @@ function InitializePhaserUI(fullScreen: boolean): void {
   };
   phaserGame = new Phaser.Game(config);
   if (fullScreen) {
-    phaserGame.scale.startFullscreen();
+    document.getElementsByTagName("body")[0].requestFullscreen();
   }
 }
 
@@ -36,11 +36,6 @@ function InitializeSocket(server: string): void {
   const name: string = (document.getElementById("playerName") as HTMLInputElement).value;
   const heroId: HeroID = HeroID.Dodge;
   const joinGame: IJoinGame = { name, heroId };
-  socket.on("S:END_GAME", () => {
-    phaserGame.destroy(true);
-    socket.disconnect(true);
-    document.getElementById('main-menu').removeAttribute("style");
-  });
   PhaserInputController.createInstance(socket);
   PhaserInputController.getInstance().setHeroId(heroId);
   socket.emit("C:JOIN_GAME", joinGame);
@@ -66,14 +61,30 @@ function IsPublicUrl(server: string): boolean {
   return !isPrivate;
 }
 
-document.getElementById("join-game").onclick = async(): Promise<void> => {
+async function startGame(): Promise<void> {
   const fullScreen: boolean = (document.getElementById("fullScreen") as HTMLInputElement).checked;
   const server = await GetGameServer();
   if (server && IsPublicUrl(server)) {
     InitializeSocket(server);
     InitializePhaserUI(fullScreen);
   }
-};
+}
+
+document.getElementById("join-game").onclick = startGame;
+
+document.getElementById("return-main-menu").onclick = (): void => {
+  phaserGame.destroy(true);
+  phaserGame.events.once("destroy", () => {
+    document.getElementById("end-menu").removeAttribute("style");
+    document.getElementById("main-menu").removeAttribute("style");
+  });
+}
+
+document.getElementById("play-again").onclick = (): void => {
+  phaserGame.destroy(true);
+  document.getElementById("end-menu").removeAttribute("style");
+  phaserGame.events.once("destroy", startGame);
+}
 
 // Load Scores
 fetch("/scores").then(async response => {

@@ -1,6 +1,6 @@
 import Hero from '../hero';
 import Effect from '../effect';
-import Condition from '../condition';
+import { Condition } from '../../../models/interfaces/basicTypes';
 
 class StunEffect extends Effect {
   duration: number;

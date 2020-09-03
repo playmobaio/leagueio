@@ -2,7 +2,7 @@ import { Velocity, Vector, Point } from "../models/basicTypes";
 import { IHealth, IHero } from '../../models/interfaces/iGameState';
 import CircleModel from '../models/circleModel';
 import HeroState from './heroState';
-import Condition from './condition';
+import { Condition } from '../../models/interfaces/basicTypes';
 import Ability from './ability';
 import Player from '../player';
 import constants from '../constants';

@@ -3,7 +3,7 @@ export interface IPoint {
   y: number;
 }
 
-export enum ICondition {
+export enum Condition {
   Active = 0,
   Casting = 1,
   Stunned = 2,

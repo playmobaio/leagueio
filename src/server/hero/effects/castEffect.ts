@@ -1,6 +1,6 @@
 import Effect from '../effect';
 import Hero from '../hero';
-import Condition from '../condition';
+import { Condition } from '../../../models/interfaces/basicTypes';
 import Ability from '../ability';
 
 class CastEffect extends Effect {

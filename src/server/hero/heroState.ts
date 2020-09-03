@@ -2,7 +2,7 @@ import Effect from './effect';
 import Hero from './hero';
 import CastEffect from './effects/castEffect';
 import Ability from './ability';
-import Condition from './condition';
+import { Condition } from '../../models/interfaces/basicTypes';
 
 class HeroState {
   hero: Hero;
@@ -63,7 +63,7 @@ class HeroState {
     let finalCondition: Condition = Condition.Active;
     for (const effect of this.effects) {
       const effectCondition = effect.causes();
-      if (effectCondition.overrides(finalCondition)) {
+      if (effectCondition > finalCondition) {
         finalCondition = effectCondition;
       }
     }
@@ -77,7 +77,7 @@ class HeroState {
   }
 
   canMove(): boolean {
-    return this.condition.equals(Condition.Active);
+    return this.condition == Condition.Active;
   }
 }
 export default HeroState;

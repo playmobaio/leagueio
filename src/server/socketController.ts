@@ -33,7 +33,11 @@ export function registerPlayerCast(game: Game, clientId: string, userInput: IUse
   }
 }
 
-export function registerPlayerClick(game: Game, clientId: string, clickEvent: IUserMouseClick): void {
+export function registerPlayerClick(
+  game: Game,
+  clientId: string,
+  clickEvent: IUserMouseClick): void {
+
   const player: Player = game.players.get(clientId);
   const cursorPoint = new Point(clickEvent.cursorPosition.x, clickEvent.cursorPosition.y)
   switch(clickEvent.click) {

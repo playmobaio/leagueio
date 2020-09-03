@@ -50,7 +50,12 @@ class Player {
     }
   }
 
-  static create(game: Game, id: string, socket: SocketIO.Socket, name: string, heroId: HeroID): Player {
+  static create(
+      game: Game,
+      id: string,
+      socket: SocketIO.Socket,
+      name: string,
+      heroId: HeroID): Player {
     const player = new Player(game, id, socket, name, heroId);
     game.emitter.emit(EmitEvent.NewPlayer, player);
     return player;

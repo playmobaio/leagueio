@@ -146,7 +146,7 @@ class Game {
     const score = this.currentFrame;
     const name = player.displayName == "" ? "Anonymous" : player.displayName;
     console.log(`submitting score: ${score} for ${name}`);
-    this.scoreCollection?.addScore({score, name, date: new Date()});
+    this.scoreCollection?.addScore({ score, name, date: new Date() });
   }
 
   getGameStates(): Array<IGameState> {

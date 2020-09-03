@@ -9,7 +9,7 @@ describe('Game', function() {
   const id = "id";
 
   beforeEach(function(){
-    game = Game.createTest();
+    game = new Game(false);
   });
 
   describe('#AddandRemovePlayers', function() {

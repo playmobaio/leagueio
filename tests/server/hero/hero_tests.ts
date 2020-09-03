@@ -18,7 +18,7 @@ describe('Hero', function() {
   let stateMock: TypeMoq.IMock<HeroState>;
 
   beforeEach(function(){
-    game = Game.createTest();
+    game = new Game(false);
     point = new Point(0, 1);
 
     player = TypeMoq.Mock.ofType<Player>();

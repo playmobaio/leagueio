@@ -12,7 +12,7 @@ describe('RangeBasedProjectile', function() {
   beforeEach(function() {
     creatorId = "testId";
     origin = new Point(0, 0);
-    game = Game.createTest();
+    game = new Game(false);
     projectile = new TestRangeBasedProjectile(game, creatorId, origin, Velocity.createNull());
   });
 

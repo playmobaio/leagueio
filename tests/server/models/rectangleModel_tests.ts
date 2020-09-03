@@ -9,7 +9,7 @@ describe('RectangleModel', function() {
   let point: Point;
 
   beforeEach(function() {
-    game = Game.createTest(true);
+    game = new Game(false);
 
     point = new Point(10, 10);
     game.emitter.emit(EmitEvent.NewBody, point);

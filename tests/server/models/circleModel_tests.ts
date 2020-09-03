@@ -9,7 +9,7 @@ describe('CircleModel', function() {
   let point: Point;
 
   beforeEach(function() {
-    game = Game.createTest();
+    game = new Game(false);
 
     point = new Point(10, 0);
     game.emitter.emit(EmitEvent.NewBody, point);

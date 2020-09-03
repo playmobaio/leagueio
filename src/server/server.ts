@@ -14,7 +14,7 @@ const SENTRY_DSN = "https://72774f64d7884b3f996466e24412134e@o439719.ingest.sent
 // Create the app
 const app = express();
 const agonesSDK = new AgonesSDK();
-const game = Game.create();
+const game = new Game();
 
 // Set up the server
 // process.env.PORT is related to deploying on heroku

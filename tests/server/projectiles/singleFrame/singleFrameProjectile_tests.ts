@@ -13,7 +13,7 @@ describe('SingleFrameProjectile', function() {
   let game: Game
 
   beforeEach(function() {
-    game = Game.createTest();
+    game = new Game(false);
     creatorId = "testId";
     position = new Point(0, 0);
     projectile = new TestSingleFrameProjectile(game, creatorId, armTimeInSeconds, position);

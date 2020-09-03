@@ -11,7 +11,7 @@ describe('Ranger', function() {
 
   beforeEach(function() {
     player = TypeMoq.Mock.ofType<Player>();
-    game = Game.createTest();
+    game = new Game(false);
     player.setup(x => x.game).returns(() => game);
     ranger = new Ranger(player.object);
   });

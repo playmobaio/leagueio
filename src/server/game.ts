@@ -26,7 +26,7 @@ class Game {
   gameLoop: NodeJS.Timeout;
   scoreCollection?: ScoreCollection;
 
-  private constructor(isProd: boolean) {
+  private constructor(isProd = true) {
     this.players = new Map<string, Player>();
     this.projectiles = new Map<string, Projectile>();
     this.collisionSystem = new Collisions();
@@ -38,14 +38,6 @@ class Game {
     if (isProd) {
       this.scoreCollection = new ScoreCollection();
     }
-  }
-
-  static create(): Game {
-    return new Game(true);
-  }
-
-  static createTest(): Game {
-    return new Game(false);
   }
 
   registerEvents(): void {

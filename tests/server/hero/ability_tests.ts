@@ -21,7 +21,7 @@ describe('Ability', function() {
   let player: Player;
 
   beforeEach(function() {
-    game = Game.createTest();
+    game = new Game(false);
     heroState = TypeMoq.Mock.ofType<HeroState>();
     hero = TypeMoq.Mock.ofType<Hero>();
     hero.setup(x => x.state).returns(() => heroState.object);

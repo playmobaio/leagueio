@@ -14,7 +14,7 @@ describe('Player', function() {
   beforeEach(function(){
     socket = TypeMoq.Mock.ofType<SocketIO.Socket>();
     socket.setup((socket) => socket.id).returns(() => id);
-    game = Game.createTest();
+    game = new Game(false);
     player = Player.create(game, id, socket.object, defaultName, defaultHeroID);
   });
 

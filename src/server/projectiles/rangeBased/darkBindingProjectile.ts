@@ -1,14 +1,15 @@
 import { Point, Velocity, Vector } from '../../models/basicTypes';
 import RangeBasedProjectile from './rangeBasedProjectile';
 import RectangleModel from '../../models/rectangleModel';
+import StunEffect from '../../hero/effects/stunEffect';
 import { IProjectile, ProjectileType } from '../../../models/interfaces/iGameState';
 import projectileConstants from '../../../models/constants/projectileConstants';
 import Player from '../../player';
 import Game from '../../game';
 
-export default class MysticShotProjectile extends RangeBasedProjectile {
-  static damage = 10;
-  static speed = 10;
+export default class DarkBindingProjectile extends RangeBasedProjectile {
+  static speed = 4;
+  static stunInSeconds = 0.5;
 
   constructor(game: Game, creatorId: string, origin: Point, dest: Point) {
     super(game, creatorId);
@@ -17,29 +18,31 @@ export default class MysticShotProjectile extends RangeBasedProjectile {
     // get angle and rotate by 90 degrees
     const angleInRadians = Vector.createFromPoints(origin, dest).getAngleInRadians() - Math.PI/2;
     this.model = new RectangleModel(game, origin,
-      projectileConstants.MysticShot.width,
-      projectileConstants.MysticShot.height,
+      projectileConstants.DarkBinding.width,
+      projectileConstants.DarkBinding.height,
       angleInRadians
     );
 
     const velocity = new Velocity(dest,
-      MysticShotProjectile.speed,
+      DarkBindingProjectile.speed,
       origin);
     this.model.setVelocity(velocity);
-  }
-
-  onPlayerCollision(player: Player): void {
-    player.receiveDamage(MysticShotProjectile.damage);
-    this.delete();
   }
 
   getRange(): number {
     return -1;
   }
 
+  onPlayerCollision(player: Player): void {
+    player.hero.state.addEffect(
+      new StunEffect(player.hero, DarkBindingProjectile.stunInSeconds));
+    player.socket.emit("S:RECEIVED_DAMAGE");
+    this.delete();
+  }
+
   toInterface(): IProjectile {
     return {
-      projectileType: ProjectileType.MysticShot,
+      projectileType: ProjectileType.DarkBinding,
       position: this.model.getPosition(),
       angle: this.model.getAngle(),
     };

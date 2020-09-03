@@ -1,14 +1,17 @@
 import Effect from './effect';
+import Hero from './hero';
+import CastEffect from './effects/castEffect';
 import Ability from './ability';
 import { Condition } from '../../models/interfaces/basicTypes';
 
 class HeroState {
+  hero: Hero;
   effects: Effect[];
   condition: Condition;
-  casting: Ability;
   queuedCast: Ability;
 
-  constructor() {
+  constructor(hero: Hero) {
+    this.hero = hero;
     this.effects = [];
     this.condition = Condition.Active;
   }
@@ -21,8 +24,9 @@ class HeroState {
     if (this.condition != Condition.Active) {
       return;
     }
-    this.casting = ability;
-    this.setCondition(Condition.Casting);
+
+    this.addEffect(new CastEffect(this.hero, ability));
+    this.updateCondition();
   }
 
   addEffect(effect: Effect): void {
@@ -46,13 +50,7 @@ class HeroState {
     this.queuedCast = null;
   }
 
-  update(): void {
-    if (this.casting?.hasCastTimeElapsed()) {
-      this.casting.onCast();
-      this.setCondition(Condition.Active);
-      this.casting = null;
-    }
-    this.queuedCast?.cast();
+  filterExpiredEffects(): void {
     this.effects = this.effects.filter((effect: Effect) => {
       const expired = effect.isExpired();
       if (expired) {
@@ -61,6 +59,27 @@ class HeroState {
       }
       return !expired;
     });
+  }
+
+  updateCondition(): void {
+    let finalCondition: Condition = Condition.Active;
+    for (const effect of this.effects) {
+      const effectCondition = effect.causes();
+      if (effectCondition > finalCondition) {
+        finalCondition = effectCondition;
+      }
+    }
+    this.setCondition(finalCondition);
+  }
+
+  update(): void {
+    this.filterExpiredEffects();
+    this.updateCondition();
+    this.queuedCast?.cast();
+  }
+
+  canMove(): boolean {
+    return this.condition == Condition.Active;
   }
 }
 export default HeroState;

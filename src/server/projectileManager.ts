@@ -6,6 +6,7 @@ import { Point, VectorBuilder } from './models/basicTypes';
 import { secondsToFrames } from './tools/frame';
 import FinalSparkProjectile from './projectiles/singleFrame/finalSparkProjectile';
 import MysticShotProjectile from './projectiles/rangeBased/mysticShotProjectile';
+import DarkBindingProjectile from './projectiles/rangeBased/darkBindingProjectile';
 
 // ProjectileManager autogenerate projectiles to shoot at the player.
 class ProjectileManager {
@@ -18,6 +19,7 @@ class ProjectileManager {
   static MYSTIC_SHOT_FREQUENCY = 6;
   static EZREAL_ULTIMATE_FREQUENCY = 4;
   static FINAL_SPARK_FREQUENCY = 3;
+  static DARK_BINDING_FREQUENCY = 10;
 
   static ID = "PROJECTILE_MANAGER";
   static AppxmLogBase2500 = 7.824
@@ -38,6 +40,7 @@ class ProjectileManager {
     this.maybeCreateEzrealUltimate();
     this.maybeCreateFinalSpark();
     this.maybeCreateMysticShot();
+    this.maybeCreateDarkBinding();
   }
 
   private setMultiplier(): void {
@@ -84,6 +87,18 @@ class ProjectileManager {
     }
 
     new MysticShotProjectile(
+      this.game,
+      ProjectileManager.ID,
+      this.getCastOrigin(),
+      this.getCastDestination());
+  }
+
+  private maybeCreateDarkBinding(): void {
+    if (!this.shouldCast(ProjectileManager.DARK_BINDING_FREQUENCY)) {
+      return;
+    }
+
+    new DarkBindingProjectile(
       this.game,
       ProjectileManager.ID,
       this.getCastOrigin(),

@@ -1,4 +1,5 @@
 import Hero from './hero';
+import { Condition } from '../../models/interfaces/basicTypes';
 import { secondsToFrames } from '../tools/frame';
 
 abstract class Effect {
@@ -19,6 +20,10 @@ abstract class Effect {
 
   abstract start(): void;
   abstract finish(): void;
+
+  causes(): Condition {
+    return Condition.Active;
+  }
 
   isExpired(): boolean {
     return this.endTime < this.hero.player.game.currentFrame;

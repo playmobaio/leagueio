@@ -1,8 +1,8 @@
 import { Velocity, Vector, Point } from "../models/basicTypes";
-import { Condition } from '../../models/interfaces/basicTypes';
 import { IHealth, IHero } from '../../models/interfaces/iGameState';
 import CircleModel from '../models/circleModel';
 import HeroState from './heroState';
+import { Condition } from '../../models/interfaces/basicTypes';
 import Ability from './ability';
 import Player from '../player';
 import constants from '../constants';
@@ -30,7 +30,7 @@ abstract class Hero {
     this.attackSpeed = constants.DEFAULT_PLAYER_ATTACK_SPEED;
     this.lastAutoAttackFrame = -1;
     this.player = player;
-    this.state = new HeroState();
+    this.state = new HeroState(this);
     this.model = new CircleModel(this.player.game,
       this.spawnLocation,
       constants.DEFAULT_CIRCLE_RADIUS);
@@ -124,8 +124,10 @@ abstract class Hero {
   }
 
   update(): void {
-    this.transform();
     this.state.update();
+    if (this.state.canMove()) {
+      this.transform();
+    }
   }
 }
 export default Hero;

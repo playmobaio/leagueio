@@ -26,7 +26,7 @@ class Game {
   gameLoop: NodeJS.Timeout;
   scoreCollection?: ScoreCollection;
 
-  private constructor(isProd = true) {
+  constructor(isProd = true) {
     this.players = new Map<string, Player>();
     this.projectiles = new Map<string, Projectile>();
     this.collisionSystem = new Collisions();

@@ -1,19 +1,14 @@
 import * as TypeMoq from "typemoq";
 import Player from "../../../../src/server/player";
-import Game from "../../../../src/server/game";
 import Brute from '../../../../src/server/hero/classes/brute';
 import BruteAuto from "../../../../src/server/hero/abilities/bruteAuto";
 
 describe('Brute', function() {
   let player: TypeMoq.IMock<Player>;
-  let game: Game;
   let brute: Brute;
 
   beforeEach(function() {
     player = TypeMoq.Mock.ofType<Player>();
-    game = Game.getInstance();
-    // new game not initiated, singleton. So just deleting projectiles
-    game.reset();
     brute = new Brute(player.object);
   });
 

@@ -7,13 +7,13 @@ import Game from "./game";
 import Ability from './hero/ability';
 import * as AgonesSDK from '@google-cloud/agones-sdk';
 
-export function clientJoinGame(socket: SocketIO.Socket, joinGame: IJoinGame): void {
-  Player.create(socket.id, socket, joinGame.name, joinGame.heroId);
-  Game.getInstance().start();
+export function clientJoinGame(game: Game, socket: SocketIO.Socket, joinGame: IJoinGame): void {
+  Player.create(game, socket.id, socket, joinGame.name, joinGame.heroId);
+  game.start();
 }
 
-export function registerPlayerCast(clientId: string, userInput: IUserInput): void {
-  const player: Player = Game.getInstance().players.get(clientId);
+export function registerPlayerCast(game: Game, clientId: string, userInput: IUserInput): void {
+  const player: Player = game.players.get(clientId);
   let ability: Ability;
   switch(userInput.io) {
   case PlayerCastIO.Q:
@@ -33,8 +33,12 @@ export function registerPlayerCast(clientId: string, userInput: IUserInput): voi
   }
 }
 
-export function registerPlayerClick(clientId: string, clickEvent: IUserMouseClick): void {
-  const player: Player = Game.getInstance().players.get(clientId);
+export function registerPlayerClick(
+  game: Game,
+  clientId: string,
+  clickEvent: IUserMouseClick): void {
+
+  const player: Player = game.players.get(clientId);
   const cursorPoint = new Point(clickEvent.cursorPosition.x, clickEvent.cursorPosition.y)
   switch(clickEvent.click) {
   case Click.Left:
@@ -48,9 +52,9 @@ export function registerPlayerClick(clientId: string, clickEvent: IUserMouseClic
 
 // declared outside so we can reuse the client
 const agonesSDK = new AgonesSDK();
-export async function disconnect(socket: SocketIO.Socket): Promise<void> {
+export async function disconnect(game: Game, socket: SocketIO.Socket): Promise<void> {
   console.log(`Client with id ${socket.id} has disconnected`);
-  Game.getInstance().reset();
+  game.reset();
   if (process.env.AGONES) {
     // reset game server to ready state
     await agonesSDK.ready();

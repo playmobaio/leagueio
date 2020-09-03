@@ -13,8 +13,7 @@ describe('bruteAuto', function() {
   let hero: TypeMoq.IMock<TestHero>;
 
   beforeEach(function() {
-    game = Game.getInstance();
-    game.reset();
+    game = new Game(false);
     hero = TypeMoq.Mock.ofType<TestHero>();
     bruteAuto = new BruteAuto(hero.object);
   });

@@ -18,11 +18,13 @@ describe('Hero', function() {
   let stateMock: TypeMoq.IMock<HeroState>;
 
   beforeEach(function(){
-    game = Game.getInstance();
-    game.reset();
+    game = new Game(false);
     point = new Point(0, 1);
+
     player = TypeMoq.Mock.ofType<Player>();
+    player.setup(x => x.game).returns(() => game);
     hero = new TestHero(player.object);
+
     mock = TypeMoq.Mock.ofInstance(hero);
     mock.callBase = true;
     stateMock = TypeMoq.Mock.ofType<HeroState>();
@@ -69,6 +71,8 @@ describe('Hero', function() {
 
   it("calling perform attack while heroState is active will autoAttack", function() {
     stateMock.setup(x => x.condition).returns(() => Condition.Active);
+    mock.setup(x => x.performAutoAttack(TypeMoq.It.isAny()));
+
     mock.object.performAttack(point);
     mock.verify(x => x.performAutoAttack(TypeMoq.It.isAny()), TypeMoq.Times.once());
   });

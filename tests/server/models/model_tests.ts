@@ -16,8 +16,7 @@ describe('Model', function() {
   }
 
   beforeEach(function() {
-    game = Game.getInstance();
-    game.reset();
+    game = new Game(false);
 
     // a square with side length of 10 and the bottom left point at the origin
     square = new Polygon(0, 0, [[0, 0], [10, 0], [10, 10], [0, 10]]);

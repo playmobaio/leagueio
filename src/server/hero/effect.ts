@@ -1,5 +1,4 @@
 import Hero from './hero';
-import Game from '../game';
 import { secondsToFrames } from '../tools/frame';
 
 abstract class Effect {
@@ -12,7 +11,7 @@ abstract class Effect {
       seconds: number,
       description: string) {
     this.hero = hero;
-    this.startTime = Game.getInstance().currentFrame;
+    this.startTime = hero.player.game.currentFrame;
     this.endTime = this.startTime + secondsToFrames(seconds);
     console.log(`StartTime: ${this.startTime}. EndTime: ${this.endTime}`);
     this.description = description;
@@ -22,7 +21,7 @@ abstract class Effect {
   abstract finish(): void;
 
   isExpired(): boolean {
-    return this.endTime < Game.getInstance().currentFrame;
+    return this.endTime < this.hero.player.game.currentFrame;
   }
 }
 

@@ -1,18 +1,14 @@
 import * as TypeMoq from "typemoq";
 import Hero from '../../../../src/server/hero/hero';
 import HailOfArrows from "../../../../src/server/hero/abilities/hailOfArrows";
-import Game from "../../../../src/server/game";
 
 describe('HailOfArrows', function() {
   let hailOfArrows: HailOfArrows;
   let hero: TypeMoq.IMock<Hero>;
-  let game: Game;
 
   beforeEach(function() {
     hero = TypeMoq.Mock.ofType<Hero>();
     hailOfArrows = new HailOfArrows(hero.object);
-    game = Game.getInstance();
-    game.reset();
   });
 
   it('smoke', function() {

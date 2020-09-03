@@ -13,7 +13,7 @@ describe('Projectile', function() {
     creatorId = "testId";
     origin = new Point(0, 0);
     velocity = new Velocity({ x: 1, y: 0 }, 1);
-    projectile = new TestProjectile(Game.getInstance(), creatorId, origin, velocity, 10);
+    projectile = new TestProjectile(new Game(false), creatorId, origin, velocity, 10);
   });
 
   describe('#update', function() {

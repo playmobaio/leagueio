@@ -15,7 +15,6 @@ import constants from './constants';
 
 // Server
 class Game {
-  private static instance: Game;
   players: Map<string, Player>;
   projectiles: Map<string, Projectile>;
   gameMap: GameMap;
@@ -25,9 +24,9 @@ class Game {
   collisionSystem: Collisions;
   projectileManager: ProjectileManager;
   gameLoop: NodeJS.Timeout;
-  scoreCollection: ScoreCollection;
+  scoreCollection?: ScoreCollection;
 
-  private constructor() {
+  constructor(isProd = true) {
     this.players = new Map<string, Player>();
     this.projectiles = new Map<string, Projectile>();
     this.collisionSystem = new Collisions();
@@ -36,15 +35,9 @@ class Game {
     this.emitter = new EventEmitter;
     this.registerEvents();
     this.projectileManager = new ProjectileManager(this);
-    this.scoreCollection = new ScoreCollection();
-  }
-
-  static getInstance(): Game {
-    if (!Game.instance) {
-      Game.instance = new Game();
+    if (isProd) {
+      this.scoreCollection = new ScoreCollection();
     }
-
-    return Game.instance;
   }
 
   registerEvents(): void {
@@ -90,10 +83,9 @@ class Game {
     console.log("Game Start");
     this.currentFrame = 0;
     this.gameLoop = setInterval(() => {
-      const game = Game.getInstance();
-      game.update();
-      const gameState: Array<IGameState> = game.getGameStates();
-      game.sendGameStates(gameState);
+      this.update();
+      const gameState: Array<IGameState> = this.getGameStates();
+      this.sendGameStates(gameState);
     }, 1000 / constants.FRAME_RATE);
   }
 
@@ -140,6 +132,13 @@ class Game {
 
     // update frame counter
     this.currentFrame++;
+  }
+
+  submitScore(player: Player): void {
+    const score = this.currentFrame;
+    const name = player.displayName == "" ? "Anonymous" : player.displayName;
+    console.log(`submitting score: ${score} for ${name}`);
+    this.scoreCollection?.addScore({ score, name, date: new Date() });
   }
 
   getGameStates(): Array<IGameState> {

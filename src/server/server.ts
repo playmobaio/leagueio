@@ -7,12 +7,14 @@ import { IUserMouseClick } from '../models/interfaces/iUserMouseClick';
 import * as AgonesSDK from '@google-cloud/agones-sdk';
 import * as apiController from "./apiController";
 import * as Sentry from "@sentry/node";
+import Game from './game';
 
 const SENTRY_DSN = "https://72774f64d7884b3f996466e24412134e@o439719.ingest.sentry.io/5406960";
 
 // Create the app
 const app = express();
 const agonesSDK = new AgonesSDK();
+const game = new Game();
 
 // Set up the server
 // process.env.PORT is related to deploying on heroku
@@ -24,24 +26,26 @@ const server = app.listen(process.env.PORT || 3000, function() {
 
 app.use(express.static(path.join(__dirname, "../client")));
 app.get("/server", apiController.requestServer);
-app.get("/scores", apiController.getTopScores);
+app.get("/scores", async(_, res) => {
+  apiController.getTopScores(game, res);
+});
+
 
 const io = require("socket.io").listen(server);
 io.sockets.on(
   "connect",
   function(socket: SocketIO.Socket) {
     console.log("We have a new client: " + socket.id);
-
     socket.on("C:JOIN_GAME", async(joinGame: IJoinGame) => {
-      socketController.clientJoinGame(socket, joinGame);
+      socketController.clientJoinGame(game, socket, joinGame);
     });
     socket.on("C:USER_CAST", (userInput: IUserInput) => {
-      socketController.registerPlayerCast(socket.id, userInput);
+      socketController.registerPlayerCast(game, socket.id, userInput);
     });
     socket.on("C:USER_MOUSE_CLICK", (userMouseClick: IUserMouseClick) => {
-      socketController.registerPlayerClick(socket.id, userMouseClick);
+      socketController.registerPlayerClick(game, socket.id, userMouseClick);
     });
-    socket.on('disconnect', async() => await socketController.disconnect(socket));
+    socket.on('disconnect', async() => await socketController.disconnect(game, socket));
   }
 );
 

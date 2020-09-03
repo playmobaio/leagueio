@@ -21,16 +21,15 @@ describe('Ability', function() {
   let player: Player;
 
   beforeEach(function() {
+    game = new Game(false);
     heroState = TypeMoq.Mock.ofType<HeroState>();
     hero = TypeMoq.Mock.ofType<Hero>();
     hero.setup(x => x.state).returns(() => heroState.object);
     abilityA = new TestAbility(hero.object);
     socket = TypeMoq.Mock.ofType<SocketIO.Socket>();
-    player = Player.create("id", socket.object, "name", 1);
+    player = Player.create(game, "id", socket.object, "name", 1);
     hero.setup(x => x.player).returns(() => player);
     abilityA.nextAvailableCastFrame = 0;
-    game = Game.getInstance();
-    game.reset();
     Abilities[abilityA.name] = { model: null, range: 0, abilityName: abilityA.name };
     abilityB = new TestAbility2(hero.object);
     abilityB.nextAvailableCastFrame = 0;

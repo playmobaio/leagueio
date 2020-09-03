@@ -14,10 +14,8 @@ describe('Player', function() {
   beforeEach(function(){
     socket = TypeMoq.Mock.ofType<SocketIO.Socket>();
     socket.setup((socket) => socket.id).returns(() => id);
-    game = Game.getInstance();
-    // new game not initiated, singleton. So just deleting projectiles
-    game.reset();
-    player = Player.create(id, socket.object, defaultName, defaultHeroID);
+    game = new Game(false);
+    player = Player.create(game, id, socket.object, defaultName, defaultHeroID);
   });
 
   it("health cannot be negative", function() {

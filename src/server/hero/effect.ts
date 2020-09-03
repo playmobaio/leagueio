@@ -1,5 +1,4 @@
 import Hero from './hero';
-import Game from '../game';
 import { Condition } from '../../models/interfaces/basicTypes';
 import { secondsToFrames } from '../tools/frame';
 

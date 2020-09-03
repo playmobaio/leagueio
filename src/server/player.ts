@@ -9,6 +9,7 @@ import Brute from './hero/classes/brute';
 import Dodge from './hero/classes/dodge';
 
 class Player {
+  game: Game;
   id: string;
   username: string;
   displayName: string;
@@ -20,7 +21,8 @@ class Player {
   health: IHealth;
   range: number;
 
-  constructor(id: string, socket: SocketIO.Socket, name: string, heroId: HeroID) {
+  constructor(game: Game, id: string, socket: SocketIO.Socket, name: string, heroId: HeroID) {
+    this.game = game;
     this.id = id;
     this.displayName = name;
     this.socket = socket;
@@ -48,9 +50,9 @@ class Player {
     }
   }
 
-  static create(id: string, socket: SocketIO.Socket, name: string, heroId: HeroID): Player {
-    const player = new Player(id, socket, name, heroId);
-    Game.getInstance().emitter.emit(EmitEvent.NewPlayer, player);
+  static create(game: Game, id: string, socket: SocketIO.Socket, name: string, heroId: HeroID): Player {
+    const player = new Player(game, id, socket, name, heroId);
+    game.emitter.emit(EmitEvent.NewPlayer, player);
     return player;
   }
 
@@ -65,20 +67,9 @@ class Player {
   }
 
   endPlayerGame(): void {
-    const score = Game.getInstance().currentFrame;
-    console.log(`Score ${score}`);
-    this.addScore(score);
-    Game.getInstance().reset();
+    this.game.submitScore(this);
+    this.game.reset();
   }
-
-  addScore(score: number): void {
-    Game.getInstance().scoreCollection.addScore({
-      score: score,
-      name: this.displayName == "" ? "Anonymous" : this.displayName,
-      date: new Date()
-    });
-  }
-
   update(): void {
     this.hero.update();
   }

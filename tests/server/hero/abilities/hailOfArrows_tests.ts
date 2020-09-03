@@ -11,8 +11,7 @@ describe('HailOfArrows', function() {
   beforeEach(function() {
     hero = TypeMoq.Mock.ofType<Hero>();
     hailOfArrows = new HailOfArrows(hero.object);
-    game = Game.getInstance();
-    game.reset();
+    game = Game.createTest();
   });
 
   it('smoke', function() {

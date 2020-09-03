@@ -10,10 +10,10 @@ describe('SingleFrameProjectile', function() {
   let creatorId: string;
   const armTimeInFrames = 1;
   const armTimeInSeconds = framesToSeconds(armTimeInFrames);
-  const game = Game.getInstance();
+  let game: Game
 
   beforeEach(function() {
-    game.reset();
+    game = Game.createTest();
     creatorId = "testId";
     position = new Point(0, 0);
     projectile = new TestSingleFrameProjectile(game, creatorId, armTimeInSeconds, position);

@@ -11,9 +11,7 @@ describe('Brute', function() {
 
   beforeEach(function() {
     player = TypeMoq.Mock.ofType<Player>();
-    game = Game.getInstance();
-    // new game not initiated, singleton. So just deleting projectiles
-    game.reset();
+    game = Game.createTest();
     brute = new Brute(player.object);
   });
 

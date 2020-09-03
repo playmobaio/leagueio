@@ -71,7 +71,7 @@ export async function requestServer(_, res): Promise<void> {
   }
 }
 
-export async function getTopScores(_, res): Promise<void> {
-  const topScores = await Game.getInstance().scoreCollection.getTopN(10);
+export async function getTopScores(game: Game, res): Promise<void> {
+  const topScores = await game.scoreCollection?.getTopN(10);
   res.json(topScores);
 }

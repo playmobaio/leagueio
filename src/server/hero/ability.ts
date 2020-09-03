@@ -1,5 +1,4 @@
 import Hero from './hero';
-import Game from '../game';
 import { secondsToFrames } from '../tools/frame';
 import constants from '../constants';
 import { ICasting } from '../../models/interfaces/iAbility';
@@ -27,7 +26,7 @@ abstract class Ability {
   abstract onCast(): void;
 
   cast(): void {
-    const currFrame = Game.getInstance().currentFrame;
+    const currFrame = this.hero.player.game.currentFrame;
     if (this.nextAvailableCastFrame > currFrame) {
       return;
     }
@@ -67,7 +66,7 @@ abstract class Ability {
   }
 
   hasCastTimeElapsed(): boolean {
-    return this.castTimeExpiration < Game.getInstance().currentFrame;
+    return this.castTimeExpiration < this.hero.player.game.currentFrame;
   }
 }
 export default Ability;

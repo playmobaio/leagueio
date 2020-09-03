@@ -5,7 +5,6 @@ import CircleModel from '../models/circleModel';
 import HeroState from './heroState';
 import Ability from './ability';
 import Player from '../player';
-import Game from '../game';
 import constants from '../constants';
 import { getFramesBetweenAutoAttack } from '../tools/frame';
 
@@ -32,7 +31,7 @@ abstract class Hero {
     this.lastAutoAttackFrame = -1;
     this.player = player;
     this.state = new HeroState();
-    this.model = new CircleModel(Game.getInstance(),
+    this.model = new CircleModel(this.player.game,
       this.spawnLocation,
       constants.DEFAULT_CIRCLE_RADIUS);
   }
@@ -69,13 +68,13 @@ abstract class Hero {
       return;
     }
     this.onAutoAttack(dest);
-    this.lastAutoAttackFrame = Game.getInstance().currentFrame;
+    this.lastAutoAttackFrame = this.player.game.currentFrame;
   }
 
   abstract onAutoAttack(dest: Point): void;
 
   respawn(): void {
-    this.model = new CircleModel(Game.getInstance(),
+    this.model = new CircleModel(this.player.game,
       this.spawnLocation,
       constants.DEFAULT_CIRCLE_RADIUS);
   }
@@ -85,7 +84,7 @@ abstract class Hero {
       return true;
     }
     const framesBetweenAutoAttacks = getFramesBetweenAutoAttack(this.attackSpeed);
-    return this.lastAutoAttackFrame + framesBetweenAutoAttacks <= Game.getInstance().currentFrame;
+    return this.lastAutoAttackFrame + framesBetweenAutoAttacks <= this.player.game.currentFrame;
   }
 
   shouldStopHero(): boolean {

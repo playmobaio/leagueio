@@ -11,9 +11,8 @@ describe('Ranger', function() {
 
   beforeEach(function() {
     player = TypeMoq.Mock.ofType<Player>();
-    game = Game.getInstance();
-    // new game not initiated, singleton. So just deleting projectiles
-    game.reset();
+    game = Game.createTest();
+    player.setup(x => x.game).returns(() => game);
     ranger = new Ranger(player.object);
   });
 

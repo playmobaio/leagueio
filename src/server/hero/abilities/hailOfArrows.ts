@@ -12,7 +12,7 @@ class HailOfArrows extends Ability {
     //    const shape = Abilities[this.name].castingShape as ICircle;
     //    const point = new Point(this.targetPosition.x, this.targetPosition.y);
     //    const circle = new Circle(shape.radius, point);
-    //    const game = Game.getInstance();
+    //    const game = this.hero.player.game;
     //    game.players.forEach((player) => {
     //      if (player.id != this.hero.player.id &&
     //        player.hero?.model?.collidesWithCircle(circle)) {

@@ -15,8 +15,7 @@ describe('TimedProjectile', function() {
   beforeEach(function() {
     creatorId = "testId";
     origin = new Point(0, 0);
-    game = Game.getInstance();
-    game.reset();
+    game = Game.createTest();
     projectile = new TestTimedProjectile(game, creatorId, lifespanInSeconds, origin);
   });
 

@@ -7,6 +7,7 @@ import AttackSpeedModifierEffect from
 import { Times } from 'typemoq';
 
 describe('AttackSpeedModifierEffect', function() {
+  let hero: TypeMoq.IMock<Hero>;
   let attackSpeedModifierEffect: AttackSpeedModifierEffect;
   const seconds = 10;
   const multiplier = 2;

@@ -7,8 +7,10 @@ abstract class Effect {
   startTime: number;
   endTime: number;
   description: string;
+  hero: Hero;
 
-  constructor(seconds: number,
+  constructor(hero: Hero,
+      seconds: number,
       description: string) {
     this.hero = hero;
     this.startTime = hero.player.game.currentFrame;
@@ -17,8 +19,8 @@ abstract class Effect {
     this.description = description;
   }
 
-  abstract start(hero: Hero): void;
-  abstract finish(hero: Hero): void;
+  abstract start(): void;
+  abstract finish(): void;
 
   causes(): Condition {
     return Condition.Active;

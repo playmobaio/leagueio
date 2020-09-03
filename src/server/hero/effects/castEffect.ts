@@ -1,18 +1,22 @@
 import Effect from '../effect';
 import Hero from '../hero';
 import Condition from '../condition';
+import Ability from '../ability';
 
 class CastEffect extends Effect {
-  constructor(seconds: number) {
-    super(seconds, `hero casting for ${seconds} seconds`);
+  ability: Ability;
+
+  constructor(hero: Hero, ability: Ability) {
+    super(hero, ability.castTime, `hero casting for ${ability.castTime} seconds`);
+    this.ability = ability;
   }
 
-  start(_: Hero): void {
+  start(): void {
     return;
   }
 
-  finish(_: Hero): void {
-    return;
+  finish(): void {
+    this.ability.onCast();
   }
 
   causes(): Condition {

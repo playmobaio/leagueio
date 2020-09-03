@@ -5,15 +5,15 @@ import Condition from '../condition';
 class StunEffect extends Effect {
   duration: number;
 
-  constructor(seconds: number) {
-    super(seconds, `stunned for ${seconds} seconds`);
+  constructor(hero: Hero, seconds: number) {
+    super(hero, seconds, `stunned for ${seconds} seconds`);
   }
 
-  start(_: Hero): void {
+  start(): void {
     return;
   }
 
-  finish(_: Hero): void {
+  finish(): void {
     return;
   }
 

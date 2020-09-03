@@ -8,7 +8,6 @@ class HeroState {
   hero: Hero;
   effects: Effect[];
   condition: Condition;
-  casting: Ability;
   queuedCast: Ability;
 
   constructor(hero: Hero) {
@@ -25,12 +24,11 @@ class HeroState {
     if (this.condition != Condition.Active) {
       return;
     }
-    this.casting = ability;
-    this.addEffect(new CastEffect(ability.castTime));
+    this.addEffect(new CastEffect(this.hero, ability));
   }
 
   addEffect(effect: Effect): void {
-    effect.start(this.hero);
+    effect.start();
     console.log(`Using ${effect.description}`);
     this.effects.push(effect);
   }
@@ -54,7 +52,7 @@ class HeroState {
     this.effects = this.effects.filter((effect: Effect) => {
       const expired = effect.isExpired();
       if (expired) {
-        effect.finish(this.hero);
+        effect.finish();
         console.log(`Resetting ${effect.description}`);
       }
       return !expired;
@@ -75,14 +73,6 @@ class HeroState {
   update(): void {
     this.filterExpiredEffects();
     this.updateCondition();
-
-    if (this.condition.equals(Condition.Casting)
-      && this.casting?.hasCastTimeElapsed()) {
-
-      this.casting.onCast();
-      this.setCondition(Condition.Active);
-      this.casting = null;
-    }
     this.queuedCast?.cast();
   }
 

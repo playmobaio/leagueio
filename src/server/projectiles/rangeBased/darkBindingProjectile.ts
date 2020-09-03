@@ -11,8 +11,6 @@ export default class DarkBindingProjectile extends RangeBasedProjectile {
   static speed = 4;
   static stunInSeconds = 0.5;
 
-  collidedPlayerIds: Set<string>;
-
   constructor(game: Game, creatorId: string, origin: Point, dest: Point) {
     super(game, creatorId);
 
@@ -29,7 +27,6 @@ export default class DarkBindingProjectile extends RangeBasedProjectile {
       DarkBindingProjectile.speed,
       origin);
     this.model.setVelocity(velocity);
-    this.collidedPlayerIds = new Set();
   }
 
   getRange(): number {
@@ -38,7 +35,7 @@ export default class DarkBindingProjectile extends RangeBasedProjectile {
 
   onPlayerCollision(player: Player): void {
     player.hero.state.addEffect(
-      new StunEffect(DarkBindingProjectile.stunInSeconds));
+      new StunEffect(player.hero, DarkBindingProjectile.stunInSeconds));
     player.socket.emit("S:RECEIVED_DAMAGE");
     this.delete();
   }

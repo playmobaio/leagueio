@@ -13,6 +13,7 @@ class GameScene extends Phaser.Scene {
   socket: SocketIO.Socket;
   gameObjects: Phaser.GameObjects.GameObject[];
   client: Phaser.GameObjects.Arc;
+  gameState: IGameState;
 
   constructor()
   {
@@ -46,12 +47,19 @@ class GameScene extends Phaser.Scene {
     const inputController = PhaserInputController.getInstance();
     this.socket = inputController.socket;
     // Register socket event to bind to render function
-    this.socket.on("S:UPDATE_GAME_STATE", this.render.bind(this));
+    this.socket.on("S:UPDATE_GAME_STATE", this.setGameState.bind(this));
     this.socket.on("S:RECEIVED_DAMAGE", () => drawClientReceivedDamage(this));
     ["Q", "W", "E"].forEach(this.addKey.bind(this));
   }
 
+  setGameState(userGame: IGameState): void {
+    this.gameState = userGame;
+  }
+
   render(userGame: IGameState): void {
+    if (userGame == null) {
+      return;
+    }
     // cleanup old game objects
     this.gameObjects.forEach(x => x.destroy());
     this.gameObjects = [];
@@ -83,6 +91,7 @@ class GameScene extends Phaser.Scene {
     if (this.input.mousePointer.isDown) {
       PhaserInputController.getInstance().sendMouseClick(this);
     }
+    this.render(this.gameState);
   }
 }
 export default GameScene;

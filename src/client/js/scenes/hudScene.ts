@@ -5,6 +5,7 @@ import { drawGameTime } from './draw/gameTime';
 import drawAbilityButtons from './draw/abilities';
 import { ICasting } from '../../../models/interfaces/iAbility';
 import { IGameState } from '../../../models/interfaces/iGameState';
+import * as mixpanel from 'mixpanel-browser';
 
 class HudScene extends Phaser.Scene {
   socket: SocketIO.Socket;
@@ -36,6 +37,7 @@ class HudScene extends Phaser.Scene {
       this.casting.set(casting.abilityName, casting.coolDownLastFrame);
     });
     this.socket.on("S:END_GAME", () => {
+      mixpanel.track('finish game', { score: this.score });
       this.socket.disconnect(true);
       this.cameras.main.fadeOut(20000, 255, 255, 255);
       document.getElementById("final-score").innerText = this.gameState.currentFrame.toString();

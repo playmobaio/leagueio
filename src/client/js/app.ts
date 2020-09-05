@@ -7,6 +7,10 @@ import HudScene from './scenes/hudScene';
 import constants from './constants';
 import { CreateScoreEntries } from './scores';
 import { IScore } from '../../server/models/iScore';
+import * as mixpanel from 'mixpanel-browser';
+import registerMixpanel from './metrics';
+
+registerMixpanel();
 
 let phaserGame:  Phaser.Game;
 function InitializePhaserUI(fullScreen: boolean): void {
@@ -30,10 +34,9 @@ function InitializePhaserUI(fullScreen: boolean): void {
   }
 }
 
-function InitializeSocket(server: string): void {
+function InitializeSocket(server: string, name: string): void {
   console.log("Initializing Socket");
   const socket: SocketIO.Socket = io(server);
-  const name: string = (document.getElementById("playerName") as HTMLInputElement).value;
   const heroId: HeroID = HeroID.Dodge;
   const joinGame: IJoinGame = { name, heroId };
   PhaserInputController.createInstance(socket);
@@ -62,17 +65,25 @@ function IsPublicUrl(server: string): boolean {
 }
 
 async function startGame(): Promise<void> {
+  mixpanel.time_event("Start Game");
   const fullScreen: boolean = (document.getElementById("fullScreen") as HTMLInputElement).checked;
   const server = await GetGameServer();
+  const name: string = (document.getElementById("playerName") as HTMLInputElement).value;
+
   if (server && IsPublicUrl(server)) {
-    InitializeSocket(server);
+    InitializeSocket(server, name);
     InitializePhaserUI(fullScreen);
   }
+  mixpanel.track("Start Game", {
+    fullScreen,
+    name: name == "" ? undefined : name
+  });
 }
 
 document.getElementById("join-game").onclick = startGame;
 
 document.getElementById("return-main-menu").onclick = (): void => {
+  mixpanel.track('return main menu');
   phaserGame.destroy(true);
   phaserGame.events.once("destroy", () => {
     document.getElementById("end-menu").removeAttribute("style");
@@ -81,6 +92,7 @@ document.getElementById("return-main-menu").onclick = (): void => {
 }
 
 document.getElementById("play-again").onclick = (): void => {
+  mixpanel.track('play again');
   phaserGame.destroy(true);
   document.getElementById("end-menu").removeAttribute("style");
   phaserGame.events.once("destroy", startGame);

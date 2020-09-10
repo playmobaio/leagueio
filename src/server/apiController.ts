@@ -89,6 +89,7 @@ export async function proxyMixpanelRequests(req: Request, res: Response): Promis
   delete headers.host;
 
   const { body, statusCode, rawHeaders } = await got(mixpanelUrl, { headers, agent: false });
+  console.log('finished request');
   res.body = body;
   res.status = statusCode;
   res.headers = rawHeaders;

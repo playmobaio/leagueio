@@ -9,6 +9,7 @@ import { CreateScoreEntries } from './scores';
 import { IScore } from '../../server/models/iScore';
 import * as mixpanel from 'mixpanel-browser';
 import registerMixpanel from './metrics';
+import MixpanelEvents from './mixpanelEvents'
 
 registerMixpanel();
 
@@ -74,7 +75,7 @@ async function startGame(): Promise<void> {
     InitializeSocket(server, name);
     InitializePhaserUI(fullScreen);
   }
-  mixpanel.track("Start Game", {
+  mixpanel.track(MixpanelEvents.START_GAME, {
     fullScreen,
     name: name == "" ? undefined : name
   });
@@ -83,7 +84,7 @@ async function startGame(): Promise<void> {
 document.getElementById("join-game").onclick = startGame;
 
 document.getElementById("return-main-menu").onclick = (): void => {
-  mixpanel.track('return main menu');
+  mixpanel.track(MixpanelEvents.RETURN_MAIN_MENU);
   phaserGame.destroy(true);
   phaserGame.events.once("destroy", () => {
     document.getElementById("end-menu").removeAttribute("style");
@@ -92,7 +93,7 @@ document.getElementById("return-main-menu").onclick = (): void => {
 }
 
 document.getElementById("play-again").onclick = (): void => {
-  mixpanel.track('play again');
+  mixpanel.track(MixpanelEvents.PLAY_AGAIN);
   phaserGame.destroy(true);
   document.getElementById("end-menu").removeAttribute("style");
   phaserGame.events.once("destroy", startGame);

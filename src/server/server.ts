@@ -7,9 +7,11 @@ import { IUserMouseClick } from '../models/interfaces/iUserMouseClick';
 import * as AgonesSDK from '@google-cloud/agones-sdk';
 import * as apiController from "./apiController";
 import * as Sentry from "@sentry/node";
+import got from "got";
 import Game from './game';
 
 const SENTRY_DSN = "https://72774f64d7884b3f996466e24412134e@o439719.ingest.sentry.io/5406960";
+const MIXPANEL_API_URL = 'https://api.mixpanel.com'
 
 // Create the app
 const app = express();
@@ -29,6 +31,22 @@ app.get("/server", apiController.requestServer);
 app.get("/scores", async(_, res) => {
   apiController.getTopScores(game, res);
 });
+
+const mixpanelProxyPrefix = "/mixpanel-proxy";
+app.get(`${mixpanelProxyPrefix}/*`,
+  async(req: express.Request, res: express.Response, _): Promise<void> => {
+    const mixpanelUrl = `${MIXPANEL_API_URL}${req.originalUrl.substr(mixpanelProxyPrefix.length)}`;
+    const headers = {
+      ...req.headers,
+      'X-Forwarded-For': req.ip
+    };
+    delete headers.host;
+
+    const { body, statusCode, rawHeaders } = await got(mixpanelUrl, { headers, agent: false });
+    res.body = body;
+    res.status = statusCode;
+    res.headers = rawHeaders;
+  });
 
 
 const io = require("socket.io").listen(server);

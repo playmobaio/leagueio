@@ -1,33 +1,49 @@
 import HudScene from "../hudScene";
 import constants from '../../constants';
 import { HeroAbilities } from '../../../../models/data/heroAbilities';
-import { IAbilityKey, AbilityKeys } from '../../../../models/data/abilityKeys';
+import { AbilityKeys } from '../../../../models/data/abilityKeys';
 import PhaserInputController from '../../phaserInputController';
 
 const abilityButtonWidth = 40;
 const buttonPadding = 10;
-const buttonArea = 3 * abilityButtonWidth;
 const gray = 0x808080;
 const white = 0xFFFFFF;
 const fromBottomOfScreen = 50;
 const canvasWidth = constants.DEFAULT_MAP_VIEW_WIDTH;
 const canvasHeight = constants.DEFAULT_MAP_VIEW_HEIGHT;
-const buttonAreaXOffset = canvasWidth / 2 - buttonArea / 2 + buttonPadding;
+
+function getActiveAbilities(heroId: number): number {
+  let total = 0;
+  for (const key of AbilityKeys) {
+    if (HeroAbilities[heroId][key.key] != null) {
+      total++;
+    }
+  }
+  return total;
+}
 
 function drawAbilityButtons(scene: HudScene, frame: number): void {
   const heroId = PhaserInputController.getInstance().heroId;
-  for (let i = 0; i < 3; i++) {
-    const x = buttonAreaXOffset + i * (abilityButtonWidth + buttonPadding);
-    const y = canvasHeight - fromBottomOfScreen;
-    const abilityKey: IAbilityKey = AbilityKeys[i];
+  const numButtons = getActiveAbilities(heroId);
+  const buttonArea = numButtons * abilityButtonWidth;
+  const gapArea = (numButtons - 1) * buttonPadding;
+  const buttonAreaXOffset = (canvasWidth - buttonArea)/ 2 + gapArea;
+  let buttonIdx = 0;
+  for (const abilityKey of AbilityKeys) {
     const abilityName: string = HeroAbilities[heroId][abilityKey.key]?.abilityName;
+    if (abilityName == null) {
+      continue;
+    }
+    const x = buttonAreaXOffset + buttonIdx * (abilityButtonWidth + buttonPadding);
+    const y = canvasHeight - fromBottomOfScreen;
+
     const coolDownLeft: number = scene.getCoolDownLeft(abilityName, frame);
-    const colorFill = abilityName == null || coolDownLeft > 0 ? gray : white;
+    const colorFill = coolDownLeft > 0 ? gray : white;
     const text = coolDownLeft > 0 ? Math.floor(coolDownLeft).toString() : abilityKey.letter;
 
     // Create containers if they don't exist
     let label: Phaser.GameObjects.Text;
-    if (scene.abilities.length != 3) {
+    if (scene.abilities.length != numButtons) {
       const rectangle = scene.add.rectangle(
         0,
         0,
@@ -39,12 +55,13 @@ function drawAbilityButtons(scene: HudScene, frame: number): void {
       scene.abilities.push(container);
     } else {
       // Update existing labels and colors
-      (scene.abilities[i].first as Phaser.GameObjects.Rectangle).setFillStyle(colorFill);
-      label = scene.abilities[i].last as Phaser.GameObjects.Text;
+      (scene.abilities[buttonIdx].first as Phaser.GameObjects.Rectangle).setFillStyle(colorFill);
+      label = scene.abilities[buttonIdx].last as Phaser.GameObjects.Text;
       label.setText(text);
     }
     // center text in container
     label.setOrigin(0.5);
+    buttonIdx++;
   }
 }
 

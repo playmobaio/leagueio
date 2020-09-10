@@ -7,6 +7,9 @@ import Hero from './hero/hero';
 import Ranger from './hero/classes/ranger';
 import Brute from './hero/classes/brute';
 import Dodge from './hero/classes/dodge';
+import Flash from './hero/abilities/flash';
+import Ability from './hero/ability';
+import Ghost from './hero/abilities/ghost';
 
 class Player {
   game: Game;
@@ -20,6 +23,8 @@ class Player {
   attackSpeed: number;
   health: IHealth;
   range: number;
+  fAbility: Ability;
+  dAbility: Ability;
 
   constructor(game: Game, id: string, socket: SocketIO.Socket, name: string, heroId: HeroID) {
     this.game = game;
@@ -31,6 +36,8 @@ class Player {
       current: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH,
       maximum: constants.DEFAULT_PLAYER_MAXIMUM_HEALTH };
     this.hero = this.createHero(heroId);
+    this.fAbility = new Flash(this.hero);
+    this.dAbility = new Ghost(this.hero);
   }
 
   createHero(heroId: HeroID): Hero {

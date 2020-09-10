@@ -10,8 +10,7 @@ class Ghost extends Ability {
 
   onCast(): void {
     console.log("Casting Ghost");
-    const effect = new MovementSpeedModifierEffect(this.hero, 3, 1.5);
-    this.hero.state.addEffect(effect);
+    this.hero.state.addEffect(new MovementSpeedModifierEffect(this.hero, 3, 1.5));
   }
 }
 

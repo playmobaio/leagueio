@@ -1,3 +1,5 @@
+import { Request, Response } from "express";
+import got from "got";
 import * as exec from 'await-exec'
 import Game from './game';
 
@@ -74,4 +76,20 @@ export async function requestServer(_, res): Promise<void> {
 export async function getTopScores(game: Game, res): Promise<void> {
   const topScores = await game.scoreCollection?.getTopN(10);
   res.json(topScores);
+}
+
+const MIXPANEL_API_URL = 'https://api.mixpanel.com'
+const mixpanelProxyPrefix = "/mixpanel-proxy";
+export async function proxyMixpanelRequests(req: Request, res: Response): Promise<void> {
+  const mixpanelUrl = `${MIXPANEL_API_URL}${req.originalUrl.substr(mixpanelProxyPrefix.length)}`;
+  const headers = {
+    ...req.headers,
+    'X-Forwarded-For': req.ip
+  };
+  delete headers.host;
+
+  const { body, statusCode, rawHeaders } = await got(mixpanelUrl, { headers, agent: false });
+  res.body = body;
+  res.status = statusCode;
+  res.headers = rawHeaders;
 }

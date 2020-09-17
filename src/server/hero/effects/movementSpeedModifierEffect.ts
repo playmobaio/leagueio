@@ -1,5 +1,6 @@
 import Effect from '../effect';
 import Hero from '../hero';
+import { Condition } from '../../../models/interfaces/basicTypes';
 
 class MovementSpeedModifierEffect extends Effect {
   multiplier: number
@@ -17,6 +18,10 @@ class MovementSpeedModifierEffect extends Effect {
 
   finish(): void {
     this.hero.movementSpeed /= this.multiplier;
+  }
+
+  causes(): Condition {
+    return Condition.Active;
   }
 }
 export default MovementSpeedModifierEffect;

@@ -49,7 +49,7 @@ class GameScene extends Phaser.Scene {
     // Register socket event to bind to render function
     this.socket.on("S:UPDATE_GAME_STATE", this.setGameState.bind(this));
     this.socket.on("S:RECEIVED_DAMAGE", () => drawClientReceivedDamage(this));
-    ["Q", "W", "E"].forEach(this.addKey.bind(this));
+    ["Q", "W", "E", "D", "F"].forEach(this.addKey.bind(this));
   }
 
   setGameState(userGame: IGameState): void {

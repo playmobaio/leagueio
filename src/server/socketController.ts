@@ -25,6 +25,12 @@ export function registerPlayerCast(game: Game, clientId: string, userInput: IUse
   case PlayerCastIO.E:
     ability = player?.hero?.eAbility;
     break;
+  case PlayerCastIO.D:
+    ability = player?.dAbility;
+    break;
+  case PlayerCastIO.F:
+    ability = player?.fAbility;
+    break;
   }
   if (ability != null) {
     ability.targetPosition = Point.createFromIPoint(userInput.cursorPosition);

@@ -1,10 +1,8 @@
 import Hero from "../hero";
-import Flash from '../abilities/flash';
-import Ghost from '../abilities/ghost';
 
 class Dodge extends Hero {
-  qAbility = new Flash(this);
-  wAbility = new Ghost(this);
+  qAbility = null;
+  wAbility = null;
   eAbility = null;
 
   onAutoAttack(): void {

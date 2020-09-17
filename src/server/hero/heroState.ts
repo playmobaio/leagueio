@@ -51,14 +51,16 @@ class HeroState {
   }
 
   filterExpiredEffects(): void {
-    this.effects = this.effects.filter((effect: Effect) => {
-      const expired = effect.isExpired();
-      if (expired) {
+    const effects = [];
+    for (const effect of this.effects) {
+      if (effect.isExpired()) {
         effect.finish();
         console.log(`Resetting ${effect.description}`);
+      } else {
+        effects.push(effect);
       }
-      return !expired;
-    });
+    }
+    this.effects = effects;
   }
 
   updateCondition(): void {

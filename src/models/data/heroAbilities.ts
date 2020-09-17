@@ -35,19 +35,25 @@ const ghost: IAbility = {
 
 const HeroAbilities: Record<HeroID, Record<string, IAbility>> = {
   0: {
-    "qAbility": flash,
-    "wAbility": ghost,
-    "eAbility": null
+    "qAbility": null,
+    "wAbility": null,
+    "eAbility": null,
+    "dAbility": ghost,
+    "fAbility": flash
   },
   1: {
     "qAbility": rapidFire,
     "wAbility": hailOfArrows,
-    "eAbility": null
+    "eAbility": null,
+    "dAbility": ghost,
+    "fAbility": flash
   },
   2: {
     "qAbility": null,
     "wAbility": null,
-    "eAbility": null
+    "eAbility": null,
+    "dAbility": ghost,
+    "fAbility": flash
   }
 }
 

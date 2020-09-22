@@ -30,8 +30,6 @@ app.get("/scores", async(_, res) => {
   apiController.getTopScores(game, res);
 });
 
-app.get(`/mixpanel-proxy/*`, apiController.proxyMixpanelRequests);
-
 const io = require("socket.io").listen(server);
 io.sockets.on(
   "connect",

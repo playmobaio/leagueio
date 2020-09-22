@@ -10,6 +10,7 @@ import { IScore } from '../../server/models/iScore';
 import * as mixpanel from 'mixpanel-browser';
 import registerMixpanel from './metrics';
 import MixpanelEvents from './mixpanelEvents'
+import { loadPlayMobaCookie, trySetPlayMobaCookie } from './cookiesUtil';
 
 registerMixpanel();
 
@@ -43,6 +44,7 @@ function InitializeSocket(server: string, name: string): void {
   PhaserInputController.createInstance(socket);
   PhaserInputController.getInstance().setHeroId(heroId);
   socket.emit("C:JOIN_GAME", joinGame);
+  trySetPlayMobaCookie(name);
 }
 
 async function GetGameServer(): Promise<string> {
@@ -51,6 +53,7 @@ async function GetGameServer(): Promise<string> {
     return (await response.json()).url;
   }).catch(err => {
     err.text().then(errorMessage => {
+      document.getElementById("loading-game").removeAttribute("style");
       // We should replace this with some better UI
       alert(errorMessage);
     })
@@ -67,12 +70,14 @@ function IsPublicUrl(server: string): boolean {
 
 async function startGame(): Promise<void> {
   mixpanel.time_event("Start Game");
+  document.getElementById("loading-game").setAttribute("style", "display:block");
   const fullScreen: boolean = (document.getElementById("fullScreen") as HTMLInputElement).checked;
   const server = await GetGameServer();
   const name: string = (document.getElementById("playerName") as HTMLInputElement).value;
 
   if (server && IsPublicUrl(server)) {
     InitializeSocket(server, name);
+    document.getElementById("loading-game").removeAttribute("style");
     InitializePhaserUI(fullScreen);
   }
   mixpanel.track(MixpanelEvents.START_GAME, {
@@ -113,3 +118,4 @@ fetch("/scores").then(async response => {
 
 // If JS is not yet loaded button will have spinner
 document.getElementById("gamespinner").outerHTML = "Join Game";
+loadPlayMobaCookie();

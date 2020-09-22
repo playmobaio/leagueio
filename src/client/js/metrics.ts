@@ -6,16 +6,12 @@ const devToken = "03b620b2f888299a9625325440a545c6";
 const productionHost = "playmoba";
 
 export default function registerMixpanel(): void {
-  const config = {
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    api_host: `${window.location.origin}/mixpanel-proxy`
-  }
   console.log(window.location)
   if (window.location.hostname.toLowerCase().search(productionHost) != -1) {
-    mixpanel.init(prodToken, config);
+    mixpanel.init(prodToken);
   } else {
     console.log('Metrics sent to dev instance.')
-    mixpanel.init(devToken, config);
+    mixpanel.init(devToken);
   }
   mixpanel.track(MixpanelEvents.VISITED_LANDING_PAGE);
 }

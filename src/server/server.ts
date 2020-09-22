@@ -21,7 +21,7 @@ const game = new Game();
 const server = app.listen(process.env.PORT || 3000, function() {
   const host = server.address().address;
   const port = server.address().port;
-  console.log("Example app listening at http://" + host + ":" + port);
+  console.log("PlayMoba listening at http://" + host + ":" + port);
 });
 
 app.use(express.static(path.join(__dirname, "../client")));
@@ -29,7 +29,6 @@ app.get("/server", apiController.requestServer);
 app.get("/scores", async(_, res) => {
   apiController.getTopScores(game, res);
 });
-
 
 const io = require("socket.io").listen(server);
 io.sockets.on(

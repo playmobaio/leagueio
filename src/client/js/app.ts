@@ -53,6 +53,7 @@ async function GetGameServer(): Promise<string> {
     return (await response.json()).url;
   }).catch(err => {
     err.text().then(errorMessage => {
+      document.getElementById("loading-game").removeAttribute("style");
       // We should replace this with some better UI
       alert(errorMessage);
     })

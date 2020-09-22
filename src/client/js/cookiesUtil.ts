@@ -9,7 +9,7 @@ export function setCookie(name: string, val: string): void {
   date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000);
 
   // Set it
-  document.cookie = name+"="+value+"; expires="+date.toUTCString()+"; path=/";
+  document.cookie = `${name}=${value}; expires=${ date.toUTCString() }; path=/`;
 }
 
 export function getCookie(name: string): string {

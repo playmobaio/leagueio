@@ -52,7 +52,7 @@
     "socket.io-client": "^2.3.0",
     "strict-event-emitter-types": "^2.0.0",
     "tslib": "^2.0.0",
-    "uuid": "^8.2.0"
+    "uuid": "^8.3.0"
   },
   "engines": {
     "node": "12.x"

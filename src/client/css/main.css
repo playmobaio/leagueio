@@ -95,3 +95,7 @@ body:before {
 #end-menu h2 {
   color: white;
 }
+
+#loading-game {
+  display: none;
+}

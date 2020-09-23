@@ -9,6 +9,7 @@
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Webpack,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-webpack\" \"npm run watch-ts\" \"npm run serve-debug\"",
     "start": "npm run serve",
     "build": "npm run clean && npm run build-webpack && npm run build-ts && npm run lint && npm run copy-static-assets",
+    "build-prod": "npm run clean && npm run build-webpack-prod && npm run build-ts && npm run lint && npm run copy-static-assets",
     "serve": "node dist/server/server.js",
     "watch-node": "nodemon dist/server/server.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"Webpack,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-webpack\" \"npm run watch-ts\" \"npm run watch-node\"",
@@ -16,6 +17,7 @@
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
     "build-webpack": "webpack --mode=development",
+    "build-webpack-prod": "webpack --mode=production",
     "watch-webpack": "webpack --mode=development --watch",
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\"",
     "lint-fix": "tsc --noEmit && eslint \"**/*.{js,ts}\" --fix",
@@ -26,7 +28,8 @@
     "debug": "npm run build && npm run watch-debug",
     "clean": "rimraf coverage dist tmp",
     "agones:local": "npm run build && (kubectl delete fleet --all || true) && eval $(minikube docker-env) && (docker image rmi playmoba:latest || true) && docker build -t playmoba . && kubectl apply -f kubeConfig/minikube/fleet.yaml && kubectl apply -f kubeConfig/minikube/autoscaler.yaml && kubectl apply -f kubeConfig/service.yaml",
-    "agones:node": "minikube service play-moba"
+    "agones:node": "minikube service play-moba",
+    "agones:prod": "npm run build-prod && (kubectl delete fleet --all || true) && eval $(minikube docker-env) && docker build -t playmoba.azurecr.io/game-server . && docker push playmoba.azurecr.io/game-server && kubectl apply -f kubeConfig/aks/fleet.yaml && kubectl apply -f kubeConfig/aks/autoscaler.yaml && kubectl apply -f kubeConfig/service.yaml"
   },
   "repository": {
     "type": "git",

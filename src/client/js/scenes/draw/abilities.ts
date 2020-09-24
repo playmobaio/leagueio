@@ -103,11 +103,7 @@ function drawAbilityButtons(scene: HudScene, frame: number): void {
         x,
         y,
         [abilityBackground, abilityNameLabel, cooldownOverlay, cooldownLabel, abilityKeyLabel]);
-      console.log(container.height.toString() + ', ' + container.width.toString());
-      console.log(container.displayHeight.toString() + ', ' + container.displayWidth.toString());
       container.setSize(abilityButtonWidth, abilityButtonWidth);
-      console.log(container.height.toString() + ', ' + container.width.toString());
-      console.log(container.displayHeight.toString() + ', ' + container.displayWidth.toString());
       scene.abilities.push(container);
     } else {
       // Update existing labels and colors

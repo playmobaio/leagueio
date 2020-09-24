@@ -9,5 +9,7 @@ export default {
   RAPID_FIRE: "RapidFire",
   BRUTE_AUTO: "BruteAuto",
   GHOST: "Ghost",
-  FLASH: "Flash"
+  FLASH: "Flash",
+  MIXPANEL_PROD_TOKEN: "1fd18f1ca857fbd985f7e75b70a184f6",
+  MIXPANEL_DEV_TOKEN: "03b620b2f888299a9625325440a545c6"
 }

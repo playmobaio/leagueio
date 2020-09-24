@@ -7,6 +7,9 @@ import { IUserMouseClick } from '../models/interfaces/iUserMouseClick';
 import * as AgonesSDK from '@google-cloud/agones-sdk';
 import * as apiController from "./apiController";
 import * as Sentry from "@sentry/node";
+import * as Mixpanel from "mixpanel";
+import MixpanelEvents from "./mixpanelEvents";
+import constants from "../models/constants";
 import Game from './game';
 
 const SENTRY_DSN = "https://72774f64d7884b3f996466e24412134e@o439719.ingest.sentry.io/5406960";
@@ -15,6 +18,7 @@ const SENTRY_DSN = "https://72774f64d7884b3f996466e24412134e@o439719.ingest.sent
 const app = express();
 const agonesSDK = new AgonesSDK();
 const game = new Game();
+let mixpanel;
 
 // Set up the server
 // process.env.PORT is related to deploying on heroku
@@ -37,6 +41,7 @@ io.sockets.on(
     console.log("We have a new client: " + socket.id);
     socket.on("C:JOIN_GAME", async(joinGame: IJoinGame) => {
       socketController.clientJoinGame(game, socket, joinGame);
+      mixpanel.track(MixpanelEvents.START_GAME, { ip: socket.handshake.address });
     });
     socket.on("C:USER_CAST", (userInput: IUserInput) => {
       socketController.registerPlayerCast(game, socket.id, userInput);
@@ -68,6 +73,10 @@ if (process.env.AGONES) {
   connectAgones();
 }
 
+const mixpanelConfig = { protocol: 'https' };
 if (process.env.IS_PRODUCTION) {
   connectSentry();
+  mixpanel = Mixpanel.init(constants.MIXPANEL_PROD_TOKEN, mixpanelConfig);
+} else {
+  mixpanel = Mixpanel.init(constants.MIXPANEL_DEV_TOKEN, mixpanelConfig);
 }

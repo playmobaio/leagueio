@@ -8,13 +8,15 @@ const abilityButtonWidth = 40;
 const buttonPadding = 10;
 const black = 0x000;
 const white = 0xFFF;
+const flashYellow = 0xFBEC9C;
+const ghostBlue = 0x74A5ED;
 const fromBottomOfScreen = 50;
 const canvasWidth = constants.DEFAULT_MAP_VIEW_WIDTH;
 const canvasHeight = constants.DEFAULT_MAP_VIEW_HEIGHT;
 
 const abilityNameToColor: Record<string, number> = {
-  "Ghost": 0x74A5ED,
-  "Flash": 0xFBEC9C,
+  "Ghost": ghostBlue,
+  "Flash": flashYellow,
 }
 
 const defaultAbilityColor = white;

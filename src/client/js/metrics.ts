@@ -5,7 +5,6 @@ import MixpanelEvents from './mixpanelEvents'
 const productionHost = "playmoba";
 
 export default function registerMixpanel(): void {
-  console.log(window.location)
   if (window.location.hostname.toLowerCase().search(productionHost) != -1) {
     mixpanel.init(constants.MIXPANEL_PROD_TOKEN);
   } else {

@@ -19,10 +19,8 @@ export const GameServerState: Record<string, string> = {
 
 // Hack for getting public URL of node
 const IpPrivateToPublicMap: Map<string, string> = new Map([
-  ["10.240.0.5", "13.86.114.94"],
-  ["10.240.0.6", "13.86.113.254"],
-  ["10.240.0.7", "13.86.117.60"],
-  ["10.240.0.8", "13.86.116.152"]
+  ["10.240.0.4", "40.67.182.50"],
+  ["10.240.0.5", "40.67.182.46"]
 ]);
 
 function translateLocalIpToProd(ip: string): string {

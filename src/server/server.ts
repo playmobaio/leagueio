@@ -11,6 +11,8 @@ import * as Mixpanel from "mixpanel";
 import MixpanelEvents from "./mixpanelEvents";
 import constants from "../models/constants";
 import Game from './game';
+import { App } from 'uWebSockets.js';
+import { v4 as uuidv4 } from 'uuid';
 
 const SENTRY_DSN = "https://72774f64d7884b3f996466e24412134e@o439719.ingest.sentry.io/5406960";
 
@@ -32,6 +34,39 @@ app.use(express.static(path.join(__dirname, "../client")));
 app.get("/server", apiController.requestServer);
 app.get("/scores", async(_, res) => {
   apiController.getTopScores(game, res);
+});
+
+const uWs = App();
+uWs.listen(parseInt(process.env.SOCKET_PORT) || 3001, function() {
+  console.log("PlayMoba started uWebsocket Server");
+})
+uWs.ws('/*', {
+  compression: 0,
+  maxPayloadLength: 16 * 1024 * 1024,
+  idleTimeout: 10,
+  open: (ws): void => {
+    ws.id = uuidv4();
+  },
+  message: (ws, message, isBinary) => {
+    // console.log(['server.ws.message'], message, isBinary);
+    const enc = new TextDecoder('utf-8');
+    const { action, topic, data } = JSON.parse(enc.decode(message));
+
+    console.log(['enc.decode(message)'], { action, topic, data });
+
+    if (topic as Topic === 'counter') {
+      if (action as CounterAction === 'increment') {
+        counter++;
+
+        ws.publish('home/sensors/temperature', message);
+        ws.publish('counter', JSON.stringify({ action: 'update', topic: '', data: counter }));
+        ws.send(JSON.stringify({ action: 'update', topic: 'counter', data: counter }));
+      }
+    }
+  },
+  close: (ws: WebSocket, code: number, message: ArrayBuffer) => {
+
+  }
 });
 
 const io = require("socket.io").listen(server);

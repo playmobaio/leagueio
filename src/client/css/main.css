@@ -99,3 +99,14 @@ body:before {
 #loading-game {
   display: none;
 }
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding-left: 30px;
+}
+
+#footer a {
+  padding: 0 5px;
+}

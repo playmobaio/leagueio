@@ -8,7 +8,7 @@ import Game from '../../game';
 
 export default class MysticShotProjectile extends RangeBasedProjectile {
   static damage = 10;
-  static speed = 10;
+  static speed = 8.5;
 
   constructor(game: Game, creatorId: string, origin: Point, dest: Point) {
     super(game, creatorId);

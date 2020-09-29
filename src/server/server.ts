@@ -50,6 +50,7 @@ io.sockets.on(
       socketController.registerPlayerClick(game, socket.id, userMouseClick);
     });
     socket.on('disconnect', async() => await socketController.disconnect(game, socket));
+    socket.on('C:PING', () => socket.emit("S:PONG"));
   }
 );
 

@@ -7,6 +7,7 @@ import { ICasting } from '../../../models/interfaces/iAbility';
 import { IGameState } from '../../../models/interfaces/iGameState';
 import * as mixpanel from 'mixpanel-browser';
 import MixpanelEvents from '../mixpanelEvents'
+import drawLatency from './draw/latency';
 
 class HudScene extends Phaser.Scene {
   socket: SocketIO.Socket;
@@ -14,9 +15,12 @@ class HudScene extends Phaser.Scene {
   healthBar: Phaser.GameObjects.Rectangle;
   healthText: Phaser.GameObjects.Text;
   gameTimeText: Phaser.GameObjects.Text;
+  latencyText: Phaser.GameObjects.Text;
   abilities: Phaser.GameObjects.Container[];
   casting: Map<string, number>;
   gameState: IGameState;
+  pingStartTime: number;
+  latency: number;
 
   constructor()
   {
@@ -26,6 +30,7 @@ class HudScene extends Phaser.Scene {
     });
     this.abilities = [];
     this.casting = new Map<string, number>();
+    this.pingStartTime = Date.now();
   }
 
   create(): void
@@ -44,6 +49,13 @@ class HudScene extends Phaser.Scene {
       document.getElementById("final-score").innerText = this.gameState.currentFrame.toString();
       document.getElementById("end-menu").setAttribute("style", "display:block");
     });
+    setInterval(() => {
+      this.socket.emit("C:PING");
+      this.pingStartTime = Date.now();
+    }, 1000);
+    this.socket.on("S:PONG", () => {
+      this.latency = Date.now() - this.pingStartTime;
+    })
   }
 
   render(userGame: IGameState): void {
@@ -53,6 +65,7 @@ class HudScene extends Phaser.Scene {
     drawHealth(this, userGame.client);
     drawGameTime(this, userGame.currentFrame);
     drawAbilityButtons(this, userGame.currentFrame);
+    drawLatency(this);
   }
 
   getCoolDownLeft(abilityName: string, frame: number): number {

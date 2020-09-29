@@ -56,6 +56,8 @@ class PhaserInputController {
       return PlayerCastIO.D;
     case "KeyF":
       return PlayerCastIO.F;
+    case "KeyS":
+      return PlayerCastIO.S;
     }
     return PlayerCastIO.None;
   }

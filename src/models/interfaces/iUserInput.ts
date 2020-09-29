@@ -11,6 +11,7 @@ export enum PlayerCastIO {
   W = 2,
   E = 3,
   D = 4,
-  F = 5
+  F = 5,
+  S = 6
 }
 

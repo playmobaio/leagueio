@@ -1,0 +1,66 @@
+name: Deploy Azure
+
+on:  
+  schedule:
+    - cron: '0 10 * * *'  # every day at 10:00 UTC
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Checking Deployment"
+        id: "check-deploy"
+        run: |
+          deployment_sha=$(cat .github/prodsha)
+          current_sha=$(git rev-parse HEAD)
+          echo "CURRENT: $current_sha"
+          echo "DEPLOYMENT: $deployment_sha"
+          if [ "$current_sha" == "$deployment_sha" ]; then
+            echo "Already deployed skipping"
+            echo "::set-output name=skip::1"
+          fi
+      - name: Cancelling when previously deployed
+        if: steps.check-deploy.outputs.skip == 1
+        uses: andymckay/cancel-action@0.2
+      - name: "Login via Azure CLI"
+        uses: azure/login@v1.1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: "Docker Login"
+        uses: azure/docker-login@v1
+        with:
+          login-server: playmoba.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+      - name: "Delete Containers"
+        run: |
+          az acr repository delete -n playmoba --repository game-server --yes
+      - name: "Build Docker Container"
+        run: |
+          npm install
+          npm run build-prod
+          docker build -t playmoba.azurecr.io/game-server .
+          docker push playmoba.azurecr.io/game-server
+      - name: "Fetch AKS Credentials"
+        run: |
+          az aks get-credentials --resource-group play-moba --name play-moba
+          kubectl config use-context play-moba
+      - name: "Update Kubernetes Controllers"
+        run: |
+          kubectl delete fleet --all
+          kubectl apply -f kubeConfig/aks/fleet.yaml
+          kubectl apply -f kubeConfig/aks/autoscaler.yaml
+          kubectl apply -f kubeConfig/service.yaml
+      - name: "Set deployment file with current commit SHA"
+        run: |
+          current_sha=$(git rev-parse HEAD)
+          echo "$current_sha" > .github/prodsha
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Add changes" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}

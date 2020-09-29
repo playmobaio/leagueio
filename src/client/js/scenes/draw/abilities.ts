@@ -87,7 +87,7 @@ function drawAbilityButtons(scene: HudScene, frame: number): void {
         0,
         0,
         cooldownLabelText,
-        { font: "10px Arial", color: '#000' });
+        { font: "10px Arial", color: '#FFF' });
       cooldownLabel.setPadding(0, 0, 0, 0);
       cooldownLabel.setOrigin(0.5);
 

@@ -31,6 +31,9 @@ export function registerPlayerCast(game: Game, clientId: string, userInput: IUse
   case PlayerCastIO.F:
     ability = player?.fAbility;
     break;
+  case PlayerCastIO.S:
+    player.hero.stopHero();
+    break;
   }
   if (ability != null) {
     ability.targetPosition = Point.createFromIPoint(userInput.cursorPosition);

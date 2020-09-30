@@ -1,5 +1,7 @@
 import * as exec from 'await-exec'
+import { Mixpanel } from 'mixpanel';
 import Game from './game';
+import MixpanelEvents from './mixpanelEvents';
 
 function createServerResponse(ip: string, port: string): object {
   return {
@@ -27,7 +29,7 @@ function translateLocalIpToProd(ip: string): string {
   return IpPrivateToPublicMap.has(ip) ? IpPrivateToPublicMap.get(ip) : ip;
 }
 
-export async function requestServer(_, res): Promise<void> {
+export async function requestServer(req, res, mixpanel: Mixpanel): Promise<void> {
   if (process.env.HEROKU) {
     res.json({ url: "https://leagueio-test.herokuapp.com/" });
     return;
@@ -59,6 +61,8 @@ export async function requestServer(_, res): Promise<void> {
     ));
     return;
   case GameServerState.UnAllocated: {
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    mixpanel.track(MixpanelEvents.MAX_SERVERS, { ip: ip });
     sendMessage(res, 404, "No game servers are available at this time");
     return;
   }

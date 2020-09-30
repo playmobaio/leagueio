@@ -29,7 +29,7 @@ const server = app.listen(process.env.PORT || 3000, function() {
 });
 
 app.use(express.static(path.join(__dirname, "../client")));
-app.get("/server", apiController.requestServer);
+app.get("/server", (req, res) => apiController.requestServer(req, res, mixpanel));
 app.get("/scores", async(_, res) => {
   apiController.getTopScores(game, res);
 });

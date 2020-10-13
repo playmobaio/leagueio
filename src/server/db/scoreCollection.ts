@@ -1,6 +1,11 @@
 import FirestoreBase from './firestoreBase';
 import { IScore } from '../models/iScore';
-import { CollectionReference, DocumentData, QuerySnapshot, FieldValue } from '@google-cloud/firestore';
+import {
+  CollectionReference,
+  DocumentData,
+  QuerySnapshot,
+  FieldValue
+} from '@google-cloud/firestore';
 
 class ScoreCollection extends FirestoreBase {
   static aggregationCollectionName = "aggregation";

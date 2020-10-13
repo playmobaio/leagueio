@@ -11,6 +11,7 @@ import * as Mixpanel from "mixpanel";
 import MixpanelEvents from "./mixpanelEvents";
 import constants from "../models/constants";
 import Game from './game';
+import * as favicon from 'serve-favicon';
 
 const SENTRY_DSN = "https://72774f64d7884b3f996466e24412134e@o439719.ingest.sentry.io/5406960";
 
@@ -29,6 +30,7 @@ const server = app.listen(process.env.PORT || 3000, function() {
 });
 
 app.use(express.static(path.join(__dirname, "../client")));
+app.use(favicon(path.join(__dirname, '..', 'client', 'assets', 'favicon.ico')));
 app.get("/server", (req, res) => apiController.requestServer(req, res, mixpanel));
 app.get("/scores", async(_, res) => {
   apiController.getTopScores(game, res);

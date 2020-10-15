@@ -8,20 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: "Checking Deployment"
-        id: "check-deploy"
-        run: |
-          deployment_sha=$(cat .github/prodsha)
-          current_sha=$(git rev-parse HEAD)
-          echo "CURRENT: $current_sha"
-          echo "DEPLOYMENT: $deployment_sha"
-          if [ "$current_sha" == "$deployment_sha" ]; then
-            echo "Already deployed skipping"
-            echo "::set-output name=skip::1"
-          fi
-      - name: Cancelling when previously deployed
-        if: steps.check-deploy.outputs.skip == 1
-        uses: andymckay/cancel-action@0.2
       - name: "Login via Azure CLI"
         uses: azure/login@v1.1
         with:
@@ -51,16 +37,3 @@ jobs:
           kubectl apply -f kubeConfig/aks/fleet.yaml
           kubectl apply -f kubeConfig/aks/autoscaler.yaml
           kubectl apply -f kubeConfig/service.yaml
-      - name: "Set deployment file with current commit SHA"
-        run: |
-          current_sha=$(git rev-parse HEAD)
-          echo "$current_sha" > .github/prodsha
-      - name: Commit files
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git commit -m "Add changes" -a
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}

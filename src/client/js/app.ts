@@ -17,6 +17,7 @@ registerMixpanel();
 let phaserGame:  Phaser.Game;
 function InitializePhaserUI(fullScreen: boolean): void {
   document.getElementById('main-menu').setAttribute("style", "display:none;");
+  document.getElementById('footer').setAttribute("style", "display:none;");
   const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
     width: constants.DEFAULT_MAP_VIEW_WIDTH,
@@ -94,6 +95,7 @@ document.getElementById("return-main-menu").onclick = (): void => {
   phaserGame.events.once("destroy", () => {
     document.getElementById("end-menu").removeAttribute("style");
     document.getElementById("main-menu").removeAttribute("style");
+    document.getElementById("footer").removeAttribute("style");
   });
 }
 

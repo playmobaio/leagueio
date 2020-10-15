@@ -10,6 +10,7 @@ import {
 class ScoreCollection extends FirestoreBase {
   static aggregationCollectionName = "aggregation";
   static scoreCollectionName = "scores";
+  static aggregationTotalField = "total";
   scoreCollection: CollectionReference<DocumentData>;
   aggregationCollection: CollectionReference<DocumentData>;
 
@@ -26,9 +27,8 @@ class ScoreCollection extends FirestoreBase {
 
   incrementScoreCount(): void {
     const ref = this.aggregationCollection.doc(ScoreCollection.scoreCollectionName);
-    ref.update('total', FieldValue.increment(1));
+    ref.update(ScoreCollection.aggregationTotalField, FieldValue.increment(1));
   }
-
 
   async getTopN(n: number): Promise<IScore[]> {
     const scoreQuery: QuerySnapshot<DocumentData> = await this.scoreCollection

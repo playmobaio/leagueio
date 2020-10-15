@@ -41,4 +41,4 @@ spec:
       bufferSize: 3
       # maximum fleet size that can be set by this FleetAutoscaler
       # required
-      maxReplicas: 20
+      maxReplicas: 40

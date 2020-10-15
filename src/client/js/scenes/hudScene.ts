@@ -43,6 +43,7 @@ class HudScene extends Phaser.Scene {
       this.casting.set(casting.abilityName, casting.coolDownLastFrame);
     });
     this.socket.on("S:END_GAME", () => {
+      this.gameState.client.health.current = 0;
       mixpanel.track(MixpanelEvents.FINISH_GAME, { score: this.gameState.currentFrame });
       this.socket.disconnect(true);
       this.cameras.main.fadeOut(20000, 255, 255, 255);

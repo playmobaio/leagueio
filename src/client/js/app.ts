@@ -52,12 +52,10 @@ async function GetGameServer(): Promise<string> {
   return await fetch("/server").then(async response => {
     if (!response.ok) { throw response }
     return (await response.json()).url;
-  }).catch(err => {
-    err.text().then(errorMessage => {
-      document.getElementById("loading-game").removeAttribute("style");
-      // We should replace this with some better UI
-      alert(errorMessage);
-    })
+  }).catch(() => {
+    document.getElementById("loading-game").removeAttribute("style");
+    // We should replace this with some better UI
+    alert("Failed to connect to a game server");
   });
 }
 
@@ -69,7 +67,11 @@ function IsPublicUrl(server: string): boolean {
   return !isPrivate;
 }
 
-async function startGame(): Promise<void> {
+function nullFunction(): void {
+  return;
+}
+
+async function startGame(successCallback: () => void = nullFunction): Promise<void> {
   mixpanel.time_event("Start Game");
   document.getElementById("loading-game").setAttribute("style", "display:block");
   const fullScreen: boolean = (document.getElementById("fullScreen") as HTMLInputElement).checked;
@@ -79,15 +81,17 @@ async function startGame(): Promise<void> {
   if (server && IsPublicUrl(server)) {
     InitializeSocket(server, name);
     document.getElementById("loading-game").removeAttribute("style");
+    successCallback();
     InitializePhaserUI(fullScreen);
+
+    mixpanel.track(MixpanelEvents.START_GAME, {
+      fullScreen,
+      name: name == "" ? undefined : name
+    });
   }
-  mixpanel.track(MixpanelEvents.START_GAME, {
-    fullScreen,
-    name: name == "" ? undefined : name
-  });
 }
 
-document.getElementById("join-game").onclick = startGame;
+document.getElementById("join-game").onclick = async(): Promise<void> => startGame();
 
 document.getElementById("return-main-menu").onclick = (): void => {
   mixpanel.track(MixpanelEvents.RETURN_MAIN_MENU);
@@ -102,8 +106,12 @@ document.getElementById("return-main-menu").onclick = (): void => {
 document.getElementById("play-again").onclick = (): void => {
   mixpanel.track(MixpanelEvents.PLAY_AGAIN);
   phaserGame.destroy(true);
-  document.getElementById("end-menu").removeAttribute("style");
-  phaserGame.events.once("destroy", startGame);
+  if (phaserGame == null || phaserGame.loop.game == null) {
+    startGame(() => document.getElementById("end-menu").removeAttribute("style"));
+  }
+  phaserGame.events.once("destroy", async(): Promise<void> => startGame(
+    () => document.getElementById("end-menu").removeAttribute("style"))
+  );
 }
 
 // Load Scores
@@ -116,6 +124,8 @@ fetch("/scores").then(async response => {
   } else {
     alert("Could not load scores at this time");
   }
+}).catch(() => {
+  alert("Could not load scores at this time");
 });
 
 // If JS is not yet loaded button will have spinner

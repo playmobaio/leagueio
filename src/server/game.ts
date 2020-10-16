@@ -70,7 +70,9 @@ class Game {
 
   reset(): void {
     console.log("Game Reset");
-    this.players.forEach(x => x.socket.emit("S:END_GAME"));
+    for (const player of this.players.values()) {
+      player.socket.emit("S:END_GAME");
+    }
     clearInterval(this.gameLoop);
     this.players.clear();
     this.projectiles.clear();
@@ -87,6 +89,17 @@ class Game {
       const gameState: Array<IGameState> = this.getGameStates();
       this.sendGameStates(gameState);
     }, 1000 / constants.FRAME_RATE);
+  }
+
+  tryReset(): boolean {
+    let clear = true;
+    for (const player of this.players.values()) {
+      clear = player.health.current <= 0 && clear;
+    }
+    if (clear) {
+      this.reset();
+    }
+    return clear;
   }
 
   removePlayer(id: string): void {

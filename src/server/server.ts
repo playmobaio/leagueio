@@ -62,6 +62,9 @@ const connectAgones = async(): Promise<void> => {
   // Health Check
   setInterval(() => {
     agonesSDK.health();
+    if (game.tryReset()) {
+      agonesSDK.ready();
+    }
   }, 5000);
   // Game server is in ready state
   await agonesSDK.ready();
